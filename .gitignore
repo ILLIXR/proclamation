@@ -1,1 +1,5 @@
-.vscode
+.vscode/
+__pycache__/
+.tox/
+*.egg-info/
+.pytest_cache/
