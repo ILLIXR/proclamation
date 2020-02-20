@@ -19,6 +19,18 @@ def test_ref_parse():
     assert(parser.parse("issue.54").as_tuple() ==
            parser.parse("issue.54.md").as_tuple())
 
+    assert(parser.parse(".gitignore") is None)
+    assert(parser.parse(".git-keep") is None)
+
+
+def test_ref_parse_filename():
+    parser = ReferenceParser()
+    assert(parser.parse_filename("issue.54.md").item_type == "issue")
+    assert(parser.parse_filename("issue.54.md").number == 54)
+    assert(parser.parse_filename("issue.54") is None)
+    assert(parser.parse_filename(".gitignore") is None)
+    assert(parser.parse_filename(".git-keep") is None)
+
 
 CHUNK = """---
 - issue.55
