@@ -16,11 +16,10 @@ def _resolve_with_base(base_dir, path):
 class Project:
     """A project has sections and chunks."""
 
-    def __init__(self, settings, version, ref_factory=None, default_base=None):
+    def __init__(self, settings, ref_factory=None, default_base=None):
         """Construct a project.
 
         settings: a ProjectSettings object.
-        version: the project version we're releasing for.
         ref_factory: optional, a reference factory if the default is not
         suitable.
         default_base: optional, default base directory. If unset, defaults to
@@ -38,13 +37,18 @@ class Project:
         self.name = settings.name
         self.template = settings.template
 
-        self.version = version
-
         self.sections = []
         sections = self.sections
         for section_settings in settings.sections:
-            directory = _resolve_with_base(
-                default_base, section_settings.directory)
-            section = Section(section_settings.name, directory)
-            section.populate_from_directory(directory, ref_factory)
+            section = Section(section_settings.name,
+                              section_settings.directory)
             sections.append(section)
+
+    def populate_sections(self, ref_factory=None):
+        """Load chunks associated with each section."""
+        if ref_factory is None:
+            ref_factory = self.ref_factory
+        for section in self.sections:
+            directory = _resolve_with_base(
+                self.default_base, section.relative_directory)
+            section.populate_from_directory(directory, ref_factory)

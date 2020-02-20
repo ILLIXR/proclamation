@@ -1,0 +1,13 @@
+{
+    "project_name": "proclamation",
+    "template": "base.md",
+    "base_url": "https://gitlab.com/ryanpavlik/proclamation",
+    "sections": {
+        "Script": {
+            "directory": "changes/script"
+        },
+        "Templates": {
+            "directory": "changes/templates"
+        }
+    }
+}

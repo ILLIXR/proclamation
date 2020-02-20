@@ -16,7 +16,12 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://gitlab.com/ryanpavlik/proclamation",
     packages=setuptools.find_packages(),
-    install_requires=["jinja2"],
+    install_requires=["jinja2", "click"],
+    include_package_data=True,
+    entry_points='''
+        [console_scripts]
+        proclamation=proclamation.main:cli
+    ''',
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",

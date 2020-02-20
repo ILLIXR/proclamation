@@ -3,18 +3,18 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+import logging
+_LOG = logging.getLogger(__name__)
+
 FRONT_MATTER_DELIMITER = "---"
 
 
 class Reference:
     """A simple class storing the information about a reference."""
 
-    def __init__(self, ref_service, item_type, number, service_params):
+    def __init__(self, item_type, number, service_params):
         """Construct a Reference from a parsed reference string."""
         super().__init__()
-        self.ref_service = ref_service
-        """Service associated with reference: something like GitHub or GitLab,
-        perhaps."""
 
         self.item_type = item_type
         """Item type, like issue, mr, pr."""
@@ -32,8 +32,7 @@ class Reference:
         Required of all classes that are to be used as a reference,
         for de-duplication.
         """
-        return (self.ref_service, self.item_type, self.number,
-                tuple(self.service_params))
+        return (self.item_type, self.number, tuple(self.service_params))
 
 
 class ReferenceFactoryBase:
@@ -64,6 +63,9 @@ class ReferenceFactoryBase:
         elts = s.split(".")
         if elts[-1] in self.extensions_to_drop:
             elts.pop()
+        # remove leading empty components - avoid thinking gitignore is a chunk.
+        while elts and not elts[0]:
+            elts.pop(0)
         return elts
 
     def parse(self, s):
@@ -72,18 +74,15 @@ class ReferenceFactoryBase:
         May override or extend.
         """
         ref_tuple = self.split_on_dot_and_drop_ext(s)
-        if ref_tuple[0] not in ("gh", "gl"):
+        if len(ref_tuple) < 2 or not ref_tuple[0]:
+            # Only one compionent: Can't be a ref.
+            # Empty first component - probably not a ref file
             # warn?
             return None
 
-        if len(ref_tuple) < 3:
-            # warn?
-            return None
-
-        return Reference(ref_service=ref_tuple[0],
-                         item_type=ref_tuple[1],
-                         number=ref_tuple[-1],
-                         service_params=ref_tuple[2:-1])
+        return Reference(item_type=ref_tuple[0],
+                         number=int(ref_tuple[1]),
+                         service_params=ref_tuple[2:])
 
 
 class Chunk:
@@ -172,11 +171,13 @@ class Section:
     For example, sections might include "Drivers", "UI", etc.
     """
 
-    def __init__(self, name):
+    def __init__(self, name, relative_directory=None):
         super().__init__()
         self.name = name
+        self.relative_directory = relative_directory
         self.chunks = []
         self.files = []
+        self._log = _LOG.getChild("Section")
 
     def populate_from_directory(self, directory, ref_factory):
         """Iterate through a directory, trying to parse each filename as a reference.
@@ -188,9 +189,11 @@ class Section:
             chunk_ref = ref_factory.parse(chunk_name.name)
             if not chunk_ref:
                 # Actually not a chunk, skipping
-                print("Not actually a chunk", chunk_name)
+                # print()
+                self._log.debug("Not actually a chunk: %s", chunk_name)
                 continue
             self.chunks.append(Chunk(chunk_name, chunk_ref, ref_factory))
+            self._log.debug("loaded: %s", chunk_name)
 
         for chunk in self.chunks:
             chunk.parse_file()

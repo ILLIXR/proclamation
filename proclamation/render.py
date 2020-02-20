@@ -13,7 +13,7 @@ from jinja2 import (ChoiceLoader, Environment, FileSystemLoader, PackageLoader,
                     TemplateSyntaxError)
 
 
-def render_template(project):
+def render_template(project, project_version):
     """Render the CHANGES template for a project.
 
     Returns the rendered text.
@@ -34,7 +34,7 @@ def render_template(project):
     try:
         return template.render({
             "project_name": project.name,
-            "project_version": project.version,
+            "project_version": project_version,
             "sections": project.sections
         })
     except TemplateSyntaxError as e:

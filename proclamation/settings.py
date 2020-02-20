@@ -22,7 +22,7 @@ class ProjectSettings:
     Often parsed from JSON with a similar structure.
     """
 
-    def __init__(self, project_name, template):
+    def __init__(self, project_name, template, base_url=None):
         """Construct a settings object."""
         self.name = project_name
         """Name of the project."""
@@ -30,6 +30,8 @@ class ProjectSettings:
         """Filename of the changelog template."""
         self.sections = []
         """List of SectionSettings."""
+        self.base_url = base_url
+        """Base URL of project management."""
 
 
 class Settings:
@@ -48,11 +50,18 @@ class Settings:
         self.projects.append(project_settings)
 
 
-def _parse_project(proj):
-    proj_settings = ProjectSettings(proj["project_name"], proj["template"])
+def parse_section(section_name, section_info):
+    return SectionSettings(section_name, section_info["directory"])
+
+
+def parse_project(proj):
+    proj_settings = ProjectSettings(
+        proj["project_name"],
+        proj["template"],
+        proj.get("base_url"))
     for section_name, section_info in proj["sections"].items():
-        proj_settings.sections.append(SectionSettings(
-            section_name, section_info["directory"]))
+        proj_settings.sections.append(
+            parse_section(section_name, section_info))
     return proj_settings
 
 
@@ -66,9 +75,9 @@ def settings_from_json_io(io):
     projects = config.get("projects")
     if projects:
         for project in projects:
-            settings.add_project(_parse_project(project))
+            settings.add_project(parse_project(project))
     else:
-        settings.add_project(_parse_project(config))
+        settings.add_project(parse_project(config))
 
     return settings
 
