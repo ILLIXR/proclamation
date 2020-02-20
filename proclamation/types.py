@@ -4,6 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
+
+from pathlib import Path
+
 _LOG = logging.getLogger(__name__)
 
 FRONT_MATTER_DELIMITER = "---"
@@ -35,13 +38,13 @@ class Reference:
         return (self.item_type, self.number, tuple(self.service_params))
 
 
-class ReferenceFactoryBase:
-    """The base class for a "reference factory".
+class ReferenceParser:
+    """The base class and default "reference parser".
 
     If you choose to customize this functionality, inherit from it.
     Otherwise, use it as-is.
 
-    Reference factories may (this one does) use the Reference class from this
+    Reference parsers may (this one does) use the Reference class from this
     module, but it's not required.
     Whatever suits you best is fine as long as it works with your template.
 
@@ -52,37 +55,65 @@ class ReferenceFactoryBase:
     """
 
     def __init__(self):
-        """Construct factory."""
+        """Construct parser."""
         self.extensions_to_drop = set(('md', 'rst', 'txt'))
 
     def split_on_dot_and_drop_ext(self, s):
-        """Return the .-delimited portions of a name/ref, excluding a file extension.
+        """Return the .-delimited portions of a name/ref, excluding a file extension,
+        and whether or not a file extension was removed.
 
-        A utility function likely to be used in factories resembling this one.
+        A utility function likely to be used in classes resembling this one.
         """
         elts = s.split(".")
         if elts[-1] in self.extensions_to_drop:
             elts.pop()
-        # remove leading empty components - avoid thinking gitignore is a chunk.
-        while elts and not elts[0]:
-            elts.pop(0)
-        return elts
+            return elts, True
+        return elts, False
+
+    def make_reference(self, elts):
+        """Convert a tuple of elements into a reference.
+
+        This might be the only function you need to override.
+        """
+        if len(elts) < 2:
+            # Only one component: Can't be a ref.
+            return None
+        try:
+            return Reference(item_type=elts[0],
+                             number=int(elts[1]),
+                             service_params=elts[2:])
+        except ValueError:
+            # Conversion failure, etc. means this isn't actually a ref
+            return None
+
+    def parse_filename(self, s):
+        """Turn a filename string into a reference or None.
+
+        May override or extend.
+        """
+        elts, removed_extension = self.split_on_dot_and_drop_ext(s)
+        if not removed_extension:
+            # Filenames must have the extension
+            return None
+        elts = s.split(".")
+        if elts[-1] in self.extensions_to_drop:
+            elts.pop()
+        else:
+            return None
+
+        if elts and not elts[0]:
+            # Empty first component: not a valid ref file.
+            return None
+        return self.make_reference(elts)
 
     def parse(self, s):
         """Turn a string into a reference or None.
 
         May override or extend.
         """
-        ref_tuple = self.split_on_dot_and_drop_ext(s)
-        if len(ref_tuple) < 2 or not ref_tuple[0]:
-            # Only one compionent: Can't be a ref.
-            # Empty first component - probably not a ref file
-            # warn?
-            return None
+        elts, _ = self.split_on_dot_and_drop_ext(s)
 
-        return Reference(item_type=ref_tuple[0],
-                         number=int(ref_tuple[1]),
-                         service_params=ref_tuple[2:])
+        return self.make_reference(elts)
 
 
 class Chunk:
@@ -97,27 +128,31 @@ class Chunk:
     without leading -) between those delimiters.
     """
 
-    def __init__(self, filename, reference, ref_factory=None, io=None):
+    def __init__(self, filename, reference=None, ref_parser=None, io=None):
         """Construct a chunk.
 
         Filename is used to open the file, if io is not provided.
-        ref_factory parses "reference" strings (referring to PR/MR/issue) into
+        ref_parser parses "reference" strings (referring to PR/MR/issue) into
         a reference object.
         A default is provided.
         For testing or advanced stuff, pass a file handle or something like
         StringIO to io, in which case filename is not used.
         """
         super().__init__()
+        filename = Path(filename)
         self.filename = filename
         self.text = ""
         self.io = io
+        if ref_parser is None:
+            ref_parser = ReferenceParser()
+        self._ref_parser = ref_parser
+
+        if not reference:
+            reference = ref_parser.parse_filename(filename.name)
         self.ref = reference
         self.refs = []
         self.known_refs = set()
         self._insert_ref(reference)
-        if ref_factory is None:
-            ref_factory = ReferenceFactoryBase()
-        self._ref_factory = ref_factory
 
     def _insert_ref(self, reference):
         ref_tuple = reference.as_tuple()
@@ -127,7 +162,7 @@ class Chunk:
 
     def add_ref(self, s):
         """Parse a string as a reference and add it to this chunk."""
-        ref_tuple = self._ref_factory.parse(s)
+        ref_tuple = self._ref_parser.parse(s)
         if not ref_tuple:
             return
         self._insert_ref(ref_tuple)
@@ -176,23 +211,22 @@ class Section:
         self.name = name
         self.relative_directory = relative_directory
         self.chunks = []
-        self.files = []
         self._log = _LOG.getChild("Section." + name)
 
-    def populate_from_directory(self, directory, ref_factory):
+    def populate_from_directory(self, directory, ref_parser):
         """Iterate through a directory, trying to parse each filename as a reference.
 
         Files that parse properly are assumed to be chunks,
         and a Chunk object is instantiated for them.
         """
         for chunk_name in directory.iterdir():
-            chunk_ref = ref_factory.parse(chunk_name.name)
+            chunk_ref = ref_parser.parse(chunk_name.name)
             if not chunk_ref:
                 # Actually not a chunk, skipping
                 # print()
                 self._log.debug("Not actually a chunk: %s", chunk_name)
                 continue
-            self.chunks.append(Chunk(chunk_name, chunk_ref, ref_factory))
+            self.chunks.append(Chunk(chunk_name, chunk_ref, ref_parser))
             self._log.debug("loaded: %s", chunk_name)
 
         for chunk in self.chunks:

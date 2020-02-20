@@ -4,6 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Project settings."""
 
+from importlib import import_module
+
+
 
 class SectionSettings:
     """Settings for a single Section."""
@@ -83,12 +86,9 @@ def parse_project(proj):
     return proj_settings
 
 
-def settings_from_json_io(io):
-    """Load settings from json in an IO like a file or StringIO."""
-    import json
-    config = json.load(io)
+def parse_settings(config):
+    """Take settings from a dict into a Settings object."""
     settings = Settings()
-
     # Having multiple projects at top level is optional.
     projects = config.get("projects")
     if projects:
@@ -96,9 +96,13 @@ def settings_from_json_io(io):
             settings.add_project(parse_project(project))
     else:
         settings.add_project(parse_project(config))
-
     return settings
 
+def settings_from_json_io(io):
+    """Load settings from json in an IO like a file or StringIO."""
+    import json
+    config = json.load(io)
+    return parse_settings(config)
 
 def settings_from_json_file(fn):
     """Load settings from a JSON file."""

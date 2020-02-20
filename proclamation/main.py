@@ -15,7 +15,7 @@ from .settings import settings_from_json_file
 
 class ProjectCollection:
     def __init__(self, config_file, project_name, default_base,
-                 ref_factory=None):
+                 ref_parser=None):
         self.project_name = project_name
         self.default_base = default_base
         settings = settings_from_json_file(config_file)
@@ -29,7 +29,7 @@ class ProjectCollection:
             log.debug("Initializing project %s", project_settings.name)
             self.projects.append(Project(project_settings,
                                          default_base=default_base,
-                                         ref_factory=ref_factory))
+                                         ref_parser=ref_parser))
 
     def should_process_project(self, proj_name):
         if self.project_name is None:
@@ -81,13 +81,13 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 @click.argument("project_version", metavar="VERSION")
 @click.pass_context
 @pass_project_collection
-def draft(project_collection, ctx, project_version, ref_factory=None):
+def draft(project_collection, ctx, project_version, ref_parser=None):
     """Preview the new VERSION portion of your NEWS file(s) to stdout."""
 
     if project_version is None:
         ctx.fail("Draft creation requires a version to be specified")
     for project in project_collection.projects:
-        project.populate_sections(ref_factory)
+        project.populate_sections(ref_parser)
         print(render_template(project, project_version))
 
 
@@ -100,7 +100,7 @@ def draft(project_collection, ctx, project_version, ref_factory=None):
 @click.pass_context
 @pass_project_collection
 def build(project_collection, ctx, project_version, delete_chunks,
-          ref_factory=None):
+          ref_parser=None):
     """Build your new NEWS file."""
     if len(project_collection.projects) != 1:
         raise click.UsageError(
@@ -108,7 +108,7 @@ def build(project_collection, ctx, project_version, delete_chunks,
             "please specify --project-name",
             ctx)
     project = project_collection.projects[0]
-    project.populate_sections(ref_factory)
+    project.populate_sections(ref_parser)
     print(render_template(project, project_version))
 
     if delete_chunks:
@@ -119,7 +119,7 @@ def build(project_collection, ctx, project_version, delete_chunks,
 @click.confirmation_option()
 @click.pass_context
 @pass_project_collection
-def remove_chunks(project_collection, ctx, ref_factory=None):
+def remove_chunks(project_collection, ctx, ref_parser=None):
     """Remove NEWS chunks associated with all projects (or specified projects).
 
     If you only have one project, or your projects don't share sections,
@@ -127,7 +127,7 @@ def remove_chunks(project_collection, ctx, ref_factory=None):
     """
     all_files = set()
     for project in project_collection.projects:
-        project.populate_sections(ref_factory)
+        project.populate_sections(ref_parser)
         all_files += set(project.chunk_filenames)
     remove_files(all_files)
 

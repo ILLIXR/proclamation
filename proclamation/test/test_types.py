@@ -3,21 +3,21 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from ..types import Chunk, ReferenceFactoryBase
+from ..types import Chunk, ReferenceParser
 
 from io import StringIO
 
 
-def test_parse_refs():
-    factory = ReferenceFactoryBase()
-    assert(factory.parse("issue.54.md").item_type == "issue")
-    assert(factory.parse("issue.54.md").number == 54)
+def test_ref_parse():
+    parser = ReferenceParser()
+    assert(parser.parse("issue.54.md").item_type == "issue")
+    assert(parser.parse("issue.54.md").number == 54)
 
-    assert(factory.parse("issue.54").item_type == "issue")
-    assert(factory.parse("issue.54").number == 54)
+    assert(parser.parse("issue.54").item_type == "issue")
+    assert(parser.parse("issue.54").number == 54)
 
-    assert(factory.parse("issue.54").as_tuple() ==
-           factory.parse("issue.54.md").as_tuple())
+    assert(parser.parse("issue.54").as_tuple() ==
+           parser.parse("issue.54.md").as_tuple())
 
 
 CHUNK = """---
@@ -31,12 +31,11 @@ This is content.
 
 
 def test_chunk():
-    factory = ReferenceFactoryBase()
+    parser = ReferenceParser()
     fn = "issue.54.md"
     chunkio = StringIO(CHUNK)
-    ref = factory.parse(fn)
-    chunk = Chunk(fn, ref, ref_factory=factory, io=chunkio)
-    assert(chunk.filename == fn)
+    chunk = Chunk(fn, ref_parser=parser, io=chunkio)
+    assert(str(chunk.filename) == fn)
     assert(len(chunk.refs) == 1)
     chunk.parse_file()
     assert("content" in chunk.text)
