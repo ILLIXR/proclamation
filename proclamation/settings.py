@@ -8,12 +8,18 @@
 class SectionSettings:
     """Settings for a single Section."""
 
-    def __init__(self, name, directory):
+    def __init__(self, name, directory, extra_data=None):
         """Construct a section settings object."""
         self.name = name
         """Section name."""
+
         self.directory = directory
         """Directory where changelog chunks for this section can be found."""
+
+        if extra_data is None:
+            extra_data = {}
+        self.extra_data = extra_data
+        """Extra data for use by your template."""
 
 
 class ProjectSettings:
@@ -22,16 +28,27 @@ class ProjectSettings:
     Often parsed from JSON with a similar structure.
     """
 
-    def __init__(self, project_name, template, base_url=None):
+    def __init__(self, project_name, template=None, base_url=None,
+                 extra_data=None):
         """Construct a settings object."""
         self.name = project_name
         """Name of the project."""
+
+        if template is None:
+            template = "base.md"
         self.template = template
         """Filename of the changelog template."""
+
         self.sections = []
         """List of SectionSettings."""
+
         self.base_url = base_url
         """Base URL of project management."""
+
+        if extra_data is None:
+            extra_data = {}
+        self.extra_data = extra_data
+        """Extra data for use by your template."""
 
 
 class Settings:
@@ -58,7 +75,8 @@ def parse_project(proj):
     proj_settings = ProjectSettings(
         proj["project_name"],
         proj["template"],
-        proj.get("base_url"))
+        proj.get("base_url"),
+        proj.get("extra_data"))
     for section_name, section_info in proj["sections"].items():
         proj_settings.sections.append(
             parse_section(section_name, section_info))

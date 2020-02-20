@@ -177,7 +177,7 @@ class Section:
         self.relative_directory = relative_directory
         self.chunks = []
         self.files = []
-        self._log = _LOG.getChild("Section")
+        self._log = _LOG.getChild("Section." + name)
 
     def populate_from_directory(self, directory, ref_factory):
         """Iterate through a directory, trying to parse each filename as a reference.

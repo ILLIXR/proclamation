@@ -4,8 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 """Loading data for a project."""
 
-from .types import Section, ReferenceFactoryBase
+import logging
+from itertools import chain
 from pathlib import Path
+
+from .types import ReferenceFactoryBase, Section
 
 
 def _resolve_with_base(base_dir, path):
@@ -37,9 +40,13 @@ class Project:
         self.name = settings.name
         self.template = settings.template
 
+        self._log = logging.getLogger(
+            __name__).getChild("Project." + self.name)
+
         self.sections = []
         sections = self.sections
         for section_settings in settings.sections:
+            self._log.debug("Instantiating section %s", section_settings.name)
             section = Section(section_settings.name,
                               section_settings.directory)
             sections.append(section)
@@ -51,4 +58,11 @@ class Project:
         for section in self.sections:
             directory = _resolve_with_base(
                 self.default_base, section.relative_directory)
+            self._log.info("Populating section %s from files in %s",
+                           section.name, str(directory))
             section.populate_from_directory(directory, ref_factory)
+
+    @property
+    def chunk_filenames(self):
+        """Return filenames for all chunks added in all sections."""
+        return chain(*(section.chunk_filenames for section in self.sections))

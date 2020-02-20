@@ -18,10 +18,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=["jinja2", "click"],
     include_package_data=True,
-    entry_points='''
-        [console_scripts]
-        proclamation=proclamation.main:cli
-    ''',
+    entry_points={"console_scripts": ["proclamation=proclamation.main:cli"]},
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",

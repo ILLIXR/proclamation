@@ -8,6 +8,7 @@ This should be the only file that needs to import Jinja2,
 so if you want to do something else for templating, you can.
 """
 
+import logging
 
 from jinja2 import (ChoiceLoader, Environment, FileSystemLoader, PackageLoader,
                     TemplateSyntaxError)
@@ -18,8 +19,13 @@ def render_template(project, project_version):
 
     Returns the rendered text.
     """
+    log = logging.getLogger(__name__)
+    search_path = [project.default_base]
+    log.debug(
+        "Template search path is %s, followed by built-in templates.",
+        str(search_path))
     loader = ChoiceLoader([
-        FileSystemLoader([project.default_base]),
+        FileSystemLoader(search_path),
         PackageLoader("proclamation", "templates")
     ])
 
@@ -31,6 +37,7 @@ def render_template(project, project_version):
               format(e.filename, e.lineno, e.message))
         raise RuntimeError("Jinja2 template syntax error")
 
+    log.info("Loaded template %s from %s", project.template, template.filename)
     try:
         return template.render({
             "project_name": project.name,
