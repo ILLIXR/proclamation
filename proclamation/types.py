@@ -187,6 +187,7 @@ class Chunk:
         line = fp.readline()
         if line.strip() == FRONT_MATTER_DELIMITER:
             self._parse_front_matter(fp)
+            line = fp.readline()
         while 1:
             if not line:
                 break

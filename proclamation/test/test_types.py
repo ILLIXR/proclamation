@@ -50,6 +50,7 @@ def test_chunk():
     assert(len(chunk.refs) == 1)
     chunk.parse_file()
     assert("content" in chunk.text)
+    assert("---" not in chunk.text)
 
     # duplicates don't get added
     assert(len(chunk.refs) == 4)
