@@ -106,6 +106,6 @@ def get_split_news_file(project_settings):
 
 def generate_updated_changelog(project, project_version):
     before, after = get_split_news_file(project.settings)
-    return "".join(before,
-                   render_template(project, project_version),
-                   after)
+    return "".join((before,
+                    render_template(project, project_version),
+                    after))

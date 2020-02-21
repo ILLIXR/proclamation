@@ -38,6 +38,7 @@ class Project:
         self.ref_parser = ref_parser
 
         self.name = settings.name
+        self.settings = settings
         self.template = settings.template
 
         self._log = logging.getLogger(

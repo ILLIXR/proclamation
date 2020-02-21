@@ -9,7 +9,7 @@ import logging
 import click
 
 from .project import Project
-from .render import render_template
+from .render import render_template, generate_updated_changelog
 from .settings import settings_from_json_file
 
 
@@ -103,22 +103,33 @@ def draft(project_collection, ctx, project_version, ref_parser=None):
               "delete_chunks",
               is_flag=True,
               help="Delete processed chunks when complete")
+@click.option("-o", "--overwrite",
+              is_flag=True,
+              help="Write updated changelog to disk, instead of to stdout.")
 @click.pass_context
 @pass_project_collection
 def build(project_collection, ctx, project_version, delete_chunks,
-          ref_parser=None):
+          overwrite, ref_parser=None):
     """Build your new NEWS file."""
-    if len(project_collection.projects) != 1:
+
+    if not overwrite and len(project_collection.projects) != 1:
         raise click.UsageError(
             "You may only build a single project at a time: "
-            "please specify --project-name",
+            "please specify --project-name or use --overwrite",
             ctx)
-    project = project_collection.projects[0]
-    project.populate_sections(ref_parser)
+    for project in project_collection.projects:
+        project.populate_sections(ref_parser)
+        new_contents = generate_updated_changelog(project, project_version)
+        if overwrite:
+            fn = project.settings.news_filename
+            with open(fn, 'w', encoding='utf-8') as fp:
+                fp.write(new_contents)
+        else:
+            print(new_contents)
     print(render_template(project, project_version))
 
     if delete_chunks:
-        remove_files(project.chunk_filenames)
+        remove_chunks(project_collection, ctx, ref_parser=ref_parser)
 
 
 @cli.command()
