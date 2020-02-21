@@ -9,6 +9,7 @@ so if you want to do something else for templating, you can.
 """
 
 import logging
+from io import StringIO
 
 from jinja2 import (ChoiceLoader, Environment, FileSystemLoader, PackageLoader,
                     TemplateSyntaxError)
@@ -48,3 +49,63 @@ def render_template(project, project_version):
         print("template syntax error during render: {}:{} error: {}".
               format(e.filename, e.lineno, e.message))
         raise RuntimeError("Jinja2 template syntax error")
+
+
+def split_news_contents(project_settings, news_contents):
+    """Split the contents of a NEWS file based on the insert point pattern.
+
+    Two strings are returned: the content before the insert point, and the
+    content after the insert point, including the line that matched the
+    pattern.
+    """
+    io = StringIO(news_contents)
+    before = []
+    after = []
+    found_first_line = False
+
+    insert_point_re = project_settings.insert_point_re
+
+    for line in io:
+        if found_first_line:
+            after.append(line)
+            continue
+        if insert_point_re.match(line):
+            # OK, we hadn't found it, but now we did.
+            found_first_line = True
+            after.append(line)
+            continue
+
+        # haven't found it yet
+        before.append(line)
+
+    log = logging.getLogger(__name__)
+    log.info("%d lines before the insert point in existing file, %d after",
+             len(before), len(after))
+    if not found_first_line:
+        log.warning("Did not find a line that matches the "
+                    "insert_point_pattern, there may be an error in "
+                    "your settings")
+    return "".join(before), "".join(after)
+
+
+def get_split_news_file(project_settings):
+    """Load configured NEWS file and return the content for before and after
+    our new entry.
+
+    We make a minimal default if we can't open the original.
+    """
+    fn = project_settings.news_filename
+    try:
+        with open(fn, 'r', encoding='utf-8') as fp:
+            content = fp.read()
+        return split_news_contents(project_settings, content)
+    except FileNotFoundError:
+        # Default "empty" changelog file
+        return "# Changelog\n\n", ""
+
+
+def generate_updated_changelog(project, project_version):
+    before, after = get_split_news_file(project.settings)
+    return "".join(before,
+                   render_template(project, project_version),
+                   after)
