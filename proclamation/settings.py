@@ -4,8 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Project settings."""
 
-from importlib import import_module
+from .types import ReferenceParser
 
+import re
 
 
 class SectionSettings:
@@ -32,7 +33,8 @@ class ProjectSettings:
     """
 
     def __init__(self, project_name, template=None, base_url=None,
-                 extra_data=None):
+                 insert_point_pattern=None,
+                 news_filename=None, extra_data=None):
         """Construct a settings object."""
         self.name = project_name
         """Name of the project."""
@@ -48,10 +50,26 @@ class ProjectSettings:
         self.base_url = base_url
         """Base URL of project management."""
 
+        if insert_point_pattern is None:
+            insert_point_pattern = r'^## .*'
+        self.insert_point_re = re.compile(insert_point_pattern)
+        """A regular expresssion matching the line we should insert before."""
+
+        if news_filename is None:
+            news_filename = "NEWS"
+        self.news_filename = news_filename
+        """The filename of your NEWS/CHANGES file."""
+
         if extra_data is None:
             extra_data = {}
         self.extra_data = extra_data
         """Extra data for use by your template."""
+
+    def make_reference_parser(self, base_dir=None):
+        """Make a default reference parser, always, for now."""
+        log = logging.getLogger(__name__)
+        parser = ReferenceParser()
+        return parser
 
 
 class Settings:
@@ -76,10 +94,12 @@ def parse_section(section_name, section_info):
 
 def parse_project(proj):
     proj_settings = ProjectSettings(
-        proj["project_name"],
-        proj["template"],
-        proj.get("base_url"),
-        proj.get("extra_data"))
+        project_name=proj["project_name"],
+        template=proj.get("template"),
+        base_url=proj.get("base_url"),
+        insert_point_pattern=proj.get("insert_point_pattern"),
+        news_filename=proj.get("news_filename"),
+        extra_data=proj.get("extra_data"))
     for section_name, section_info in proj["sections"].items():
         proj_settings.sections.append(
             parse_section(section_name, section_info))
@@ -98,11 +118,13 @@ def parse_settings(config):
         settings.add_project(parse_project(config))
     return settings
 
+
 def settings_from_json_io(io):
     """Load settings from json in an IO like a file or StringIO."""
     import json
     config = json.load(io)
     return parse_settings(config)
+
 
 def settings_from_json_file(fn):
     """Load settings from a JSON file."""
