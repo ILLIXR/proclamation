@@ -30,7 +30,7 @@ def render_template(project, project_version):
         PackageLoader("proclamation", "templates")
     ])
 
-    env = Environment(trim_blocks=True, autoescape=False, loader=loader)
+    env = Environment(autoescape=False, loader=loader)
     try:
         template = env.get_template(project.template)
     except TemplateSyntaxError as e:

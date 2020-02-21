@@ -126,7 +126,6 @@ def build(project_collection, ctx, project_version, delete_chunks,
                 fp.write(new_contents)
         else:
             print(new_contents)
-    print(render_template(project, project_version))
 
     if delete_chunks:
         remove_chunks(project_collection, ctx, ref_parser=ref_parser)
