@@ -43,10 +43,9 @@ This is content.
 
 
 def test_chunk():
-    parser = ReferenceParser()
     fn = "issue.54.md"
     chunkio = StringIO(CHUNK)
-    chunk = Chunk(fn, ref_parser=parser, io=chunkio)
+    chunk = Chunk(fn, io=chunkio)
     assert(str(chunk.filename) == fn)
     assert(len(chunk.refs) == 1)
     chunk.parse_file()
@@ -54,3 +53,18 @@ def test_chunk():
 
     # duplicates don't get added
     assert(len(chunk.refs) == 4)
+
+
+SIMPLE_CHUNK = """This is a simple chunk content.
+"""
+
+
+def test_simple_chunk():
+    fn = "issue.54.md"
+    chunkio = StringIO(SIMPLE_CHUNK)
+    chunk = Chunk(fn, io=chunkio)
+    assert(str(chunk.filename) == fn)
+    assert(len(chunk.refs) == 1)
+    chunk.parse_file()
+    assert(len(chunk.refs) == 1)
+    assert("content" in chunk.text)

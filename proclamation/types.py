@@ -168,24 +168,33 @@ class Chunk:
         self._insert_ref(ref_tuple)
 
     def _parse_front_matter(self, fp):
-        while 1:
-            line = fp.readline().strip()
-            if line == FRONT_MATTER_DELIMITER:
-                break
-            if line.startswith("- "):
-                line = line[2:]
-            line = line.strip()
-            self.add_ref(line)
-
-    def _parse_io(self, fp):
-        first_line = fp.readline()
-        if first_line.strip() == FRONT_MATTER_DELIMITER:
-            self._parse_front_matter(fp)
+        log = logging.getLogger(__name__)
         while 1:
             line = fp.readline()
             if not line:
+                return
+            line = line.strip()
+            if line == FRONT_MATTER_DELIMITER:
+                return
+
+            # Strip "bullet points" so this can look more yaml-like
+            if line.startswith("- "):
+                line = line[2:].strip()
+            log.debug("Front matter reference text: %s", line)
+            self.add_ref(line)
+
+    def _parse_io(self, fp):
+        line = fp.readline()
+        if line.strip() == FRONT_MATTER_DELIMITER:
+            self._parse_front_matter(fp)
+        while 1:
+            if not line:
                 break
             self.text += line
+            line = fp.readline()
+        self.text = self.text.strip()
+        log = logging.getLogger(__name__)
+        log.debug("Got chunk starting with '%s'", self.text[:20])
 
     def parse_file(self):
         """Open the file and parse content, and front matter if any.
@@ -226,10 +235,9 @@ class Section:
                 # print()
                 self._log.debug("Not actually a chunk: %s", chunk_name)
                 continue
-            self.chunks.append(Chunk(chunk_name, chunk_ref, ref_parser))
-            self._log.debug("loaded: %s", chunk_name)
-
-        for chunk in self.chunks:
+            chunk = Chunk(chunk_name, chunk_ref, ref_parser)
+            self.chunks.append(chunk)
+            self._log.debug("added: %s", chunk_name)
             chunk.parse_file()
 
     @property
