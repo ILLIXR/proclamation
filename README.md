@@ -6,6 +6,13 @@ A tool for building CHANGES/NEWS files from chunks.
 
 Inspired by town-crier, but completely language agnostic.
 
+## TODO
+
+- release dates
+- warn if first line of "after" is same as first line of generated entry (already released this)
+- Populate this file, not just the code comments.
+- JSON schema?
+
 ## Code of Conduct
 
 Please note that this project is released with a Contributor Code of Conduct. By
