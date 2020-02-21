@@ -14,8 +14,14 @@ from .settings import settings_from_json_file
 
 
 class ProjectCollection:
+    """Specifies a config file, project, and other options.
+
+    Typically populated by whatever is parsing a command line.
+    """
+
     def __init__(self, config_file, project_name, default_base,
                  ref_parser=None):
+        """Construct the ProjectCollection, including creating all Project objects."""
         self.project_name = project_name
         self.default_base = default_base
         settings = settings_from_json_file(config_file)
