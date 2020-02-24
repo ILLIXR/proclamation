@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from ..types import Chunk, ReferenceParser
+from ..types import Fragment, ReferenceParser
 
 from io import StringIO
 
@@ -32,7 +32,7 @@ def test_ref_parse_filename():
     assert(parser.parse_filename(".git-keep") is None)
 
 
-CHUNK = """---
+FRAGMENT = """---
 - issue.55
 - mr.23
 pr.25
@@ -42,30 +42,30 @@ This is content.
 """
 
 
-def test_chunk():
+def test_fragment():
     fn = "issue.54.md"
-    chunkio = StringIO(CHUNK)
-    chunk = Chunk(fn, io=chunkio)
-    assert(str(chunk.filename) == fn)
-    assert(len(chunk.refs) == 1)
-    chunk.parse_file()
-    assert("content" in chunk.text)
-    assert("---" not in chunk.text)
+    fragmentio = StringIO(FRAGMENT)
+    fragment = Fragment(fn, io=fragmentio)
+    assert(str(fragment.filename) == fn)
+    assert(len(fragment.refs) == 1)
+    fragment.parse_file()
+    assert("content" in fragment.text)
+    assert("---" not in fragment.text)
 
     # duplicates don't get added
-    assert(len(chunk.refs) == 4)
+    assert(len(fragment.refs) == 4)
 
 
-SIMPLE_CHUNK = """This is a simple chunk content.
+SIMPLE_FRAGMENT = """This is a simple fragment content.
 """
 
 
-def test_simple_chunk():
+def test_simple_fragment():
     fn = "issue.54.md"
-    chunkio = StringIO(SIMPLE_CHUNK)
-    chunk = Chunk(fn, io=chunkio)
-    assert(str(chunk.filename) == fn)
-    assert(len(chunk.refs) == 1)
-    chunk.parse_file()
-    assert(len(chunk.refs) == 1)
-    assert("content" in chunk.text)
+    fragmentio = StringIO(SIMPLE_FRAGMENT)
+    fragment = Fragment(fn, io=fragmentio)
+    assert(str(fragment.filename) == fn)
+    assert(len(fragment.refs) == 1)
+    fragment.parse_file()
+    assert(len(fragment.refs) == 1)
+    assert("content" in fragment.text)

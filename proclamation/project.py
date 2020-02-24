@@ -17,7 +17,7 @@ def _resolve_with_base(base_dir, path):
 
 
 class Project:
-    """A project has sections and chunks."""
+    """A project has sections and fragments."""
 
     def __init__(self, settings, ref_parser=None, default_base=None):
         """Construct a project.
@@ -53,7 +53,7 @@ class Project:
             sections.append(section)
 
     def populate_sections(self, ref_parser=None):
-        """Load chunks associated with each section."""
+        """Load fragments associated with each section."""
         if ref_parser is None:
             ref_parser = self.ref_parser
         for section in self.sections:
@@ -64,6 +64,6 @@ class Project:
             section.populate_from_directory(directory, ref_parser)
 
     @property
-    def chunk_filenames(self):
-        """Return filenames for all chunks added in all sections."""
-        return chain(*(section.chunk_filenames for section in self.sections))
+    def fragment_filenames(self):
+        """Return filenames for all fragments added in all sections."""
+        return chain(*(section.fragment_filenames for section in self.sections))

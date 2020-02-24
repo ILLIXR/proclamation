@@ -116,20 +116,20 @@ class ReferenceParser:
         return self.make_reference(elts)
 
 
-class Chunk:
+class Fragment:
     """A single CHANGES/NEWS entry, provided as text to insert into the templates.
 
-    A chunk comes from a file or stream.
+    A fragment comes from a file or stream.
 
-    The chunk filename is parsed to provide one reference. Optionally, an
+    The fragment filename is parsed to provide one reference. Optionally, an
     extremely small subset of "YAML front matter" can be used to list
-    additional references in the chunk file contents. Delimit the front matter
+    additional references in the fragment file contents. Delimit the front matter
     with --- both before and after, and place one reference per line (with or
     without leading -) between those delimiters.
     """
 
     def __init__(self, filename, reference=None, ref_parser=None, io=None):
-        """Construct a chunk.
+        """Construct a fragment.
 
         Filename is used to open the file, if io is not provided.
         ref_parser parses "reference" strings (referring to PR/MR/issue) into
@@ -161,7 +161,7 @@ class Chunk:
             self.known_refs.add(ref_tuple)
 
     def add_ref(self, s):
-        """Parse a string as a reference and add it to this chunk."""
+        """Parse a string as a reference and add it to this fragment."""
         ref_tuple = self._ref_parser.parse(s)
         if not ref_tuple:
             return
@@ -195,7 +195,7 @@ class Chunk:
             line = fp.readline()
         self.text = self.text.strip()
         log = logging.getLogger(__name__)
-        log.debug("Got chunk starting with '%s'", self.text[:20])
+        log.debug("Got fragment starting with '%s'", self.text[:20])
 
     def parse_file(self):
         """Open the file and parse content, and front matter if any.
@@ -220,28 +220,28 @@ class Section:
         super().__init__()
         self.name = name
         self.relative_directory = relative_directory
-        self.chunks = []
+        self.fragments = []
         self._log = _LOG.getChild("Section." + name)
 
     def populate_from_directory(self, directory, ref_parser):
         """Iterate through a directory, trying to parse each filename as a reference.
 
-        Files that parse properly are assumed to be chunks,
-        and a Chunk object is instantiated for them.
+        Files that parse properly are assumed to be fragments,
+        and a Fragment object is instantiated for them.
         """
-        for chunk_name in directory.iterdir():
-            chunk_ref = ref_parser.parse(chunk_name.name)
-            if not chunk_ref:
-                # Actually not a chunk, skipping
+        for fragment_name in directory.iterdir():
+            fragment_ref = ref_parser.parse(fragment_name.name)
+            if not fragment_ref:
+                # Actually not a fragment, skipping
                 # print()
-                self._log.debug("Not actually a chunk: %s", chunk_name)
+                self._log.debug("Not actually a fragment: %s", fragment_name)
                 continue
-            chunk = Chunk(chunk_name, chunk_ref, ref_parser)
-            self.chunks.append(chunk)
-            self._log.debug("added: %s", chunk_name)
-            chunk.parse_file()
+            fragment = Fragment(fragment_name, fragment_ref, ref_parser)
+            self.fragments.append(fragment)
+            self._log.debug("added: %s", fragment_name)
+            fragment.parse_file()
 
     @property
-    def chunk_filenames(self):
-        """Return a generator of filenames for all chunks added."""
-        return (chunk.filename for chunk in self.chunks)
+    def fragment_filenames(self):
+        """Return a generator of filenames for all fragments added."""
+        return (fragment.filename for fragment in self.fragments)

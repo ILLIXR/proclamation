@@ -18,7 +18,7 @@ class SectionSettings:
         """Section name."""
 
         self.directory = directory
-        """Directory where changelog chunks for this section can be found."""
+        """Directory where changelog fragments for this section can be found."""
 
         if extra_data is None:
             extra_data = {}

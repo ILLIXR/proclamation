@@ -2,18 +2,17 @@
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
 
-A tool for building CHANGES/NEWS files from chunks/fragments.
+A tool for building CHANGES/NEWS files from fragments.
 
 Inspired by [towncrier][], but completely language agnostic.
 
 ## About Proclamation and Usage Instructions
 
-The "proclamation" tool assembles changelogs, which incorporate fragments of changelog
-text added by the author of a change in a specific location and format.
+The "proclamation" tool assembles changelogs, which incorporate fragments of
+changelog text added by the author of a change in a specific location and
+format.
 
 ### Fragments
-
-(Fragments are also known as "chunks" in the codebase).
 
 Each change should add a changelog fragment file, whose contents are
 Markdown-formatted text describing the change briefly. Reference metadata will
@@ -167,7 +166,7 @@ to preview the full file on screen. When you're ready to actually perform the
 update, run something like:
 
 ```sh
-proclamation build YOUR_NEW_VERSION --delete-chunks --overwrite
+proclamation build YOUR_NEW_VERSION --delete-fragments --overwrite
 ```
 
 to overwrite your changelog file with the updated one, then delete the used

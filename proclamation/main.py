@@ -70,7 +70,7 @@ pass_project_collection = click.make_pass_decorator(ProjectCollection)
               help="Show verbose info messages. Repeat for more verbosity.")
 @click.pass_context
 def cli(ctx, config_file, project_name, default_base, verbose):
-    """Proclamation builds your NEWS files from chunks."""
+    """Proclamation builds your NEWS files from fragments."""
     fmt = "[%(levelname)s:%(name)s]  %(message)s"
     if verbose >= 2:
         logging.basicConfig(format=fmt, level=logging.DEBUG)
@@ -94,7 +94,7 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 def draft(project_collection, ctx, project_version, release_date=None,
           ref_parser=None):
     """Preview the new VERSION portion of your NEWS file(s) to stdout.
-    
+
     If no version is provided, a dummy value is used."""
 
     if project_version is None:
@@ -110,17 +110,17 @@ def draft(project_collection, ctx, project_version, release_date=None,
               "release_date",
               default=None,
               help="Release date if not today.")
-@click.option("-d", "--delete-chunks",
-              "delete_chunks",
+@click.option("-d", "--delete-fragments",
+              "delete_fragments",
               is_flag=True,
-              help="Delete processed chunks when complete")
+              help="Delete processed fragments when complete")
 @click.option("-o", "--overwrite",
               is_flag=True,
               help="Write updated changelog to disk, instead of to stdout.")
 @click.pass_context
 @pass_project_collection
 def build(project_collection, ctx, project_version, release_date=None,
-          delete_chunks=False, overwrite=False, ref_parser=None):
+          delete_fragments=False, overwrite=False, ref_parser=None):
     """Build your new NEWS file."""
 
     if not overwrite and len(project_collection.projects) != 1:
@@ -139,24 +139,24 @@ def build(project_collection, ctx, project_version, release_date=None,
         else:
             print(new_contents)
 
-    if delete_chunks:
-        remove_chunks(project_collection, ctx, ref_parser=ref_parser)
+    if delete_fragments:
+        remove_fragments(project_collection, ctx, ref_parser=ref_parser)
 
 
 @cli.command()
 @click.confirmation_option()
 @click.pass_context
 @pass_project_collection
-def remove_chunks(project_collection, ctx, ref_parser=None):
-    """Remove NEWS chunks associated with all projects (or specified projects).
+def remove_fragments(project_collection, ctx, ref_parser=None):
+    """Remove NEWS fragments associated with all projects (or specified projects).
 
     If you only have one project, or your projects don't share sections,
-    you may consider using the --delete-chunks option of "build" instead.
+    you may consider using the --delete-fragments option of "build" instead.
     """
     all_files = set()
     for project in project_collection.projects:
         project.populate_sections(ref_parser)
-        all_files += set(project.chunk_filenames)
+        all_files += set(project.fragment_filenames)
     remove_files(all_files)
 
 
