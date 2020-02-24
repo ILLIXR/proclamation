@@ -110,7 +110,8 @@ def get_split_news_file(project_settings):
 
 
 def combine_changelogs(before, after, project, project_version, release_date):
-    """Return the text of the updated, complete CHANGES/NEWS file given pre-split contents."""
+    """Return the text of the updated, complete CHANGES/NEWS file given
+    pre-split contents."""
     new_portion = render_template(project, project_version, release_date)
 
     first_new_line = new_portion.split("\n", 1)[0]

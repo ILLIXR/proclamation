@@ -66,4 +66,5 @@ class Project:
     @property
     def fragment_filenames(self):
         """Return filenames for all fragments added in all sections."""
-        return chain(*(section.fragment_filenames for section in self.sections))
+        return chain(*(section.fragment_filenames
+                       for section in self.sections))

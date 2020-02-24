@@ -123,9 +123,9 @@ class Fragment:
 
     The fragment filename is parsed to provide one reference. Optionally, an
     extremely small subset of "YAML front matter" can be used to list
-    additional references in the fragment file contents. Delimit the front matter
-    with --- both before and after, and place one reference per line (with or
-    without leading -) between those delimiters.
+    additional references in the fragment file contents. Delimit the front
+    matter with --- both before and after, and place one reference per line
+    (with or without leading -) between those delimiters.
     """
 
     def __init__(self, filename, reference=None, ref_parser=None, io=None):

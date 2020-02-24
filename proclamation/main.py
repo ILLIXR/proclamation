@@ -21,7 +21,8 @@ class ProjectCollection:
 
     def __init__(self, config_file, project_name, default_base,
                  ref_parser=None):
-        """Construct the ProjectCollection, including creating all Project objects."""
+        """Construct the ProjectCollection, including creating all Project
+        objects."""
         self.project_name = project_name
         self.default_base = default_base
         settings = settings_from_json_file(config_file)
@@ -122,7 +123,6 @@ def draft(project_collection, ctx, project_version, release_date=None,
 def build(project_collection, ctx, project_version, release_date=None,
           delete_fragments=False, overwrite=False, ref_parser=None):
     """Build your new NEWS file."""
-
     if not overwrite and len(project_collection.projects) != 1:
         raise click.UsageError(
             "You may only build a single project at a time: "
