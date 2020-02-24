@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Project settings."""
 
-from .types import ReferenceParser
-
 import re
+
+from .types import ReferenceParser
 
 
 class SectionSettings:
@@ -67,7 +67,6 @@ class ProjectSettings:
 
     def make_reference_parser(self, base_dir=None):
         """Make a default reference parser, always, for now."""
-        log = logging.getLogger(__name__)
         parser = ReferenceParser()
         return parser
 
