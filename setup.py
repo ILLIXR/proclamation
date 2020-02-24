@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="proclamation",
-    version="0.0.1",
+    version="1.0.0",
     author="Ryan A. Pavlik",
     author_email="ryan.pavlik@collabora.com",
     description="A CHANGES/NEWS file creator",
@@ -20,7 +20,7 @@ setuptools.setup(
     include_package_data=True,
     entry_points={"console_scripts": ["proclamation=proclamation.main:cli"]},
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
