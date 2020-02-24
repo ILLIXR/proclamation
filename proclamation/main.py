@@ -9,7 +9,7 @@ import logging
 import click
 
 from .project import Project
-from .render import render_template, generate_updated_changelog
+from .render import generate_updated_changelog, render_template
 from .settings import settings_from_json_file
 
 
@@ -85,20 +85,29 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 
 @cli.command()
 @click.argument("project_version", metavar="VERSION")
+@click.option("--date",
+              "release_date",
+              default=None,
+              help="Release date if not today.")
 @click.pass_context
 @pass_project_collection
-def draft(project_collection, ctx, project_version, ref_parser=None):
+def draft(project_collection, ctx, project_version, release_date=None,
+          ref_parser=None):
     """Preview the new VERSION portion of your NEWS file(s) to stdout."""
 
     if project_version is None:
         ctx.fail("Draft creation requires a version to be specified")
     for project in project_collection.projects:
         project.populate_sections(ref_parser)
-        print(render_template(project, project_version))
+        print(render_template(project, project_version, release_date))
 
 
 @cli.command()
 @click.argument("project_version", metavar="VERSION")
+@click.option("--date",
+              "release_date",
+              default=None,
+              help="Release date if not today.")
 @click.option("-d", "--delete-chunks",
               "delete_chunks",
               is_flag=True,
@@ -108,8 +117,8 @@ def draft(project_collection, ctx, project_version, ref_parser=None):
               help="Write updated changelog to disk, instead of to stdout.")
 @click.pass_context
 @pass_project_collection
-def build(project_collection, ctx, project_version, delete_chunks,
-          overwrite, ref_parser=None):
+def build(project_collection, ctx, project_version, release_date=None,
+          delete_chunks=False, overwrite=False, ref_parser=None):
     """Build your new NEWS file."""
 
     if not overwrite and len(project_collection.projects) != 1:
@@ -119,7 +128,8 @@ def build(project_collection, ctx, project_version, delete_chunks,
             ctx)
     for project in project_collection.projects:
         project.populate_sections(ref_parser)
-        new_contents = generate_updated_changelog(project, project_version)
+        new_contents = generate_updated_changelog(project, project_version,
+                                                  release_date)
         if overwrite:
             fn = project.settings.news_filename
             with open(fn, 'w', encoding='utf-8') as fp:

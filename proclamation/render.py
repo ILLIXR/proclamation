@@ -9,13 +9,14 @@ so if you want to do something else for templating, you can.
 """
 
 import logging
+from datetime import date
 from io import StringIO
 
 from jinja2 import (ChoiceLoader, Environment, FileSystemLoader, PackageLoader,
                     TemplateSyntaxError)
 
 
-def render_template(project, project_version):
+def render_template(project, project_version, release_date=None):
     """Render the CHANGES template for a project.
 
     Returns the rendered text.
@@ -30,6 +31,9 @@ def render_template(project, project_version):
         PackageLoader("proclamation", "templates")
     ])
 
+    if release_date is None:
+        release_date = date.today().isoformat().strip()
+
     env = Environment(autoescape=False, loader=loader)
     try:
         template = env.get_template(project.template)
@@ -43,6 +47,7 @@ def render_template(project, project_version):
         return template.render({
             "project_name": project.name,
             "project_version": project_version,
+            "date": release_date,
             "sections": project.sections
         })
     except TemplateSyntaxError as e:
@@ -104,8 +109,10 @@ def get_split_news_file(project_settings):
         return "# Changelog\n\n", ""
 
 
-def generate_updated_changelog(project, project_version):
+def generate_updated_changelog(project, project_version, release_date=None):
     before, after = get_split_news_file(project.settings)
+    new_portion = render_template(project, project_version, release_date)
+
     return "".join((before,
-                    render_template(project, project_version),
+                    new_portion,
                     after))
