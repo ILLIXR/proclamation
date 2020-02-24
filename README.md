@@ -1,5 +1,7 @@
 # proclamation
 
+[![pipeline status](https://gitlab.com/ryanpavlik/proclamation/badges/master/pipeline.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
+[![coverage report](https://gitlab.com/ryanpavlik/proclamation/badges/master/coverage.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
 
 A tool for building CHANGES/NEWS files from fragments.
