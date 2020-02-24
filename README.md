@@ -4,7 +4,7 @@
 
 A tool for building CHANGES/NEWS files from fragments.
 
-Inspired by [towncrier][], but completely language agnostic.
+Inspired by [towncrier][], but completely language-agnostic and markup-agnostic.
 
 ## About Proclamation and Usage Instructions
 
@@ -72,6 +72,25 @@ There are provisions for providing your own reference parser if this format is
 entirely unusable, but they're underdeveloped. If this functionality is
 interesting to you, get involved and help finish it!
 
+### Sections
+
+Changelog fragments are organized into sections, each of which should have its
+own directory. These might be "type-of-change" sections (e.g. new feature,
+bugfix, etc). Alternately, they might be logical sub-projects - it's permissable
+to have multiple projects configured in one config file and repo with
+partially-overlapping sections. (This is actually a part of one of the
+originally motivating use cases for this tool.)
+
+Every file whose filename parses and meets some basic checks will be used!
+Having a `changes/your_section_name` directory for each section is recommended.
+You can provide a `README.md` file with a modified subset of this file in that
+directory, as guidance to contributors to your project. (`README.md` won't parse
+as a reference, so it will not be treated as a changelog fragment.)
+
+Use whatever works for your project. Right now, all changelog fragments must be
+in a section, sections must be a single directory, and sections may not be
+nested. If you'd like to loosen these assumptions, get involved and help!
+
 ## Installation
 
 It's recommended to install this in a virtualenv. Something like this will work
@@ -118,11 +137,7 @@ elaborate use-cases than this.)
     are objects. Sections might be logical sub-projects, or alternately
     categories of changes (feature, bug fix, etc), it's up to you.
     - The only key valid right now in the child of the section is `directory`,
-      which indicates the directory to search for changelog fragments. Every
-      file whose filename parses and meets some basic checks will be used!
-      Having a "changes/section_name" directory is recommended. You can provide
-      a `README.md` file with a modified subset of this file in that directory,
-      as guidance to contributors to your project.
+      which indicates the directory to search for changelog fragments.
   - `template` - Optional. The name of a Jinja2 template for a single release's
     changelog section. `base.md` comes with proclamation and is used by default.
     Your custom template might inherit from this if you only need to change a
@@ -136,12 +151,16 @@ elaborate use-cases than this.)
   - `extra_data` - Any extra data you'd like to pass along to your custom
     template.
 
-## Workflow
+## Sample Usage Workflow
 
 Note that the base `proclamation` script and all its subcommands have help,
 accessible through `-h` or `--help`. The guidance in this section of the README
 is intentionally minimal, to avoid contradicting the online help which remains
-up-to-date implicitly.
+up-to-date implicitly. This is also only the simplest, minimal way to perform
+these operations: if your project is more complex, there may already be more
+features to support your needs in the command line help.
+
+### During Development
 
 As changes get submitted to your project, have each change author create a
 changelog fragment file. Since these are all separate files, with names made
@@ -151,12 +170,13 @@ inspiration, towncrier, over having each contributor edit CHANGES as part of
 their submission.)
 
 At any time you can run `proclamation draft` to preview the release portion that
-would be added to your changelog if you released at any given point in
-development.
+would be added to your changelog if you released at that time.
+
+### Preparing for a Release
 
 When you're ready to perform a release, you'll want to run proclamation to
 update your changelog, then remove the fragments that you've incorporated into
-the regular changelog. Use a command like the following:
+the regular changelog. You can use a command like the following:
 
 ```sh
 proclamation build YOUR_NEW_VERSION
@@ -169,23 +189,32 @@ update, run something like:
 proclamation build YOUR_NEW_VERSION --delete-fragments --overwrite
 ```
 
-to overwrite your changelog file with the updated one, then delete the used
+to overwrite your changelog file with the updated one and delete the used
 changelog fragments.
 
-Then, make sure the deletion of the fragments and the update of the changelog
-has been checked in to your version control system. You're welcome to manually
-edit the new (or old!) changelog entries as desired: as long as the
-`insert_point_pattern` can still match (a line starting with `##&nbsp;` by
-default), proclamation will not be confused.
+You're welcome to manually edit the new (or old!) changelog entries as desired:
+as long as the `insert_point_pattern` (by default, `^## .*`) can still match,
+proclamation will not be confused.
 
-## TODO
+Finally, make sure the deletion of the fragments and the update of the changelog
+has been checked in to your version control system.
 
-- JSON schema?
+## Development of proclamation
+
+You can use the same installation instructions above to locally install a link in a virtualenv.
+
+- Run `pytest-3` or similar to run the automated tests.
+- Run `autopep8 proclamation/*.py proclamation/test/*.py --in-place` to
+  automatically format the source code with [autopep8][].
+- Use [`tox`][tox] to run flake8 as well as tests for multiple Python versions.
+- When submitting a change, be sure to create your changelog fragment in the changes directory! :)
 
 ## Code of Conduct
 
 Please note that this project is released with a Contributor Code of Conduct. By
 participating in this project you agree to abide by its terms.
 
-
 [towncrier]: https://github.com/hawkowl/towncrier
+[tox]: https://tox.readthedocs.io/en/latest/
+[flake8]: https://flake8.pycqa.org/en/latest/
+[autopep8]: https://github.com/hhatto/autopep8
