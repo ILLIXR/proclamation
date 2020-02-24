@@ -117,6 +117,8 @@ def combine_changelogs(before, after, project, project_version, release_date):
     first_new_line = new_portion.split("\n", 1)[0]
     first_after_line = after.split("\n", 1)[0]
 
+    log = logging.getLogger(__name__)
+    log.info("First line of insert point: %s", first_after_line.rstrip())
     if first_after_line.rstrip() == first_new_line.rstrip():
         raise RuntimeError(
             "Your new NEWS entry has the same heading as the most recent "
