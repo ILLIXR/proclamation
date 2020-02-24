@@ -109,10 +109,25 @@ def get_split_news_file(project_settings):
         return "# Changelog\n\n", ""
 
 
-def generate_updated_changelog(project, project_version, release_date=None):
-    before, after = get_split_news_file(project.settings)
+def combine_changelogs(before, after, project, project_version, release_date):
+    """Return the text of the updated, complete CHANGES/NEWS file given pre-split contents."""
     new_portion = render_template(project, project_version, release_date)
 
+    first_new_line = new_portion.split("\n", 1)[0]
+    first_after_line = after.split("\n", 1)[0]
+
+    if first_after_line.rstrip() == first_new_line.rstrip():
+        raise RuntimeError(
+            "Your new NEWS entry has the same heading as the most recent "
+            "existing entry! Probably duplicating version numbers.")
     return "".join((before,
                     new_portion,
                     after))
+
+
+def generate_updated_changelog(project, project_version, release_date=None):
+    """Return the text of the updated, complete CHANGES/NEWS file."""
+    before, after = get_split_news_file(project.settings)
+
+    return combine_changelogs(before, after, project, project_version,
+                              release_date)
