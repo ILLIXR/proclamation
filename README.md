@@ -207,6 +207,7 @@ You can use the same installation instructions above to locally install a link i
 - Run `autopep8 proclamation/*.py proclamation/test/*.py --in-place` to
   automatically format the source code with [autopep8][].
 - Use [`tox`][tox] to run flake8 as well as tests for multiple Python versions.
+  - e.g. on Debian Buster, you can run `tox -e py35,py37,flake8`
 - When submitting a change, be sure to create your changelog fragment in the changes directory! :)
 
 ## Code of Conduct
