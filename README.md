@@ -95,8 +95,15 @@ nested. If you'd like to loosen these assumptions, get involved and help!
 
 ## Installation
 
-It's recommended to install this in a virtualenv. Something like this will work
-on *nix-like systems, adjusted for your shell usage.
+Proclamation is available on [pypi][], so you can install it for your local user with:
+
+```sh
+pip3 install --user proclamation
+```
+
+Alternately, you can install from this repository. If you do this, it's
+recommended to install this in a virtualenv. Something like this will work on
+*nix-like systems, adjusted for your shell usage.
 
 ```bash
 # Create a virtualenv in `venv`
@@ -116,6 +123,8 @@ also update the virtualenv. Omit the `--editable` if you want other behavior.
 Note that the `venv/bin/proclamation` script can be run from outside the venv,
 through the magic of setuptools, so if you want to be able to use it elsewhere
 on your system, you might symlink it into a directory that's in your PATH.
+
+[pypi]: https://pypi.org/project/proclamation/
 
 ## Configuration
 
