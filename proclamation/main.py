@@ -84,7 +84,7 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 
 
 @cli.command()
-@click.argument("project_version", metavar="VERSION")
+@click.argument("project_version", metavar="VERSION", required=False)
 @click.option("--date",
               "release_date",
               default=None,
@@ -93,10 +93,12 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 @pass_project_collection
 def draft(project_collection, ctx, project_version, release_date=None,
           ref_parser=None):
-    """Preview the new VERSION portion of your NEWS file(s) to stdout."""
+    """Preview the new VERSION portion of your NEWS file(s) to stdout.
+    
+    If no version is provided, a dummy value is used."""
 
     if project_version is None:
-        ctx.fail("Draft creation requires a version to be specified")
+        project_version = "v.next (DRAFT)"
     for project in project_collection.projects:
         project.populate_sections(ref_parser)
         print(render_template(project, project_version, release_date))
