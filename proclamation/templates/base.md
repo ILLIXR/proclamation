@@ -20,12 +20,12 @@
     {%- endif %}
 {%- endmacro -%}
 {% block title %}## {{ project_name }} {{project_version}} ({{date}}){% endblock %}
-
-{% for section in sections %}
+{% block sections_and_fragments %}{% for section in sections %}
 - {{ section.name }}
-{%- for chunk in section.chunks %}
-  - {{ (chunk.text + format_refs(chunk.refs)) | wordwrap | indent }}
+{%- for fragment in section.fragments %}
+{%- set rawtext %}{{ chunk.text }} ({{format_refs(chunk.refs)}}){% endset -%}
+  - {{ rawtext | wordwrap | indent }}
 {%- else %}
   - No significant changes
 {%- endfor %}
-{%- endfor %}
+{%- endfor %}{% endblock %}
