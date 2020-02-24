@@ -23,9 +23,9 @@
 
 {% for section in sections %}
 - {{ section.name }}
-{% for chunk in section.chunks %}
+{%- for chunk in section.chunks %}
   - {{ (chunk.text + format_refs(chunk.refs)) | wordwrap | indent }}
-{% else %}
+{%- else %}
   - No significant changes
-{% endfor %}
-{% endfor %}
+{%- endfor %}
+{%- endfor %}
