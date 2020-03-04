@@ -12,11 +12,11 @@
 [{{ link_text }}]({{base_url}}/{{subdir}}/{{ ref.number }})
 {%- endmacro -%}
 {% macro format_refs(refs) -%}
-    {% if (refs | length) > 0 %} (
+    {% if (refs | length) > 0 %}
         {%- set comma = joiner(", ") -%}
         {% for ref in refs -%}
             {{comma()}}{{format_ref(ref)}}
-        {%- endfor %})
+        {%- endfor %}
     {%- endif %}
 {%- endmacro -%}
 {% block title %}## {{ project_name }} {{project_version}} ({{date}}){% endblock %}
