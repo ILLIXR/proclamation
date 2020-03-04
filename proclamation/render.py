@@ -48,7 +48,8 @@ def render_template(project, project_version, release_date=None):
             "project_name": project.name,
             "project_version": project_version,
             "date": release_date,
-            "sections": project.sections
+            "sections": project.sections,
+            "base_url": project.settings.base_url,
         })
     except TemplateSyntaxError as e:
         print("template syntax error during render: {}:{} error: {}".
