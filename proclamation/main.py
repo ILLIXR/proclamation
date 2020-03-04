@@ -168,7 +168,15 @@ def build(project_collection, ctx, project_version, release_date=None,
             print(new_contents)
 
     if delete_fragments:
-        remove_fragments(project_collection, ctx, ref_parser=ref_parser)
+        _actually_remove_fragments(project_collection, ref_parser=ref_parser)
+
+
+def _actually_remove_fragments(project_collection, ref_parser=None):
+    all_files = set()
+    for project in project_collection.projects:
+        project.populate_sections(ref_parser)
+        all_files.update(set(project.fragment_filenames))
+    remove_files(all_files)
 
 
 @cli.command()
@@ -181,11 +189,7 @@ def remove_fragments(project_collection, ctx, ref_parser=None):
     If you only have one project, or your projects don't share sections,
     you may consider using the --delete-fragments option of "build" instead.
     """
-    all_files = set()
-    for project in project_collection.projects:
-        project.populate_sections(ref_parser)
-        all_files.update(set(project.fragment_filenames))
-    remove_files(all_files)
+    _actually_remove_fragments(project_collection, ref_parser=ref_parser)
 
 
 def remove_files(files):
