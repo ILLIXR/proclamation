@@ -44,13 +44,17 @@ def render_template(project, project_version, release_date=None):
 
     log.info("Loaded template %s from %s", project.template, template.filename)
     try:
-        return template.render({
+        result = template.render({
             "project_name": project.name,
             "project_version": project_version,
             "date": release_date,
             "sections": project.sections,
             "base_url": project.settings.base_url,
         })
+        # ensure it ends with a blank line
+        while not result.endswith("\n\n"):
+            result += "\n"
+        return result
     except TemplateSyntaxError as e:
         print("template syntax error during render: {}:{} error: {}".
               format(e.filename, e.lineno, e.message))
