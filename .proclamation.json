@@ -2,7 +2,7 @@
     "#": "This is a config file for proclamation, the changelog combiner: https://gitlab.com/ryanpavlik/proclamation",
     "project_name": "proclamation",
     "base_url": "https://gitlab.com/ryanpavlik/proclamation",
-    "news_filename": "CHANGELOG",
+    "news_filename": "CHANGELOG.md",
     "sections": {
         "Script": {
             "directory": "changes/script"
