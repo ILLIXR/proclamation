@@ -23,8 +23,7 @@
 {% block sections_and_fragments %}{% for section in sections %}
 - {{ section.name }}
 {%- for fragment in section.fragments %}
-{%- set rawtext %}{{ chunk.text }} ({{format_refs(chunk.refs)}}){% endset -%}
-  - {{ rawtext | wordwrap | indent }}
+  - {% set rawtext %}{{ fragment.text }} ({{format_refs(fragment.refs)}}){% endset %}{{ rawtext | wordwrap | indent }}
 {%- else %}
   - No significant changes
 {%- endfor %}
