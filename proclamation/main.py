@@ -5,6 +5,7 @@
 """Main entry point."""
 
 import logging
+import sys
 
 import click
 
@@ -25,9 +26,14 @@ class ProjectCollection:
         objects."""
         self.project_name = project_name
         self.default_base = default_base
-        settings = settings_from_json_file(config_file)
         self.projects = []
         log = logging.getLogger(__name__).getChild("ProjectCollection")
+        try:
+            settings = settings_from_json_file(config_file)
+        except FileNotFoundError:
+            self.loaded_config = False
+            self.config_fn = config_file
+            return
         for project_settings in settings.projects:
             if not self.should_process_project(project_settings.name):
                 log.info("Skipping project %s, not selected on command line")
@@ -37,6 +43,7 @@ class ProjectCollection:
             self.projects.append(Project(project_settings,
                                          default_base=default_base,
                                          ref_parser=ref_parser))
+        self.loaded_config = True
 
     def should_process_project(self, proj_name):
         if self.project_name is None:
@@ -101,7 +108,13 @@ def draft(project_collection, ctx, project_version, release_date=None,
     if project_version is None:
         project_version = "v.next (DRAFT)"
     for project in project_collection.projects:
-        project.populate_sections(ref_parser)
+        try:
+            project.populate_sections(ref_parser)
+        except FileNotFoundError as e:
+            logging.getLogger(__name__).warning(
+                "Skipping project '%s', got this error while populating: %s  ",
+                project.name, e)
+            continue
         print(render_template(project, project_version, release_date))
 
 
@@ -125,11 +138,26 @@ def build(project_collection, ctx, project_version, release_date=None,
     """Build your new NEWS file."""
     if not overwrite and len(project_collection.projects) != 1:
         raise click.UsageError(
-            "You may only build a single project at a time: "
+            "You may only build a single project at a time to stdout: "
             "please specify --project-name or use --overwrite",
             ctx)
+    if not project_collection.loaded_config:
+        raise click.UsageError("Config file %s not found" %
+                               project_collection.config_fn, ctx)
     for project in project_collection.projects:
-        project.populate_sections(ref_parser)
+        try:
+            project.populate_sections(ref_parser)
+        except FileNotFoundError as e:
+
+            logging.getLogger(__name__).error(
+                "When processing project '%s', got this error: %s",
+                project.name, e)
+            sys.exit(-1)
+
+    # Separate loop so that we don't write anything until we know we parsed
+    # everything OK
+
+    for project in project_collection.projects:
         new_contents = generate_updated_changelog(project, project_version,
                                                   release_date)
         if overwrite:
