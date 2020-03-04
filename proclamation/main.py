@@ -184,7 +184,7 @@ def remove_fragments(project_collection, ctx, ref_parser=None):
     all_files = set()
     for project in project_collection.projects:
         project.populate_sections(ref_parser)
-        all_files += set(project.fragment_filenames)
+        all_files.update(set(project.fragment_filenames))
     remove_files(all_files)
 
 
