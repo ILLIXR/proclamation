@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="proclamation",
-    version="1.0.0",
+    version="1.0.1",
     author="Ryan A. Pavlik",
     author_email="ryan.pavlik@collabora.com",
     description="A CHANGES/NEWS file creator",
