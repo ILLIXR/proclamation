@@ -29,3 +29,8 @@ flake8:
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
     - tox -e flake8
+
+reuse:
+  image: fsfe/reuse
+  script:
+    - reuse lint
