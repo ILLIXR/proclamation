@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from ..types import Fragment, ReferenceParser
+from ..types import Fragment, ReferenceParser, Section
 
 from io import StringIO
 
@@ -69,3 +69,22 @@ def test_simple_fragment():
     fragment.parse_file()
     assert(len(fragment.refs) == 1)
     assert("content" in fragment.text)
+
+
+def test_fragment_sorting():
+    section = Section("MySection")
+
+    frag_b = Fragment("issue.2.md")
+    section.add_fragment(frag_b)
+    assert(section.fragments[0] == frag_b)
+
+    frag_a = Fragment("issue.1.md")
+    section.add_fragment(frag_a)
+    assert(section.fragments[0] == frag_a)
+    assert(section.fragments[1] == frag_b)
+
+    frag_c = Fragment("issue.2.2.md")
+    section.add_fragment(frag_c)
+    assert(section.fragments[0] == frag_a)
+    assert(section.fragments[1] == frag_b)
+    assert(section.fragments[2] == frag_c)

@@ -246,6 +246,12 @@ class Fragment:
             self.refs.append(reference)
             self.known_refs.add(ref_tuple)
 
+    def __lt__(self, other):
+        """Compare less-than for fragment sorting."""
+        # For now - sort based on the first reference of a fragment.
+        # This is typically the one from the filename.
+        return self.refs[0].as_tuple() < other.refs[0].as_tuple()
+
     def add_ref(self, s):
         """Parse a string as a reference and add it to this fragment."""
         ref_tuple = self._ref_parser.parse(s)
@@ -303,7 +309,7 @@ class Section:
 
     A section contains :class:`Fragment` objects. They are typically populated
     from a directory of files through a call to
-    :func:`populate_from_directory()`.
+    :func:`populate_from_directory()`. They are kept sorted.
     """
 
     def __init__(self, name, relative_directory=None):
@@ -312,6 +318,18 @@ class Section:
         self.relative_directory = relative_directory
         self.fragments = []
         self._log = _LOG.getChild("Section." + name)
+
+    def add_fragment(self, fragment):
+        """Add a fragment to this section.
+
+        This does **not** call fragment.parse_file(). However,
+        :func:`populate_from_directory()` is the usual place this gets
+        called from, and it **does* call parse_file.
+        """
+        self.fragments.append(fragment)
+        # Keep this list sorted
+        self.fragments.sort()
+        self._log.debug("added: %s", fragment.filename)
 
     def populate_from_directory(self, directory, ref_parser):
         """Iterate through a directory, trying to parse each filename as a reference.
@@ -327,8 +345,7 @@ class Section:
                 self._log.debug("Not actually a fragment: %s", fragment_name)
                 continue
             fragment = Fragment(fragment_name, fragment_ref, ref_parser)
-            self.fragments.append(fragment)
-            self._log.debug("added: %s", fragment_name)
+            self.add_fragment(fragment)
             fragment.parse_file()
 
     @property
