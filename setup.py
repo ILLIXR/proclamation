@@ -21,7 +21,7 @@ setuptools.setup(
     project_urls={
         "Source Code and Issue Tracker": "https://gitlab.com/ryanpavlik/proclamation",
         "Documentation": "https://proclamation.readthedocs.io",
-    }
+    },
     packages=setuptools.find_packages(),
     install_requires=["jinja2", "click"],
     include_package_data=True,
