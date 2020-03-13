@@ -1,4 +1,4 @@
-# proclamation
+# Proclamation
 
 [![pipeline status](https://gitlab.com/ryanpavlik/proclamation/badges/master/pipeline.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
 [![coverage report](https://gitlab.com/ryanpavlik/proclamation/badges/master/coverage.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
@@ -176,7 +176,7 @@ participating in this project you agree to abide by its terms.
 If you have questions or found a bug, feel free to file an issue on the GitLab
 project for Proclamation.
 
-Merge requests are gratefully accepted. To develop on proclamation, you'll
+Merge requests are gratefully accepted. To develop on Proclamation, you'll
 probably want to follow the virtualenv installation instructions above to
 locally install a link in a virtualenv.
 

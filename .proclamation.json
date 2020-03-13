@@ -1,8 +1,8 @@
 {
-    "#": "This is a config file for proclamation, the changelog combiner: https://gitlab.com/ryanpavlik/proclamation",
+    "#": "This is a config file for Proclamation, the changelog combiner: https://gitlab.com/ryanpavlik/proclamation",
     "SPDX-License-Identifier: CC0-1.0": "",
     "SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors": "",
-    "project_name": "proclamation",
+    "project_name": "Proclamation",
     "base_url": "https://gitlab.com/ryanpavlik/proclamation",
     "news_filename": "CHANGELOG.md",
     "sections": {

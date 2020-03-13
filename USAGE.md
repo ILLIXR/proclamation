@@ -14,7 +14,7 @@ This project uses the [Proclamation][] tool to maintain changelogs. Contributors
 to this project do not need to use Proclamation, but they are asked to write a
 fragment for the changelog describing their change. See below for more details.
 
-- Directory to run proclamation in: repository root
+- Directory to run Proclamation in: repository root
   - Config file: default name (`.proclamation.json`)
 - Location of the per-changelog-section directories: `changes/`
 
@@ -49,7 +49,7 @@ fragment for the changelog describing their change. See below for more details.
 
 ## About Proclamation and Usage Instructions
 
-The "proclamation" tool assembles changelogs, which incorporate fragments of
+The "Proclamation" tool assembles changelogs, which incorporate fragments of
 changelog text added by the author of a change in a specific location and
 format.
 
@@ -65,7 +65,7 @@ fragment just contains one line of Markdown text describing the change:
 Here the author of a change has written some text about it.
 ```
 
-(If you change the template in your proclamation config file, your project can use a different markup format than Markdown.)
+(If you change the template in your Proclamation config file, your project can use a different markup format than Markdown.)
 
 ### References
 
@@ -75,7 +75,7 @@ change. Each fragment must have at least one of these, which forms the main part
 of the filename. If applicable, additional can be added within the file - see
 below for details.
 
-This portion of the proclamation system is intentionally left very flexible,
+This portion of the Proclamation system is intentionally left very flexible,
 since there are very many ways of organizing and managing a project. By default,
 references are delimited by the `.` character. The first two fields have some
 conventional meaning, while any additional fields are up to the user and are
@@ -147,7 +147,7 @@ directly, or contain a member named "projects" with an array of project config
 objects.
 
 You can look at the config file for this project for guidance, since it's a
-pretty simple use case of this tool. (proclamation was designed to handle more
+pretty simple use case of this tool. (Proclamation was designed to handle more
 elaborate use-cases than this.)
 
 - Project attributes:
@@ -163,10 +163,10 @@ elaborate use-cases than this.)
     - The only key valid right now in the child of the section is `directory`,
       which indicates the directory to search for changelog fragments.
   - `template` - Optional. The name of a Jinja2 template for a single release's
-    changelog section. `base.md` comes with proclamation and is used by default.
+    changelog section. `base.md` comes with Proclamation and is used by default.
     Your custom template might inherit from this if you only need to change a
     few small details. Evaluated relative to the current working directory when
-    you run proclamation.
+    you run Proclamation.
   - `insert_point_pattern` - Useful mainly if you're not using the default
     template. The first match of this regex will be considered the first line of
     a release entry, and your new release will be put in your changelog file
@@ -189,7 +189,7 @@ features to support your needs in the command line help.
 As changes get submitted to your project, have each change author create a
 changelog fragment file. Since these are all separate files, with names made
 unique by your issue/repo tracker, there won't be merge conflicts no matter what
-order they're merged in. (This is the central benefit of proclamation, and its
+order they're merged in. (This is the central benefit of Proclamation, and its
 inspiration, towncrier, over having each contributor edit CHANGES as part of
 their submission.)
 
@@ -198,7 +198,7 @@ would be added to your changelog if you released at that time.
 
 ### Preparing for a Release
 
-When you're ready to perform a release, you'll want to run proclamation to
+When you're ready to perform a release, you'll want to run Proclamation to
 update your changelog, then remove the fragments that you've incorporated into
 the regular changelog. You can use a command like the following:
 
@@ -218,7 +218,7 @@ changelog fragments.
 
 You're welcome to manually edit the new (or old!) changelog entries as desired:
 as long as the `insert_point_pattern` (by default, `^## .*`) can still match,
-proclamation will not be confused.
+Proclamation will not be confused.
 
 Finally, make sure the deletion of the fragments and the update of the changelog
 has been checked in to your version control system.
