@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 
 .shared:
   image: python:3.$PYTHON_MINOR
@@ -27,3 +29,8 @@ flake8:
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
     - tox -e flake8
+
+reuse:
+  image: fsfe/reuse
+  script:
+    - reuse lint

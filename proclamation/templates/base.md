@@ -1,3 +1,7 @@
+{#-
+SPDX-License-Identifier: CC0-1.0
+SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+-#}
 {% macro format_ref(ref) -%}
     {%- if ref.item_type == "issue" -%}
         {%- set subdir = "issues" %}

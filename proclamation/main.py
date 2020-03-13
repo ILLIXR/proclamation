@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2020 Collabora, Ltd.
+# Copyright 2020 Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 """Main entry point."""
