@@ -2,6 +2,7 @@
 
 [![pipeline status](https://gitlab.com/ryanpavlik/proclamation/badges/master/pipeline.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
 [![coverage report](https://gitlab.com/ryanpavlik/proclamation/badges/master/coverage.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
+[![REUSE status](https://api.reuse.software/badge/gitlab.com/ryanpavlik/proclamation)](https://api.reuse.software/info/gitlab.com/ryanpavlik/proclamation)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
