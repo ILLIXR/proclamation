@@ -42,7 +42,10 @@ fragment for the changelog describing their change. See below for more details.
   the changelog for the next release.
 - If your changes affect multiple sections, you can have a file in each section
   describing the section-specific changes.
-- If your change resolves an issue or otherwise references some issue or merge/pull request, you can add those references to the beginning of your changelog fragment. See the full instructions below for 
+- If your change resolves an issue or otherwise references some issue or
+  merge/pull request, you can add those references to the beginning of your
+  changelog fragment. See the full instructions below regarding
+  [References](#references).
 
 ## About Proclamation and Usage Instructions
 
