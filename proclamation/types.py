@@ -95,11 +95,6 @@ class ReferenceParser:
         if not removed_extension:
             # Filenames must have the extension
             return None
-        elts = s.split(".")
-        if elts[-1] in self.extensions_to_drop:
-            elts.pop()
-        else:
-            return None
 
         if elts and not elts[0]:
             # Empty first component: not a valid ref file.
