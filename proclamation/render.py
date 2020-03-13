@@ -1,5 +1,5 @@
 #!/usr/bin/env python3 -i
-# Copyright 2019-2020 Collabora, Ltd.
+# Copyright 2019-2020 Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 """Use Jinja2 to render an addition to the CHANGES file.

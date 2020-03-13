@@ -7,6 +7,10 @@
 A tool for building CHANGES/NEWS files from fragments.
 
 Inspired by [towncrier][], but completely language-agnostic and markup-agnostic.
+(The default template uses markdown, but all formatting is controlled by Jinja2
+templates so you can change that as desired.)
+
+[towncrier]: https://github.com/hawkowl/towncrier
 
 ## About Proclamation and Usage Instructions
 
@@ -83,11 +87,13 @@ to have multiple projects configured in one config file and repo with
 partially-overlapping sections. (This is actually a part of one of the
 originally motivating use cases for this tool.)
 
-Every file whose filename parses and meets some basic checks will be used!
-Having a `changes/your_section_name` directory for each section is recommended.
-You can provide a `README.md` file with a modified subset of this file in that
-directory, as guidance to contributors to your project. (`README.md` won't parse
-as a reference, so it will not be treated as a changelog fragment.)
+Every file whose filename parses and meets some basic checks will be used! (You
+do need to add e.g. an `.md` file extension to files for them to parse as
+references.) Having a `changes/your_section_name` directory for each section is
+recommended. You can provide a `README.md` file with a modified subset of this
+file in that directory, as guidance to contributors to your project.
+(`README.md` won't parse as a reference, so it will not be treated as a
+changelog fragment.)
 
 Use whatever works for your project. Right now, all changelog fragments must be
 in a section, sections must be a single directory, and sections may not be
@@ -217,16 +223,73 @@ You can use the same installation instructions above to locally install a link i
 - Run `pytest-3` or similar to run the automated tests.
 - Run `autopep8 proclamation/*.py proclamation/test/*.py --in-place` to
   automatically format the source code with [autopep8][].
-- Use [`tox`][tox] to run flake8 as well as tests for multiple Python versions.
+- Use [`tox`][tox] to run [flake8][] as well as tests for multiple Python versions.
   - e.g. on Debian Buster, you can run `tox -e py35,py37,flake8`
 - When submitting a change, be sure to create your changelog fragment in the changes directory! :)
+
+No copyright assignment is required to contribute. However, you are required to
+make your contributions available under the prevailing license for that content
+type (see below) for it to be accepted into the main repo.
+
+[tox]: https://tox.readthedocs.io/en/latest/
+[flake8]: https://flake8.pycqa.org/en/latest/
+[autopep8]: https://github.com/hhatto/autopep8
 
 ## Code of Conduct
 
 Please note that this project is released with a Contributor Code of Conduct. By
 participating in this project you agree to abide by its terms.
 
-[towncrier]: https://github.com/hawkowl/towncrier
-[tox]: https://tox.readthedocs.io/en/latest/
-[flake8]: https://flake8.pycqa.org/en/latest/
-[autopep8]: https://github.com/hhatto/autopep8
+## License
+
+The *tl;dr* is: The bulk of the package is [Apache-2.0][] licensed. Files that
+you might incorporate into your own project are [CC0][] (public domain
+dedication or nearest equivalent based on jurisdiction); this is so you can
+freely use them into your project no matter what license you use.
+
+Note that dependencies and third-party documents may have their own licenses.
+For instance, the code of conduct, based on the Contributor Covenant v2.0, is
+licensed CC-BY-4.0.
+
+This project is [REUSE-compliant](https://reuse.software) (version 3.0 of the
+REUSE specification). You can use that project's tools to work with copyright
+and licenses of files in this project.
+
+[Apache-2.0]: http://www.apache.org/licenses/LICENSE-2.0
+[CC0]: https://creativecommons.org/publicdomain/zero/1.0/
+
+### Default license, including all Python code files
+
+```txt
+Copyright 2019-2020 Collabora, Ltd. and the Proclamation contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+### Templates and this documentation
+
+```txt
+SPDX-License-Identifier: CC0-1.0
+SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+```
+
+- This `README.md` file
+- `proclamation/templates/*`
+
+[CC0 1.0 Universal (CC0 1.0) Public Domain Dedication][CC0]
+
+```txt
+To the extent possible under law, the person who associated CC0 with this work
+has waived all copyright and related or neighboring rights to this work. This
+work is published from: United States.
+```

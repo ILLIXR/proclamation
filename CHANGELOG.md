@@ -1,5 +1,10 @@
 # Changelog for proclamation, the changelog combiner
 
+```txt
+SPDX-License-Identifier: CC0-1.0
+SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+```
+
 ## proclamation 1.0.1 (2020-03-04)
 
 - Script
