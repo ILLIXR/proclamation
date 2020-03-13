@@ -2,6 +2,7 @@
 
 [![pipeline status](https://gitlab.com/ryanpavlik/proclamation/badges/master/pipeline.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
 [![coverage report](https://gitlab.com/ryanpavlik/proclamation/badges/master/coverage.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
+[![Documentation Status](https://readthedocs.org/projects/proclamation/badge/?version=latest)](https://proclamation.readthedocs.io/en/latest/?badge=latest)
 [![REUSE status](https://api.reuse.software/badge/gitlab.com/ryanpavlik/proclamation)](https://api.reuse.software/info/gitlab.com/ryanpavlik/proclamation)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
@@ -13,6 +14,8 @@ Inspired by [towncrier][], but completely language-agnostic and markup-agnostic.
 templates so you can change that as desired.)
 
 Maintained at <https://gitlab.com/ryanpavlik/proclamation>
+
+Documentation also available at <https://proclamation.readthedocs.io/en/latest/>
 
 [towncrier]: https://github.com/hawkowl/towncrier
 
