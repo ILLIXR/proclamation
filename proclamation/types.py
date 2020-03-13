@@ -13,14 +13,27 @@ FRONT_MATTER_DELIMITER = "---"
 
 
 class Reference:
-    """A simple class storing the information about a reference."""
+    """A simple class storing the information about a reference.
+
+    A reference is an issue, merge/pull request, ticket number, etc: any known
+    namespace of identifiers that suit your project. By customizing your
+    template (or, in extreme cases, your reference parser) you can accomodate
+    a variety of project structures split across multiple systems.
+
+    Generally created from a string by :class:`ReferenceParser`.
+
+    If you customize Proclamation by writing your own customized subclass
+    of :class:`ReferenceParser`, you do not necessarily have to use this
+    class. However, for most project structures, even fairly complicated ones,
+    this class and a custom template suffice.
+    """
 
     def __init__(self, item_type, number, service_params):
-        """Construct a Reference from a parsed reference string."""
+        """Construct from a parsed reference string."""
         super().__init__()
 
         self.item_type = item_type
-        """Item type, like issue, mr, pr."""
+        """Item type, like ``issue``, ``mr``, ``pr``."""
 
         self.number = number
         """Reference number."""
@@ -37,6 +50,11 @@ class Reference:
         """
         return (self.item_type, self.number, tuple(self.service_params))
 
+    def __repr__(self):
+        return "Reference({}, {}, {})".format(repr(self.item_type),
+                                              repr(self.number),
+                                              repr(self.service_params))
+
 
 class ReferenceParser:
     """The base class and default "reference parser".
@@ -44,8 +62,8 @@ class ReferenceParser:
     If you choose to customize this functionality, inherit from it.
     Otherwise, use it as-is.
 
-    Reference parsers may (this one does) use the Reference class from this
-    module, but it's not required.
+    Reference parsers may use the :class:`Reference` class from this module,
+    as this one does, but it's not required.
     Whatever suits you best is fine as long as it works with your template.
 
     References are things like ticket numbers, issue numbers, merge/pull
@@ -62,7 +80,20 @@ class ReferenceParser:
         """Return the .-delimited portions of a name/ref, excluding a file extension,
         and whether or not a file extension was removed.
 
-        A utility function likely to be used in classes resembling this one.
+        This is a utility function used by both :func:`parse` and
+        :func:`parse_filename`.
+
+        >>> ReferenceParser().split_on_dot_and_drop_ext("mr.50.md")
+        (['mr', '50'], True)
+
+        >>> ReferenceParser().split_on_dot_and_drop_ext("mr.50.extradata.md")
+        (['mr', '50', 'extradata'], True)
+
+        >>> ReferenceParser().split_on_dot_and_drop_ext("mr.50")
+        (['mr', '50'], False)
+
+        >>> ReferenceParser().split_on_dot_and_drop_ext("mr.50.extradata")
+        (['mr', '50', 'extradata'], False)
         """
         elts = s.split(".")
         if elts[-1] in self.extensions_to_drop:
@@ -71,9 +102,34 @@ class ReferenceParser:
         return elts, False
 
     def make_reference(self, elts):
-        """Convert a tuple of elements into a reference.
+        """Convert a list/tuple of elements into a reference.
 
-        This might be the only function you need to override.
+        This might be the only function you need to override if you need a
+        custom reference parser but can deal with the filename being
+        ``.``-delimited.
+
+        Called by :func:`parse_filename` and :func:`parse` once they've
+        separated the parts of their input string.
+
+        >>> ReferenceParser().make_reference(['mr', '50', 'extradata'])
+        Reference('mr', 50, ['extradata'])
+
+        >>> ReferenceParser().make_reference(['mr', '50'])
+        Reference('mr', 50, [])
+
+        >>> ReferenceParser().make_reference(['mr', '50', 'extradata',
+        ...                                   'evenmoredata'])
+        Reference('mr', 50, ['extradata', 'evenmoredata'])
+
+        This list is not a valid reference: not enough elements.
+
+        >>> ReferenceParser().make_reference(['mr'])
+
+        This list is not a valid reference: can't convert the second element
+        to a number.
+
+        >>> ReferenceParser().make_reference(['mr', 'fifty'])
+
         """
         if len(elts) < 2:
             # Only one component: Can't be a ref.
@@ -89,16 +145,30 @@ class ReferenceParser:
     def parse_filename(self, s):
         """Turn a filename string into a reference or None.
 
+        Unlike :func:`parse`, this method requires that the string end in one
+        of the known file extensions, as a way to avoid accidentally loading
+        files that aren't meant to be changelog fragments.
+
         May override or extend.
+
+
+        >>> ReferenceParser().parse_filename("mr.50.md")
+        Reference('mr', 50, [])
+
+        >>> ReferenceParser().parse_filename("mr.50.extradata.md")
+        Reference('mr', 50, ['extradata'])
+
+        This should return None because there's no file extension.
+
+        >>> ReferenceParser().parse_filename("mr.50")
+
+        This should return None because there's no (recognized) file extension.
+
+        >>> ReferenceParser().parse_filename("mr.50.extradata")
         """
         elts, removed_extension = self.split_on_dot_and_drop_ext(s)
         if not removed_extension:
             # Filenames must have the extension
-            return None
-        elts = s.split(".")
-        if elts[-1] in self.extensions_to_drop:
-            elts.pop()
-        else:
             return None
 
         if elts and not elts[0]:
@@ -109,7 +179,23 @@ class ReferenceParser:
     def parse(self, s):
         """Turn a string into a reference or None.
 
+        This will drop a file extension if it's present, but does not require
+        it to be present unlike :func:`parse_filename`.
+
         May override or extend.
+
+
+        >>> ReferenceParser().parse("mr.50.md")
+        Reference('mr', 50, [])
+
+        >>> ReferenceParser().parse("mr.50.extradata.md")
+        Reference('mr', 50, ['extradata'])
+
+        >>> ReferenceParser().parse("mr.50")
+        Reference('mr', 50, [])
+
+        >>> ReferenceParser().parse("mr.50.extradata")
+        Reference('mr', 50, ['extradata'])
         """
         elts, _ = self.split_on_dot_and_drop_ext(s)
 
@@ -214,6 +300,10 @@ class Section:
 
     Changes for a Section are (potentially) separated out in the news file.
     For example, sections might include "Drivers", "UI", etc.
+
+    A section contains :class:`Fragment` objects. They are typically populated
+    from a directory of files through a call to
+    :func:`populate_from_directory()`.
     """
 
     def __init__(self, name, relative_directory=None):
@@ -227,7 +317,7 @@ class Section:
         """Iterate through a directory, trying to parse each filename as a reference.
 
         Files that parse properly are assumed to be fragments,
-        and a Fragment object is instantiated for them.
+        and a :class:`Fragment` object is instantiated for them.
         """
         for fragment_name in directory.iterdir():
             fragment_ref = ref_parser.parse(fragment_name.name)
@@ -243,5 +333,11 @@ class Section:
 
     @property
     def fragment_filenames(self):
-        """Return a generator of filenames for all fragments added."""
+        """Return a generator of filenames for all :class:`Fragment` objects
+        added."""
         return (fragment.filename for fragment in self.fragments)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

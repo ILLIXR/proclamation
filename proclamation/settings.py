@@ -10,7 +10,7 @@ from .types import ReferenceParser
 
 
 class SectionSettings:
-    """Settings for a single Section."""
+    """Settings for a single :class:`Section`."""
 
     def __init__(self, name, directory, extra_data=None):
         """Construct a section settings object."""
@@ -27,7 +27,7 @@ class SectionSettings:
 
 
 class ProjectSettings:
-    """Project settings class.
+    """Settings for an entire :class:`Project`.
 
     Often parsed from JSON with a similar structure.
     """
@@ -39,21 +39,27 @@ class ProjectSettings:
         self.name = project_name
         """Name of the project."""
 
+        # We do the None testing here, instead of having a more meaningful default above,
+        # because a config file might pass us "None" for all of these.
         if template is None:
             template = "base.md"
         self.template = template
         """Filename of the changelog template."""
 
         self.sections = []
-        """List of SectionSettings."""
+        """List of :class:`SectionSettings` objects."""
 
         self.base_url = base_url
-        """Base URL of project management."""
+        """Base URL of project management.
+
+        This is your project URL if using GitHub or GitLab with the default
+        template."""
 
         if insert_point_pattern is None:
             insert_point_pattern = r'^## .*'
         self.insert_point_re = re.compile(insert_point_pattern)
-        """A regular expresssion matching the line we should insert before."""
+        """A regular expresssion matching the line we should insert before,
+        compiled from ``insert_point_pattern``."""
 
         if news_filename is None:
             news_filename = "NEWS"
@@ -66,7 +72,12 @@ class ProjectSettings:
         """Extra data for use by your template."""
 
     def make_reference_parser(self, base_dir=None):
-        """Make a default reference parser, always, for now."""
+        """Make a :class:`ReferenceParser`.
+
+        This is an expansion point for further usage, if projects
+        end up needing to supply a custom reference parser without
+        having to replace the rest of the command-line infrastructure, etc.
+        """
         parser = ReferenceParser()
         return parser
 
@@ -80,18 +91,20 @@ class Settings:
     def __init__(self):
         """Construct a top-level settings."""
         self.projects = []
-        """List of ProjectSettings."""
+        """List of :class:`ProjectSettings` objects."""
 
     def add_project(self, project_settings):
-        """Add a ProjectSettings object to this settings."""
+        """Add a :class:`ProjectSettings` object to this settings."""
         self.projects.append(project_settings)
 
 
 def parse_section(section_name, section_info):
+    """Parse a name and dictionary into a :class:`SectionSettings` object."""
     return SectionSettings(section_name, section_info["directory"])
 
 
 def parse_project(proj):
+    """Parse a dictionary into a :class:`ProjectSettings` object."""
     proj_settings = ProjectSettings(
         project_name=proj["project_name"],
         template=proj.get("template"),
@@ -106,7 +119,7 @@ def parse_project(proj):
 
 
 def parse_settings(config):
-    """Take settings from a dict into a Settings object."""
+    """Parse settings from a dict into a :class:`Settings` object."""
     settings = Settings()
     # Having multiple projects at top level is optional.
     projects = config.get("projects")
@@ -119,13 +132,14 @@ def parse_settings(config):
 
 
 def settings_from_json_io(io):
-    """Load settings from json in an IO like a file or StringIO."""
+    """Load :class:`Settings` from json in an IO like a file or
+    :class:`StringIO`."""
     import json
     config = json.load(io)
     return parse_settings(config)
 
 
 def settings_from_json_file(fn):
-    """Load settings from a JSON file."""
+    """Load :class:`Settings` from a JSON file."""
     with open(str(fn), 'r', encoding='utf-8') as fp:
         return settings_from_json_io(fp)
