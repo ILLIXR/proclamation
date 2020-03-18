@@ -24,11 +24,12 @@ python-3.7:
     PYTHON_MINOR: 7
   extends: .shared
 
-flake8:
+linting:
   image: python:3.7
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
     - tox -e flake8
+    - tox -e codespell
 
 reuse:
   image: fsfe/reuse
