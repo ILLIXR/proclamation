@@ -5,6 +5,51 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 ```
 
+## Proclamation 1.0.2 (2020-03-18)
+
+- Script
+  - Remove redundant code from reference parsing, and improve docstrings/doctests.
+    ([!8](https://gitlab.com/ryanpavlik/proclamation/merge_requests/8))
+  - Sort fragments in each section based on the tuple-ized form of their first
+    reference (from the filename). This will keep MR's in a section in numerical
+    order, etc. ([!9](https://gitlab.com/ryanpavlik/proclamation/merge_requests/9),
+    [#4](https://gitlab.com/ryanpavlik/proclamation/issues/4))
+  - Error out if we can't parse a front-matter line as a reference, instead of
+    silently swallowing the error.
+    ([!11](https://gitlab.com/ryanpavlik/proclamation/merge_requests/11))
+  - Support comment lines in per-fragment (YAML-like) front matter: a line with `#`
+    followed by anything, optionally preceded by whitespace.
+    ([!11](https://gitlab.com/ryanpavlik/proclamation/merge_requests/11),
+    [#8](https://gitlab.com/ryanpavlik/proclamation/issues/8))
+- Templates
+  - No significant changes
+- Misc
+  - Adjust copyright and license notices, placing documentation, config file, and
+    templates under CC0-1.0 so they may be re-used in other projects that use
+    Proclamation.
+    ([!7](https://gitlab.com/ryanpavlik/proclamation/merge_requests/7))
+  - Changes to ensure compliance with version 3.0 of the
+    [REUSE](https://reuse.software) specification as well as [standard-
+    readme](https://github.com/RichardLitt/standard-readme)
+    ([!7](https://gitlab.com/ryanpavlik/proclamation/merge_requests/7))
+  - Split some content from `README.md` into a `USAGE.md` designed for reuse in
+    projects that use Proclamation.
+    ([!7](https://gitlab.com/ryanpavlik/proclamation/merge_requests/7))
+  - Add Sphinx documentation, connected to read-the-docs.
+    ([!8](https://gitlab.com/ryanpavlik/proclamation/merge_requests/8))
+  - Update `setup.py` to specify that we need `click` version 7.
+    ([!10](https://gitlab.com/ryanpavlik/proclamation/merge_requests/10),
+    [#7](https://gitlab.com/ryanpavlik/proclamation/issues/7))
+  - Fix spelling errors/typos, and add `codespell` to tox and CI.
+    ([!12](https://gitlab.com/ryanpavlik/proclamation/merge_requests/12),
+    [#6](https://gitlab.com/ryanpavlik/proclamation/issues/6))
+  - Start testing against Python 3.8 as well.
+    ([!13](https://gitlab.com/ryanpavlik/proclamation/merge_requests/13))
+  - Note in USAGE that you can append a `.2`, `.3`, etc. before the extension of a
+    filename if you want more than one changelog item for a single "main"
+    reference.
+    ([!13](https://gitlab.com/ryanpavlik/proclamation/merge_requests/13))
+
 ## Proclamation 1.0.1 (2020-03-04)
 
 - Script
