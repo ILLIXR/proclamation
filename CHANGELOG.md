@@ -5,6 +5,13 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 ```
 
+## Proclamation 1.0.2.1 (2020-03-18)
+
+Brown-paper-bag release: no functional change, no need to upgrade from 1.0.2.
+
+- Fix reuse.software metadata. No functional change.
+  ([!14](https://gitlab.com/ryanpavlik/proclamation/merge_requests/14))
+
 ## Proclamation 1.0.2 (2020-03-18)
 
 - Script
