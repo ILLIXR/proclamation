@@ -20,7 +20,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://gitlab.com/ryanpavlik/proclamation",
     project_urls={
-        "Source Code and Issue Tracker": "https://gitlab.com/ryanpavlik/proclamation",
+        "Source Code and Issue Tracker":
+            "https://gitlab.com/ryanpavlik/proclamation",
         "Documentation": "https://proclamation.readthedocs.io",
     },
     packages=setuptools.find_packages(),
