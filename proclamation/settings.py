@@ -58,7 +58,7 @@ class ProjectSettings:
         if insert_point_pattern is None:
             insert_point_pattern = r'^## .*'
         self.insert_point_re = re.compile(insert_point_pattern)
-        """A regular expresssion matching the line we should insert before,
+        """A regular expression matching the line we should insert before,
         compiled from ``insert_point_pattern``."""
 
         if news_filename is None:
