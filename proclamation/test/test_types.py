@@ -56,6 +56,29 @@ def test_fragment():
     assert(len(fragment.refs) == 4)
 
 
+FRAGMENT_ERROR = """---
+- issue.55
+- mr.23
+pr.25
+issue.54
+err
+---
+This is content.
+"""
+
+
+def test_fragment_with_error():
+    fn = "issue.54.md"
+    fragmentio = StringIO(FRAGMENT_ERROR)
+    fragment = Fragment(fn, io=fragmentio)
+    try:
+        fragment.parse_file()
+    except RuntimeError as e:
+        assert("Could not parse line" in str(e))
+        return
+    assert(False)  # We expect an error.
+
+
 SIMPLE_FRAGMENT = """This is a simple fragment content.
 """
 
@@ -69,6 +92,32 @@ def test_simple_fragment():
     fragment.parse_file()
     assert(len(fragment.refs) == 1)
     assert("content" in fragment.text)
+
+
+FRAGMENT_WITH_COMMENTS = """---
+# comment
+- issue.55
+- mr.23
+   # comment
+pr.25
+# comment
+---
+This is content.
+"""
+
+
+def test_fragment_with_comment():
+    fn = "issue.54.md"
+    fragmentio = StringIO(FRAGMENT_WITH_COMMENTS)
+    fragment = Fragment(fn, io=fragmentio)
+    assert(str(fragment.filename) == fn)
+    assert(len(fragment.refs) == 1)
+    fragment.parse_file()
+    # skips comments
+    assert(len(fragment.refs) == 4)
+    assert("---" not in fragment.text)
+    assert("comment" not in fragment.text)
+    print(fragment.refs)
 
 
 def test_fragment_sorting():

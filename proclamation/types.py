@@ -256,8 +256,9 @@ class Fragment:
         """Parse a string as a reference and add it to this fragment."""
         ref_tuple = self._ref_parser.parse(s)
         if not ref_tuple:
-            return
+            return None
         self._insert_ref(ref_tuple)
+        return ref_tuple
 
     def _parse_front_matter(self, fp):
         log = logging.getLogger(__name__)
@@ -268,12 +269,19 @@ class Fragment:
             line = line.strip()
             if line == FRONT_MATTER_DELIMITER:
                 return
+            if line.startswith("#"):
+                # comment line
+                continue
 
             # Strip "bullet points" so this can look more yaml-like
             if line.startswith("- "):
                 line = line[2:].strip()
             log.debug("Front matter reference text: %s", line)
-            self.add_ref(line)
+            result = self.add_ref(line)
+            if result is None:
+                raise RuntimeError(
+                    "Could not parse line in front matter as reference:",
+                    line)
 
     def _parse_io(self, fp):
         line = fp.readline()
