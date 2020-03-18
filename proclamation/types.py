@@ -17,7 +17,7 @@ class Reference:
 
     A reference is an issue, merge/pull request, ticket number, etc: any known
     namespace of identifiers that suit your project. By customizing your
-    template (or, in extreme cases, your reference parser) you can accomodate
+    template (or, in extreme cases, your reference parser) you can accommodate
     a variety of project structures split across multiple systems.
 
     Generally created from a string by :class:`ReferenceParser`.
