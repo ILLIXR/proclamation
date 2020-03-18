@@ -9,6 +9,8 @@ Proclamation: the changelog combiner
    :maxdepth: 2
    :caption: Contents:
 
+   README <README>
+   Changelog <CHANGELOG>
    Usage Instructions (USAGE.md) <USAGE>
    cli
    api
