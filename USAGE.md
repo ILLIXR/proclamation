@@ -113,7 +113,7 @@ Here the author of a change has written some text about it.
 
 There are provisions for providing your own reference parser if this format is
 entirely unusable, but they're underdeveloped. (Most use cases found by the
-original author can actually be accomodated just by changing the template and
+original author can actually be accommodated just by changing the template and
 specifying `.`-delimited fields in references.) If this functionality is
 interesting to you, get involved in the development of Proclamation and help
 finish it!
@@ -122,7 +122,7 @@ finish it!
 
 Changelog fragments are organized into sections, each of which should have its
 own directory. These might be "type-of-change" sections (e.g. new feature,
-bugfix, etc). Alternately, they might be logical sub-projects - it's permissable
+bugfix, etc). Alternately, they might be logical sub-projects - it's permissible
 to have multiple projects configured in one config file and repo with
 partially-overlapping sections. (This is actually a part of one of the
 originally motivating use cases for this tool.)
