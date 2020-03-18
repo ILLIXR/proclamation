@@ -269,6 +269,9 @@ class Fragment:
             line = line.strip()
             if line == FRONT_MATTER_DELIMITER:
                 return
+            if line.startswith("#"):
+                # comment line
+                continue
 
             # Strip "bullet points" so this can look more yaml-like
             if line.startswith("- "):

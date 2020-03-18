@@ -94,6 +94,32 @@ def test_simple_fragment():
     assert("content" in fragment.text)
 
 
+FRAGMENT_WITH_COMMENTS = """---
+# comment
+- issue.55
+- mr.23
+   # comment
+pr.25
+# comment
+---
+This is content.
+"""
+
+
+def test_fragment_with_comment():
+    fn = "issue.54.md"
+    fragmentio = StringIO(FRAGMENT_WITH_COMMENTS)
+    fragment = Fragment(fn, io=fragmentio)
+    assert(str(fragment.filename) == fn)
+    assert(len(fragment.refs) == 1)
+    fragment.parse_file()
+    # skips comments
+    assert(len(fragment.refs) == 4)
+    assert("---" not in fragment.text)
+    assert("comment" not in fragment.text)
+    print(fragment.refs)
+
+
 def test_fragment_sorting():
     section = Section("MySection")
 
