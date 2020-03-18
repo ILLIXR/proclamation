@@ -332,7 +332,7 @@ class Section:
 
         This does **not** call fragment.parse_file(). However,
         :func:`populate_from_directory()` is the usual place this gets
-        called from, and it **does* call parse_file.
+        called from, and it **does** call parse_file.
         """
         self.fragments.append(fragment)
         # Keep this list sorted
