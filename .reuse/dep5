@@ -14,8 +14,8 @@ Source: https://gitlab.com/ryanpavlik/proclamation
 #Copyright: 2020, Collabora, Ltd. and the Proclamation contributors
 #License: CC0-1.0
 
-Files: CHANGELOG.md
-       README.md
+Files: README.md
+       docs/README.md
 Copyright: 2020, Collabora, Ltd. and the Proclamation contributors
 License: CC0-1.0
 
