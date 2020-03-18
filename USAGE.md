@@ -42,6 +42,11 @@ fragment for the changelog describing their change. See below for more details.
   the changelog for the next release.
 - If your changes affect multiple sections, you can have a file in each section
   describing the section-specific changes.
+- If you want more than one changelog fragment per section in a single change,
+  you can name the additional fragments `mr.YOURNUMBER.2.md`,
+  `mr.YOURNUMBER.3.md`, etc. The additional number appended at the end will not
+  appear in the output, but will keep the files separate and will affect the
+  sort order of the fragments.
 - If your change resolves an issue or otherwise references some issue or
   merge/pull request, you can add those references to the beginning of your
   changelog fragment. See the full instructions below regarding
@@ -97,6 +102,10 @@ where
 Your changelog fragment filename is simply the "main" reference with the `.md`
 extension added. (You can also use `.rst` or `.txt` as your extension in your
 project.)
+
+Notably, whether or not `service_params` is used in your template, you can
+append an extra token, like `.2`, before the file extension to easily handle
+multiple fragments for a single merge request, etc.
 
 To specify additional references in a file, prefix the contents of the changelog
 fragment with a block delimited above and below by `---`, with one reference on
