@@ -56,6 +56,29 @@ def test_fragment():
     assert(len(fragment.refs) == 4)
 
 
+FRAGMENT_ERROR = """---
+- issue.55
+- mr.23
+pr.25
+issue.54
+err
+---
+This is content.
+"""
+
+
+def test_fragment_with_error():
+    fn = "issue.54.md"
+    fragmentio = StringIO(FRAGMENT_ERROR)
+    fragment = Fragment(fn, io=fragmentio)
+    try:
+        fragment.parse_file()
+    except RuntimeError as e:
+        assert("Could not parse line" in str(e))
+        return
+    assert(False)  # We expect an error.
+
+
 SIMPLE_FRAGMENT = """This is a simple fragment content.
 """
 
