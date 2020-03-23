@@ -5,6 +5,13 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 ```
 
+## Proclamation 1.0.2.2 (2020-03-23)
+
+Packaging release: no functional change if you run from source or have your own
+template. Otherwise, upgrade recommended.
+
+- Fix `MANIFEST.in` to properly package the base template.
+
 ## Proclamation 1.0.2.1 (2020-03-18)
 
 Brown-paper-bag release: no functional change, no need to upgrade from 1.0.2.
