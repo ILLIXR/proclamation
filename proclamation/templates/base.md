@@ -17,7 +17,7 @@ SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 {%- endmacro -%}
 {% macro format_refs(refs) -%}
     {% if (refs | length) > 0 %}
-        {%- set comma = joiner(", ") -%}
+        {%- set comma = joiner(",\n") -%}
         {% for ref in refs -%}
             {{comma()}}{{format_ref(ref)}}
         {%- endfor %}
@@ -28,7 +28,8 @@ SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 {%- for section in sections %}
 - {{ section.name }}
 {%- for fragment in section.fragments %}
-  - {% set rawtext %}{{ fragment.text }} ({{format_refs(fragment.refs)}}){% endset %}{{ rawtext | wordwrap | indent }}
+  - {{ fragment.text | wordwrap | indent }}
+    ({{ format_refs(fragment.refs) | indent }})
 {%- else %}
   - No significant changes
 {%- endfor -%}
