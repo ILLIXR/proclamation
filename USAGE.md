@@ -39,7 +39,9 @@ fragment for the changelog describing their change. See below for more details.
 - Create a file in the appropriate section's directory, named `mr.YOURNUMBER.md`
   (or `pr` if you're on GitHub instead of GitLab)
 - In that file, briefly describe your change as you would like it describe in
-  the changelog for the next release.
+  the changelog for the next release. A common format is to start with a
+  component, subsection, or type of change (bug fix, feature), then a colon,
+  then a sentence describing the user impact of the change.
 - If your changes affect multiple sections, you can have a file in each section
   describing the section-specific changes.
 - If you want more than one changelog fragment per section in a single change,
@@ -70,7 +72,8 @@ fragment just contains one line of Markdown text describing the change:
 Here the author of a change has written some text about it.
 ```
 
-(If you change the template in your Proclamation config file, your project can use a different markup format than Markdown.)
+(If you change the template in your Proclamation config file, your project can
+use a different markup format than Markdown.)
 
 ### References
 
@@ -146,7 +149,8 @@ changelog fragment.)
 
 Use whatever works for your project. Right now, all changelog fragments must be
 in a section, sections must be a single directory, and sections may not be
-nested. If you'd like to loosen these assumptions, get involved in the development of Proclamation and help!
+nested. If you'd like to loosen these assumptions, get involved in the
+development of Proclamation and help!
 
 ## Configuration
 
