@@ -12,8 +12,10 @@ Proclamation: the changelog combiner
    README <README>
    Changelog <CHANGELOG>
    Usage Instructions (USAGE.md) <USAGE>
+   schema
    cli
    api
+   Project Code of Conduct <CODE_OF_CONDUCT>
 
 
 

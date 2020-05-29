@@ -12,18 +12,13 @@ from .types import ReferenceParser
 class SectionSettings:
     """Settings for a single :class:`Section`."""
 
-    def __init__(self, name, directory, extra_data=None):
+    def __init__(self, name, directory):
         """Construct a section settings object."""
         self.name = name
         """Section name."""
 
         self.directory = directory
         """Directory containing changelog fragments for this section."""
-
-        if extra_data is None:
-            extra_data = {}
-        self.extra_data = extra_data
-        """Extra data for use by your template."""
 
 
 class ProjectSettings:
@@ -39,8 +34,9 @@ class ProjectSettings:
         self.name = project_name
         """Name of the project."""
 
-        # We do the None testing here, instead of having a more meaningful default above,
-        # because a config file might pass us "None" for all of these.
+        # We do the None testing here, instead of having a more meaningful
+        # default above, because a config file might pass us "None" for
+        # all of these.
         if template is None:
             template = "base.md"
         self.template = template

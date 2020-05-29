@@ -349,7 +349,6 @@ class Section:
             fragment_ref = ref_parser.parse(fragment_name.name)
             if not fragment_ref:
                 # Actually not a fragment, skipping
-                # print()
                 self._log.debug("Not actually a fragment: %s", fragment_name)
                 continue
             fragment = Fragment(fragment_name, fragment_ref, ref_parser)
