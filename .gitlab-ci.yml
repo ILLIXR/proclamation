@@ -33,7 +33,8 @@ linting:
   image: python:3.7
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
-    - tox -e flake8
+    - pip3 install flake8
+    - flake8 proclamation/*.py
     - tox -e codespell
 
 reuse:
