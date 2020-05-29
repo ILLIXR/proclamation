@@ -37,7 +37,9 @@ linting:
     - tox -e codespell
 
 reuse:
-  image: fsfe/reuse
+  image:
+    name: fsfe/reuse:latest
+    entrypoint: [""]
   script:
     - reuse lint
 
