@@ -15,6 +15,7 @@ Proclamation: the changelog combiner
    schema
    cli
    api
+   Project Code of Conduct <CODE_OF_CONDUCT>
 
 
 
