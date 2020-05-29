@@ -4,7 +4,7 @@
 [![coverage report](https://gitlab.com/ryanpavlik/proclamation/badges/master/coverage.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/master)
 [![Documentation Status](https://readthedocs.org/projects/proclamation/badge/?version=latest)](https://proclamation.readthedocs.io/en/latest/?badge=latest)
 [![REUSE status](https://api.reuse.software/badge/gitlab.com/ryanpavlik/proclamation)](https://api.reuse.software/info/gitlab.com/ryanpavlik/proclamation)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 A tool for building CHANGES/NEWS files from fragments.
@@ -99,7 +99,7 @@ on your system, you might symlink it into a directory that's in your `PATH`.
 ## Usage
 
 For detailed instructions that you might consider copying and modifying for your
-own project, see [USAGE.md](usage.md).
+own project, see [USAGE.md](USAGE.md).
 
 Proclamation itself is primarily used through the command line by the person
 making releases.
@@ -118,7 +118,7 @@ general help, listing overall options and subcommands, as follows:
 proclamation --help
 ```
 
-Additionally, each subcommand has its own help text, describing it and its available options, for example: 
+Additionally, each subcommand has its own help text, describing it and its available options, for example:
 
 ```sh
 proclamation build --help
