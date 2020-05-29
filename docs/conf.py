@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 
 # Documentation builds require the following modules in addition to sphinx:
-# recommonmark click sphinx_click
+# recommonmark click sphinx_click sphinx-jsonschema
 
 from pathlib import Path
 import sys
@@ -24,7 +24,8 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.extlinks',
     'recommonmark',
-    'sphinx_click.ext'
+    'sphinx_click.ext',
+    'sphinx-jsonschema',
 ]
 
 source_suffix = ['.rst', '.md']

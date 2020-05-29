@@ -12,6 +12,7 @@ Proclamation: the changelog combiner
    README <README>
    Changelog <CHANGELOG>
    Usage Instructions (USAGE.md) <USAGE>
+   schema
    cli
    api
 
