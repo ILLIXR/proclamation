@@ -6,7 +6,7 @@
 import json
 from io import StringIO
 
-from ..settings import parse_project, settings_from_json_io
+from ..settings import parse_project, settings_from_json_io, parse_section
 
 PROJ_NAME = "my project"
 
@@ -54,3 +54,13 @@ def test_project_toplevel():
     assert(settings.projects[0].name == PROJ_NAME)
     assert(settings.projects[0].template == "dummy")
     assert(len(settings.projects[0].sections) == 1)
+
+
+def test_parse_section():
+    sect_setting_dict = {
+        "directory": "changes/main"
+    }
+
+    sect = parse_section("main section", sect_setting_dict)
+    assert(sect.name == "main section")
+    assert(sect.directory == sect_setting_dict['directory'])
