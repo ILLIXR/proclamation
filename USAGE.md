@@ -1,11 +1,9 @@
 # Usage of Proclamation to maintain changelogs
 
-This file:
-
-```txt
+<!--
 SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
-```
+-->
 
 **NOTE**: You may wish to copy this file into your own project and modify it as
 appropriate as a guide to your contributors.
@@ -41,7 +39,8 @@ fragment for the changelog describing their change. See below for more details.
 - In that file, briefly describe your change as you would like it describe in
   the changelog for the next release. A common format is to start with a
   component, subsection, or type of change (bug fix, feature), then a colon,
-  then a sentence describing the user impact of the change.
+  then a sentence describing the user impact of the change. (This is used for
+  sorting in some projects.)
 - If your changes affect multiple sections, you can have a file in each section
   describing the section-specific changes.
 - If you want more than one changelog fragment per section in a single change,
