@@ -5,10 +5,13 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 -->
 
-## Proclamation 1.1.0 (2020-07-28)
+## Proclamation 1.1.1 (2020-07-28)
 
 This adds one major new feature (`sort_by_prefix`), a public JSON schema, and a
 variety of smaller improvements.
+
+(Version 1.1.0 was briefly tagged but never published to PyPI, 1.1.1 replaces it
+entirely.)
 
 - Script
   - Add section setting `sort_by_prefix` to allow optionally sorting by a colon-
