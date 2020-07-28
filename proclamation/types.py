@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
+from operator import attrgetter
 from pathlib import Path
 
 _LOG = logging.getLogger(__name__)
@@ -215,6 +216,12 @@ class Fragment:
     (with or without leading -) between those delimiters.
     """
 
+    ARBITRARY_MAX_PREFIX_LEN = 40
+    """If the first colon in a fragment is after this many characters or more,
+    we assume it's not actually the prefix. It may instead be, for example,
+    a URL included in the fragment text.
+    """
+
     def __init__(self, filename, reference=None, ref_parser=None, io=None):
         """Construct a fragment.
 
@@ -249,6 +256,8 @@ class Fragment:
         Do not modify manually."""
         self._insert_ref(reference)
 
+        self._prefix = None
+
     def _insert_ref(self, reference):
         ref_tuple = reference.as_tuple()
         if ref_tuple not in self._known_refs:
@@ -265,6 +274,29 @@ class Fragment:
     def ref(self):
         """Get the first reference used for a fragment, which becomes an ID."""
         return self._ref
+
+    def _populate_prefix(self):
+        """Cache the computed prefix."""
+        if not self.text:
+            return
+        if self._prefix:
+            return
+        # First try splitting on colon.
+        parts = self.text.split(':', maxsplit=1)
+        if len(parts) == 2 and len(parts[0]) < self.ARBITRARY_MAX_PREFIX_LEN:
+            self._prefix = parts[0]
+            return
+        # If that fails, just do spaces.
+        parts = self.text.split(' ', maxsplit=1)
+        self._prefix = parts[0]
+
+    @property
+    def prefix(self):
+        """Get the colon-delimited prefix or first word of the content."""
+        if not self.text:
+            return ''
+        self._populate_prefix()
+        return self._prefix
 
     def add_ref(self, s):
         """Parse a string as a reference and add it to this fragment."""
@@ -309,7 +341,8 @@ class Fragment:
             line = fp.readline()
         self.text = self.text.strip()
         log = logging.getLogger(__name__)
-        log.debug("Got fragment starting with '%s'", self.text[:20])
+        log.debug("Got fragment with prefix '%s', text starting with '%s'",
+                  self.prefix, self.text[:20])
 
     def parse_file(self):
         """Open the file and parse content, and front matter if any.
@@ -334,12 +367,23 @@ class Section:
     :func:`populate_from_directory()`. They are kept sorted.
     """
 
-    def __init__(self, name, relative_directory=None):
+    def __init__(self,
+                 name,
+                 relative_directory=None,
+                 sort_by_prefix=False):
         super().__init__()
         self.name = name
         self.relative_directory = relative_directory
+        self.sort_by_prefix = sort_by_prefix
         self.fragments = []
         self._log = _LOG.getChild("Section." + name)
+
+    def _sort_fragments(self):
+        # Keep this list sorted
+        self.fragments.sort()
+        if self.sort_by_prefix:
+            self._log.debug("Sorting by prefix here!")
+            self.fragments.sort(key=attrgetter('prefix'))
 
     def add_fragment(self, fragment):
         """Add a fragment to this section.
@@ -349,8 +393,7 @@ class Section:
         called from, and it **does** call parse_file.
         """
         self.fragments.append(fragment)
-        # Keep this list sorted
-        self.fragments.sort()
+        self._sort_fragments()
         self._log.debug("added: %s", fragment.filename)
 
     def populate_from_directory(self, directory, ref_parser):
@@ -368,8 +411,10 @@ class Section:
                 self._log.debug("Not actually a fragment: %s", fragment_name)
                 continue
             fragment = Fragment(fragment_name, fragment_ref, ref_parser)
-            self.add_fragment(fragment)
             fragment.parse_file()
+            self.add_fragment(fragment)
+
+        self._sort_fragments()
 
     @property
     def fragment_filenames(self):

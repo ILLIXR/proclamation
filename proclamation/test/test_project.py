@@ -19,3 +19,16 @@ def test_project_and_section_create():
     assert(proj.sections[0].name == "main section")
     assert(proj.sections[0].relative_directory ==
            "changes/main")
+    assert(proj.sections[0].sort_by_prefix is False)
+
+def test_project_and_section_create_sort_by_prefix():
+    proj_config = deepcopy(PROJECT)
+    proj_config["sections"]["main section"]["sort_by_prefix"] = True
+    print(repr(proj_config))
+    proj_settings = parse_project(proj_config)
+    proj = Project(proj_settings)
+    assert(len(proj.sections) == 1)
+    assert(proj.sections[0].name == "main section")
+    assert(proj.sections[0].relative_directory ==
+           "changes/main")
+    assert(proj.sections[0].sort_by_prefix is True)

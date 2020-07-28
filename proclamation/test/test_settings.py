@@ -6,7 +6,7 @@
 import json
 from io import StringIO
 
-from ..settings import parse_project, settings_from_json_io, parse_section
+from ..settings import parse_project, parse_section, settings_from_json_io
 
 PROJ_NAME = "my project"
 
@@ -64,3 +64,10 @@ def test_parse_section():
     sect = parse_section("main section", sect_setting_dict)
     assert(sect.name == "main section")
     assert(sect.directory == sect_setting_dict['directory'])
+    assert(sect.sort_by_prefix is False)
+
+    sect_setting_dict['sort_by_prefix'] = True
+    sect = parse_section("main section", sect_setting_dict)
+    assert(sect.name == "main section")
+    assert(sect.directory == sect_setting_dict['directory'])
+    assert(sect.sort_by_prefix is True)
