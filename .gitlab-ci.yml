@@ -53,7 +53,7 @@ sphinx:
 
 # Publish schema
 pages:
-  stage: pages
+  stage: deploy
   only:
     - master
   script:
