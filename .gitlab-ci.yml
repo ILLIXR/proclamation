@@ -50,3 +50,15 @@ sphinx:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends make
     - pip3 install jinja2 && pip3 install -r docs/requirements.txt
     - make -C docs
+
+# Publish schema
+pages:
+  stage: pages
+  only:
+    - master
+  script:
+    - mkdir -p public
+    - cp proclamation.schema.* public/
+  artifacts:
+    paths:
+      - public
