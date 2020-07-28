@@ -4,9 +4,12 @@
 # SPDX-License-Identifier: Apache-2.0
 """Project settings."""
 
+import logging
 import re
 
 from .types import ReferenceParser
+
+_LOG = logging.getLogger(__name__)
 
 
 class SectionSettings:
@@ -19,6 +22,18 @@ class SectionSettings:
 
         self.directory = directory
         """Directory containing changelog fragments for this section."""
+
+        _LOG.debug("Created: %s", repr(self))
+
+    def __repr__(self):
+        """Return a representation of this object.
+
+        >>> repr(SectionSettings('Name', 'mydir'))
+        "SectionSettings('Name', 'mydir')"
+        """
+        return "SectionSettings({}, {})".format(
+            repr(self.name), repr(self.directory)
+        )
 
 
 class ProjectSettings:
