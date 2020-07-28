@@ -21,6 +21,7 @@ def test_project_and_section_create():
            "changes/main")
     assert(proj.sections[0].sort_by_prefix is False)
 
+
 def test_project_and_section_create_sort_by_prefix():
     proj_config = deepcopy(PROJECT)
     proj_config["sections"]["main section"]["sort_by_prefix"] = True
