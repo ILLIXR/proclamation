@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-
 from pathlib import Path
 
 _LOG = logging.getLogger(__name__)
@@ -237,22 +236,35 @@ class Fragment:
 
         if not reference:
             reference = ref_parser.parse_filename(filename.name)
-        self.ref = reference
+        self._ref = reference
+
         self.refs = []
-        self.known_refs = set()
+        """All references added for a fragment, including the first.
+
+        Do not modify manually."""
+
+        self._known_refs = set()
+        """The set of all ref tuples associated with this fragment.
+
+        Do not modify manually."""
         self._insert_ref(reference)
 
     def _insert_ref(self, reference):
         ref_tuple = reference.as_tuple()
-        if ref_tuple not in self.known_refs:
+        if ref_tuple not in self._known_refs:
             self.refs.append(reference)
-            self.known_refs.add(ref_tuple)
+            self._known_refs.add(ref_tuple)
 
     def __lt__(self, other):
         """Compare less-than for fragment sorting."""
         # For now - sort based on the first reference of a fragment.
         # This is typically the one from the filename.
-        return self.refs[0].as_tuple() < other.refs[0].as_tuple()
+        return self.ref.as_tuple() < other.ref.as_tuple()
+
+    @property
+    def ref(self):
+        """Get the first reference used for a fragment, which becomes an ID."""
+        return self._ref
 
     def add_ref(self, s):
         """Parse a string as a reference and add it to this fragment."""
