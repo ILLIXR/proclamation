@@ -7,8 +7,8 @@ SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
 
 ## Proclamation 1.1.0 (2020-07-28)
 
-This adds one major new feature, `sort_by_prefix`, and a variety of smaller
-improvements.
+This adds one major new feature (`sort_by_prefix`), a public JSON schema, and a
+variety of smaller improvements.
 
 - Script
   - Add section setting `sort_by_prefix` to allow optionally sorting by a colon-
@@ -33,9 +33,10 @@ improvements.
   - Add more tests for `Project`, `Fragment` (including parsing from disk), and
     `SectionSettings`.
     ([!16](https://gitlab.com/ryanpavlik/proclamation/merge_requests/16))
-  - Add a JSON Schema for config files. To use, add `"$schema": "https://gitlab.com
-    /ryanpavlik/proclamation/-/raw/master/proclamation.schema.json"` to the root of
-    your config file. Some editors will use this to provide editing help.
+  - Add a JSON Schema for config files. To use, add
+    `"$schema": "https://ryanpavlik.gitlab.io/proclamation/proclamation.schema.json"`
+    to the root of your config file. Some editors will use this to provide
+    editing help.
     ([!17](https://gitlab.com/ryanpavlik/proclamation/merge_requests/17))
 
 ## Proclamation 1.0.2.2 (2020-03-23)
