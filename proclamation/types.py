@@ -47,6 +47,8 @@ class Reference:
 
         Required of all classes that are to be used as a reference,
         for de-duplication.
+
+        Don't actually use this in your templates!
         """
         return (self.item_type, self.number, tuple(self.service_params))
 
