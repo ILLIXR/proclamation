@@ -4,21 +4,48 @@
 # SPDX-License-Identifier: Apache-2.0
 """Project settings."""
 
+import logging
 import re
 
 from .types import ReferenceParser
+
+_LOG = logging.getLogger(__name__)
 
 
 class SectionSettings:
     """Settings for a single :class:`Section`."""
 
-    def __init__(self, name, directory):
+    def __init__(self, name, directory, sort_by_prefix=False):
         """Construct a section settings object."""
         self.name = name
         """Section name."""
 
         self.directory = directory
         """Directory containing changelog fragments for this section."""
+
+        self.sort_by_prefix = sort_by_prefix
+        """Whether fragments should be sorted by first word before rendering.
+
+        This would be a stable sort that preserves the reference sort for same
+        first words."""
+
+        _LOG.debug("Created: %s", repr(self))
+
+    def __repr__(self):
+        """Return a representation of this object.
+
+        >>> repr(SectionSettings('Name', 'mydir'))
+        "SectionSettings('Name', 'mydir', False)"
+
+        >>> repr(SectionSettings('Name', 'mydir', False))
+        "SectionSettings('Name', 'mydir', False)"
+
+        >>> repr(SectionSettings('Name', 'mydir', True))
+        "SectionSettings('Name', 'mydir', True)"
+        """
+        return "SectionSettings({}, {}, {})".format(
+            repr(self.name), repr(self.directory), repr(self.sort_by_prefix)
+        )
 
 
 class ProjectSettings:
@@ -96,7 +123,9 @@ class Settings:
 
 def parse_section(section_name, section_info):
     """Parse a name and dictionary into a :class:`SectionSettings` object."""
-    return SectionSettings(section_name, section_info["directory"])
+    return SectionSettings(section_name,
+                           section_info["directory"],
+                           section_info.get("sort_by_prefix", False))
 
 
 def parse_project(proj):

@@ -20,6 +20,12 @@
                     "type": "string",
                     "title": "Fragment Directory",
                     "description": "Relative path to directory with changelog fragments"
+                },
+                "sort_by_prefix": {
+                    "type": "boolean",
+                    "title": "Sort by Prefix",
+                    "default": false,
+                    "description": "If true, fragments will be sorted by a colon-delimited prefix in their content (after the normal sorting by reference), or by their first word if no colon is found in the text."
                 }
             }
         },

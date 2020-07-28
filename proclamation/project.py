@@ -45,11 +45,14 @@ class Project:
             __name__).getChild("Project." + self.name)
 
         self.sections = []
+        """List of all sections in this project. Do not modify."""
+
         sections = self.sections
         for section_settings in settings.sections:
             self._log.debug("Instantiating section %s", section_settings.name)
             section = Section(section_settings.name,
-                              section_settings.directory)
+                              section_settings.directory,
+                              section_settings.sort_by_prefix)
             sections.append(section)
 
     def populate_sections(self, ref_parser=None):
