@@ -3,9 +3,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from ..types import Fragment, ReferenceParser, Section
-
+import tempfile
 from io import StringIO
+from pathlib import Path
+
+from ..types import Fragment, ReferenceParser, Section
 
 
 def test_ref_parse():
@@ -127,6 +129,31 @@ def test_fragment_with_comment():
     assert("---" not in fragment.text)
     assert("comment" not in fragment.text)
     print(fragment.refs)
+
+
+PREFIX_DATA = (
+    ("mr.1544.md", "Document new thing"),
+    ("mr.1729.md", "Make generation of event explicit"),
+    ("mr.1731.md", "Document another new thing"),
+)
+
+
+def create_fragments(dirname):
+    our_dir = Path(dirname)
+    for fn, contents in PREFIX_DATA:
+        with open(str(our_dir/fn), 'w') as fp:
+            fp.write(contents)
+            fp.write('\n')
+
+
+def test_fragment_sorting_from_disk():
+    with tempfile.TemporaryDirectory() as dirname:
+        create_fragments(dirname)
+        section = Section("MySection")
+        section.populate_from_directory(dirname, ReferenceParser())
+        assert(section.fragments[0].ref.as_tuple() == ("mr", 1544, ()))
+        assert(section.fragments[1].ref.as_tuple() == ("mr", 1729, ()))
+        assert(section.fragments[2].ref.as_tuple() == ("mr", 1731, ()))
 
 
 def test_fragment_sorting():

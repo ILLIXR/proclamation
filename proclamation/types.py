@@ -347,6 +347,8 @@ class Section:
         Files that parse properly are assumed to be fragments,
         and a :class:`Fragment` object is instantiated for them.
         """
+        if isinstance(directory, str):
+            directory = Path(directory)
         for fragment_name in directory.iterdir():
             fragment_ref = ref_parser.parse(fragment_name.name)
             if not fragment_ref:
