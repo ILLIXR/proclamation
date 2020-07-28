@@ -55,7 +55,7 @@ sphinx:
 pages:
   stage: deploy
   only:
-    - master
+    - main
   script:
     - mkdir -p public
     - cp proclamation.schema.* public/

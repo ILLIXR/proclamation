@@ -38,6 +38,7 @@ variety of smaller improvements.
     to the root of your config file. Some editors will use this to provide
     editing help.
     ([!17](https://gitlab.com/ryanpavlik/proclamation/merge_requests/17))
+  - The name of the default branch has been changed to `main`.
 
 ## Proclamation 1.0.2.2 (2020-03-23)
 
