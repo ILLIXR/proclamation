@@ -1,9 +1,42 @@
 # Changelog for Proclamation, the changelog combiner
 
-```txt
+<!--
 SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
-```
+-->
+
+## Proclamation 1.1.0 (2020-07-28)
+
+This adds one major new feature, `sort_by_prefix`, and a variety of smaller
+improvements.
+
+- Script
+  - Add section setting `sort_by_prefix` to allow optionally sorting by a colon-
+    delimited prefix in fragment text (or the first word if no colon exists).
+    ([!16](https://gitlab.com/ryanpavlik/proclamation/merge_requests/16))
+  - Report an error if a project name is specified but not found in the config
+    file, and add tests for `ProjectCollection`.
+    ([!18](https://gitlab.com/ryanpavlik/proclamation/merge_requests/18),
+    [#12](https://gitlab.com/ryanpavlik/proclamation/issues/12))
+- Templates
+  - Start fragment references on a new line, and only place one reference per line
+    (manually wrapped). This keeps the wrapping filter from mangling the Markdown-
+    formatted links.
+    ([!15](https://gitlab.com/ryanpavlik/proclamation/merge_requests/15))
+- Misc
+  - docs: Mention the emerging practice of starting your fragment with a component,
+    subsection, or change type (feature or bug fix), followed by a colon, like this
+    entry.
+    ([!15](https://gitlab.com/ryanpavlik/proclamation/merge_requests/15))
+  - Improve API documentation.
+    ([!16](https://gitlab.com/ryanpavlik/proclamation/merge_requests/16))
+  - Add more tests for `Project`, `Fragment` (including parsing from disk), and
+    `SectionSettings`.
+    ([!16](https://gitlab.com/ryanpavlik/proclamation/merge_requests/16))
+  - Add a JSON Schema for config files. To use, add `"$schema": "https://gitlab.com
+    /ryanpavlik/proclamation/-/raw/master/proclamation.schema.json"` to the root of
+    your config file. Some editors will use this to provide editing help.
+    ([!17](https://gitlab.com/ryanpavlik/proclamation/merge_requests/17))
 
 ## Proclamation 1.0.2.2 (2020-03-23)
 

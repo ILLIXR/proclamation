@@ -1,1 +1,0 @@
-Add a JSON Schema for config files. To use, add `"$schema": "https://gitlab.com/ryanpavlik/proclamation/-/raw/master/proclamation.schema.json"` to the root of your config file. Some editors will use this to provide editing help.
