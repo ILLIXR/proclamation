@@ -45,6 +45,8 @@ class Project:
             __name__).getChild("Project." + self.name)
 
         self.sections = []
+        """List of all sections in this project. Do not modify."""
+
         sections = self.sections
         for section_settings in settings.sections:
             self._log.debug("Instantiating section %s", section_settings.name)
