@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright (c) 2020-2021 Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 """Setup."""
@@ -11,7 +11,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="proclamation",
-    version="1.1.1",
+    version="1.2.0",
     author="Ryan A. Pavlik",
     author_email="ryan.pavlik@collabora.com",
     description="A CHANGES/NEWS file creator",
