@@ -226,7 +226,7 @@ and licenses of files in this project.
 ### Default license, including all Python code files
 
 ```txt
-Copyright 2019-2020 Collabora, Ltd. and the Proclamation contributors
+Copyright 2019-2021 Collabora, Ltd. and the Proclamation contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -245,7 +245,7 @@ limitations under the License.
 
 ```txt
 SPDX-License-Identifier: CC0-1.0
-SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+SPDX-FileCopyrightText: 2021 Collabora, Ltd. and the Proclamation contributors
 ```
 
 - This `README.md` file
