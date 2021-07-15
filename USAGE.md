@@ -190,6 +190,11 @@ elaborate use-cases than this.)
   - `extra_data` - Any extra data you'd like to pass along to your custom
     template.
 
+For the benefit of users of VS Code and other editors with MarkdownLint support,
+it's encouraged to copy the `.markdownlint.yaml` file from the Proclamation
+`changes` directory to your own `changes` directory: It will disable the warning
+or error squiggles for changelog fragment usage.
+
 ## Sample Usage Workflow
 
 Note that the base `proclamation` script and all its subcommands have help,
