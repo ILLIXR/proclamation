@@ -9,11 +9,6 @@
     - tox -e py3$PYTHON_MINOR
     - pytest --cov=proclamation
 
-python-3.5:
-  variables:
-    PYTHON_MINOR: 5
-  extends: .shared
-
 python-3.6:
   variables:
     PYTHON_MINOR: 6
