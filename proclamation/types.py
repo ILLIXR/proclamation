@@ -6,6 +6,7 @@
 import logging
 from operator import attrgetter
 from pathlib import Path
+from typing import List, Optional, Set, Tuple
 
 _LOG = logging.getLogger(__name__)
 
@@ -204,6 +205,10 @@ class ReferenceParser:
         return self.make_reference(elts)
 
 
+_DASH_BULLET = "- "
+_ASTERISK_BULLET = "* "
+
+
 class Fragment:
     """A single CHANGES/NEWS entry, provided as text to insert into the templates.
 
@@ -222,7 +227,8 @@ class Fragment:
     a URL included in the fragment text.
     """
 
-    def __init__(self, filename, reference=None, ref_parser=None, io=None):
+    def __init__(self, filename, reference: Optional[Reference] = None,
+                 ref_parser=None, io=None):
         """Construct a fragment.
 
         Filename is used to open the file, if io is not provided.
@@ -235,7 +241,7 @@ class Fragment:
         super().__init__()
         filename = Path(filename)
         self.filename = filename
-        self.text = ""
+        self.text: str = ""
         self.io = io
         if ref_parser is None:
             ref_parser = ReferenceParser()
@@ -243,20 +249,25 @@ class Fragment:
 
         if not reference:
             reference = ref_parser.parse_filename(filename.name)
-        self._ref = reference
+        if not reference:
+            raise RuntimeError(
+                "Reference not provided, and could not be parsed "
+                "from filename " + filename.name)
 
-        self.refs = []
+        self._ref: Reference = reference
+
+        self.refs: List[Reference] = []
         """All references added for a fragment, including the first.
 
         Do not modify manually."""
 
-        self._known_refs = set()
+        self._known_refs: Set[Tuple[str, ...]] = set()
         """The set of all ref tuples associated with this fragment.
 
         Do not modify manually."""
         self._insert_ref(reference)
 
-        self._prefix = None
+        self._prefix: Optional[str] = None
 
     def _insert_ref(self, reference):
         ref_tuple = reference.as_tuple()
@@ -320,7 +331,7 @@ class Fragment:
                 continue
 
             # Strip "bullet points" so this can look more yaml-like
-            if line.startswith("- "):
+            if line.startswith(_DASH_BULLET):
                 line = line[2:].strip()
             log.debug("Front matter reference text: %s", line)
             result = self.add_ref(line)
@@ -329,31 +340,77 @@ class Fragment:
                     "Could not parse line in front matter as reference:",
                     line)
 
-    def _parse_io(self, fp):
-        line = fp.readline()
+    def __copy__(self):
+        current = Fragment(self.filename, self._ref, self._ref_parser)
+        current.refs = list(self.refs)
+        current._known_refs = set(self._known_refs)
+        current.text = self.text
+        return current
+
+    def _parse_io(self, fp) -> List['Fragment']:
+        line: str = fp.readline()
         if line.strip() == FRONT_MATTER_DELIMITER:
             self._parse_front_matter(fp)
             line = fp.readline()
-        while 1:
-            if not line:
-                break
-            self.text += line
-            line = fp.readline()
-        self.text = self.text.strip()
+
+        bullets = self._parse_bullets(fp, line)
+        self.text = bullets[0]
         log = logging.getLogger(__name__)
         log.debug("Got fragment with prefix '%s', text starting with '%s'",
                   self.prefix, self.text[:20])
+        bullets.pop(0)
 
-    def parse_file(self):
+        extras: List[Fragment] = []
+        if bullets:
+            for bullet in bullets:
+                current = self.__copy__()
+                current.text = bullet
+                extras.append(current)
+        return extras
+
+    def _parse_bullets(self, fp, line: str):
+        bullets: List[str] = []
+        bullet_content = ""
+        while 1:
+            if not line:
+                break
+
+            # Remove leading "bullet"
+            lstripped_line = line.lstrip()
+            had_bullet = False
+            if lstripped_line.startswith(_DASH_BULLET):
+                line = lstripped_line[len(_DASH_BULLET):]
+                had_bullet = True
+            elif lstripped_line.startswith(_ASTERISK_BULLET):
+                line = lstripped_line[len(_ASTERISK_BULLET):]
+                had_bullet = True
+
+            if had_bullet:
+                # We must start a new bullet
+                if bullet_content:
+                    bullets.append(bullet_content)
+                bullet_content = ""
+            bullet_content += line
+            line = fp.readline()
+
+        if bullet_content:
+            bullets.append(bullet_content)
+        return [s.strip() for s in bullets]
+
+    def parse_file(self) -> List['Fragment']:
         """Open the file and parse content, and front matter if any.
 
         If io was provided at construction time, that is parsed instead.
+
+        If the file contains more than one bulleted item, a new fragment
+        for each additional item beyond the first will be created and
+        returned in a list.
         """
         if self.io is not None:
-            self._parse_io(self.io)
-            return
+            return self._parse_io(self.io)
+
         with open(str(self.filename), 'r', encoding='utf-8') as fp:
-            self._parse_io(fp)
+            return self._parse_io(fp)
 
 
 class Section:
@@ -401,6 +458,8 @@ class Section:
 
         Files that parse properly are assumed to be fragments,
         and a :class:`Fragment` object is instantiated for them.
+        Files with multiple bullet points are considered to be
+        multiple fragments.
         """
         if isinstance(directory, str):
             directory = Path(directory)
@@ -411,8 +470,10 @@ class Section:
                 self._log.debug("Not actually a fragment: %s", fragment_name)
                 continue
             fragment = Fragment(fragment_name, fragment_ref, ref_parser)
-            fragment.parse_file()
+            extras = fragment.parse_file()
             self.add_fragment(fragment)
+            for extra in extras:
+                self.add_fragment(extra)
 
         self._sort_fragments()
 

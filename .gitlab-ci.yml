@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: CC0-1.0
-# SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+# SPDX-FileCopyrightText: 2021 Collabora, Ltd. and the Proclamation contributors
 
 .shared:
   image: python:3.$PYTHON_MINOR
@@ -8,11 +8,6 @@
     - pip3 install pytest-cov jinja2 Click
     - tox -e py3$PYTHON_MINOR
     - pytest --cov=proclamation
-
-python-3.5:
-  variables:
-    PYTHON_MINOR: 5
-  extends: .shared
 
 python-3.6:
   variables:
@@ -27,6 +22,11 @@ python-3.7:
 python-3.8:
   variables:
     PYTHON_MINOR: 8
+  extends: .shared
+
+python-3.9:
+  variables:
+    PYTHON_MINOR: 9
   extends: .shared
 
 linting:

@@ -44,10 +44,13 @@ fragment for the changelog describing their change. See below for more details.
 - If your changes affect multiple sections, you can have a file in each section
   describing the section-specific changes.
 - If you want more than one changelog fragment per section in a single change,
-  you can name the additional fragments `mr.YOURNUMBER.2.md`,
-  `mr.YOURNUMBER.3.md`, etc. The additional number appended at the end will not
-  appear in the output, but will keep the files separate and will affect the
-  sort order of the fragments.
+  you can list the fragments as "bullets" in a single file: start each
+  fragment's content on a new line beginning with `-` or `*` and a space.
+  - Alternately, you can put each fragment in its own file, and name the
+    additional fragments `mr.YOURNUMBER.2.md`, `mr.YOURNUMBER.3.md`, etc. The
+    additional number appended at the end will not appear in the output, but
+    will keep the files separate and will affect the sort order of the
+    fragments.
 - If your change resolves an issue or otherwise references some issue or
   merge/pull request, you can add those references to the beginning of your
   changelog fragment. See the full instructions below regarding

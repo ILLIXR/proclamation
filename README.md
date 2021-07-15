@@ -59,7 +59,10 @@ Proclamation -- all they have to do is create a text file, and only the person
 doing releases strictly needs to install Proclamation. However, there are some
 utilities that they might find useful if they do.
 
-Proclamation is available on [pypi][], so you can install it for your local user with:
+Proclamation requires Python 3.6 or newer.
+
+Proclamation is available on [pypi][], so you can install it for your local user
+with:
 
 ```sh
 pip3 install --user proclamation
@@ -226,7 +229,7 @@ and licenses of files in this project.
 ### Default license, including all Python code files
 
 ```txt
-Copyright 2019-2020 Collabora, Ltd. and the Proclamation contributors
+Copyright 2019-2021 Collabora, Ltd. and the Proclamation contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -245,7 +248,7 @@ limitations under the License.
 
 ```txt
 SPDX-License-Identifier: CC0-1.0
-SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+SPDX-FileCopyrightText: 2021 Collabora, Ltd. and the Proclamation contributors
 ```
 
 - This `README.md` file
