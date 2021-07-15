@@ -6,7 +6,7 @@
 import logging
 from operator import attrgetter
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Set, Tuple
 
 _LOG = logging.getLogger(__name__)
 
@@ -251,7 +251,8 @@ class Fragment:
             reference = ref_parser.parse_filename(filename.name)
         if not reference:
             raise RuntimeError(
-                "Reference not provided, and could not be parsed from filename " + filename.name)
+                "Reference not provided, and could not be parsed "
+                "from filename " + filename.name)
 
         self._ref: Reference = reference
 
@@ -260,7 +261,7 @@ class Fragment:
 
         Do not modify manually."""
 
-        self._known_refs = set()
+        self._known_refs: Set[Tuple[str, ...]] = set()
         """The set of all ref tuples associated with this fragment.
 
         Do not modify manually."""
@@ -339,39 +340,73 @@ class Fragment:
                     "Could not parse line in front matter as reference:",
                     line)
 
-    def _parse_io(self, fp):
+    def __copy__(self):
+        current = Fragment(self.filename, self._ref, self._ref_parser)
+        current.refs = list(self.refs)
+        current._known_refs = set(self._known_refs)
+        current.text = self.text
+        return current
+
+    def _parse_io(self, fp) -> List['Fragment']:
         line: str = fp.readline()
         if line.strip() == FRONT_MATTER_DELIMITER:
             self._parse_front_matter(fp)
             line = fp.readline()
+
+        bullets = self._parse_bullets(fp, line)
+        self.text = bullets[0]
+        log = logging.getLogger(__name__)
+        log.debug("Got fragment with prefix '%s', text starting with '%s'",
+                  self.prefix, self.text[:20])
+        bullets.pop(0)
+
+        extras: List[Fragment] = []
+        if bullets:
+            for bullet in bullets:
+                current = self.__copy__()
+                current.text = bullet
+                extras.append(current)
+        return extras
+
+    def _parse_bullets(self, fp, line: str):
+        bullets: List[str] = []
+        bullet_content = ""
         while 1:
             if not line:
                 break
 
             # Remove leading "bullet"
             lstripped_line = line.lstrip()
+            had_bullet = False
             if lstripped_line.startswith(_DASH_BULLET):
                 line = lstripped_line[len(_DASH_BULLET):]
+                had_bullet = True
             elif lstripped_line.startswith(_ASTERISK_BULLET):
                 line = lstripped_line[len(_ASTERISK_BULLET):]
+                had_bullet = True
 
-            self.text += line
+            if had_bullet:
+                # We must start a new bullet
+                if bullet_content:
+                    bullets.append(bullet_content)
+                bullet_content = ""
+            bullet_content += line
             line = fp.readline()
-        self.text = self.text.strip()
-        log = logging.getLogger(__name__)
-        log.debug("Got fragment with prefix '%s', text starting with '%s'",
-                  self.prefix, self.text[:20])
 
-    def parse_file(self):
+        if bullet_content:
+            bullets.append(bullet_content)
+        return [s.strip() for s in bullets]
+
+    def parse_file(self) -> List['Fragment']:
         """Open the file and parse content, and front matter if any.
 
         If io was provided at construction time, that is parsed instead.
         """
         if self.io is not None:
-            self._parse_io(self.io)
-            return
+            return self._parse_io(self.io)
+
         with open(str(self.filename), 'r', encoding='utf-8') as fp:
-            self._parse_io(fp)
+            return self._parse_io(fp)
 
 
 class Section:
@@ -419,6 +454,8 @@ class Section:
 
         Files that parse properly are assumed to be fragments,
         and a :class:`Fragment` object is instantiated for them.
+        Files with multiple bullet points are considered to be
+        multiple fragments.
         """
         if isinstance(directory, str):
             directory = Path(directory)
@@ -429,8 +466,10 @@ class Section:
                 self._log.debug("Not actually a fragment: %s", fragment_name)
                 continue
             fragment = Fragment(fragment_name, fragment_ref, ref_parser)
-            fragment.parse_file()
+            extras = fragment.parse_file()
             self.add_fragment(fragment)
+            for extra in extras:
+                self.add_fragment(extra)
 
         self._sort_fragments()
 
