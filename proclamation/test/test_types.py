@@ -170,6 +170,39 @@ def test_fragment_strip_bullet():
     assert("- " not in fragment.text)
 
 
+FRAGMENT_WITH_BULLETS = """---
+- issue.55
+- mr.23
+pr.25
+issue.54
+---
+- This is content.
+- This is second.
+"""
+
+
+def test_fragment_split_on_bullets():
+    fn = "issue.54.md"
+    fragmentio = StringIO(FRAGMENT_WITH_BULLETS)
+    fragment = Fragment(fn, io=fragmentio)
+    assert(str(fragment.filename) == fn)
+    assert(len(fragment.refs) == 1)
+    extras = fragment.parse_file()
+    # skips comments
+    assert(len(fragment.refs) == 4)
+    assert("---" not in fragment.text)
+    assert("- " not in fragment.text)
+    assert("second" not in fragment.text)
+    assert(len(extras) == 1)
+
+    frag2 = extras[0]
+    assert("second" in frag2.text)
+    assert(len(frag2.refs) == 4)
+    assert("---" not in frag2.text)
+    assert("- " not in frag2.text)
+    assert("content" not in frag2.text)
+
+
 PREFIX_DATA = (
     ("mr.1544.md", "Document new thing"),
     ("mr.1729.md", "Make generation of event explicit"),
