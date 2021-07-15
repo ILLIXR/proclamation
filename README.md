@@ -59,7 +59,10 @@ Proclamation -- all they have to do is create a text file, and only the person
 doing releases strictly needs to install Proclamation. However, there are some
 utilities that they might find useful if they do.
 
-Proclamation is available on [pypi][], so you can install it for your local user with:
+Proclamation requires Python 3.6 or newer.
+
+Proclamation is available on [pypi][], so you can install it for your local user
+with:
 
 ```sh
 pip3 install --user proclamation
