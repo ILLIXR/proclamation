@@ -1,5 +1,0 @@
----
-- issue.14
----
-- Be able to strip bullets from content lines.
-- Generate multiple fragments from a fragment file with multiple bullets.

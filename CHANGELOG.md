@@ -2,8 +2,35 @@
 
 <!--
 SPDX-License-Identifier: CC0-1.0
-SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+SPDX-FileCopyrightText: 2020-2021 Collabora, Ltd. and the Proclamation contributors
 -->
+
+## Proclamation 1.2.0 (2021-07-15)
+
+This version has a minor API change (return value from `Fragment.parse_file`) to
+support the new user-facing feature: multiple fragments in a single file using
+bullets. This was added because I kept seeing people try this approach in
+projects I maintain, so it made sense to simply support it.
+
+This release also no longer works with Python 3.5, which has been end-of-life
+for over six months by now.
+
+- Script
+  - Be able to strip bullets from content lines.
+    ([!20](https://gitlab.com/ryanpavlik/proclamation/merge_requests/20),
+    [#14](https://gitlab.com/ryanpavlik/proclamation/issues/14))
+  - Generate multiple fragments from a fragment file with multiple bullets.
+    ([!20](https://gitlab.com/ryanpavlik/proclamation/merge_requests/20),
+    [#14](https://gitlab.com/ryanpavlik/proclamation/issues/14))
+- Templates
+  - No significant changes
+- Misc
+  - Proclamation now requires Python 3.6 or greater, as some modern type
+    annotations have been added in the codebase for ease of development.
+    ([!20](https://gitlab.com/ryanpavlik/proclamation/merge_requests/20))
+  - A sample `.markdownlint.yaml` file is included, which you may wish to
+    copy into your own project's `changes` directory.
+    ([!21](https://gitlab.com/ryanpavlik/proclamation/merge_requests/21))
 
 ## Proclamation 1.1.1 (2020-07-28)
 
