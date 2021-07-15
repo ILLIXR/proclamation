@@ -401,6 +401,10 @@ class Fragment:
         """Open the file and parse content, and front matter if any.
 
         If io was provided at construction time, that is parsed instead.
+
+        If the file contains more than one bulleted item, a new fragment
+        for each additional item beyond the first will be created and
+        returned in a list.
         """
         if self.io is not None:
             return self._parse_io(self.io)
