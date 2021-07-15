@@ -6,6 +6,7 @@
 import logging
 from operator import attrgetter
 from pathlib import Path
+from typing import List, Optional
 
 _LOG = logging.getLogger(__name__)
 
@@ -204,6 +205,10 @@ class ReferenceParser:
         return self.make_reference(elts)
 
 
+_DASH_BULLET = "- "
+_ASTERISK_BULLET = "* "
+
+
 class Fragment:
     """A single CHANGES/NEWS entry, provided as text to insert into the templates.
 
@@ -222,7 +227,8 @@ class Fragment:
     a URL included in the fragment text.
     """
 
-    def __init__(self, filename, reference=None, ref_parser=None, io=None):
+    def __init__(self, filename, reference: Optional[Reference] = None,
+                 ref_parser=None, io=None):
         """Construct a fragment.
 
         Filename is used to open the file, if io is not provided.
@@ -235,7 +241,7 @@ class Fragment:
         super().__init__()
         filename = Path(filename)
         self.filename = filename
-        self.text = ""
+        self.text: str = ""
         self.io = io
         if ref_parser is None:
             ref_parser = ReferenceParser()
@@ -243,9 +249,13 @@ class Fragment:
 
         if not reference:
             reference = ref_parser.parse_filename(filename.name)
-        self._ref = reference
+        if not reference:
+            raise RuntimeError(
+                "Reference not provided, and could not be parsed from filename " + filename.name)
 
-        self.refs = []
+        self._ref: Reference = reference
+
+        self.refs: List[Reference] = []
         """All references added for a fragment, including the first.
 
         Do not modify manually."""
@@ -256,7 +266,7 @@ class Fragment:
         Do not modify manually."""
         self._insert_ref(reference)
 
-        self._prefix = None
+        self._prefix: Optional[str] = None
 
     def _insert_ref(self, reference):
         ref_tuple = reference.as_tuple()
@@ -320,7 +330,7 @@ class Fragment:
                 continue
 
             # Strip "bullet points" so this can look more yaml-like
-            if line.startswith("- "):
+            if line.startswith(_DASH_BULLET):
                 line = line[2:].strip()
             log.debug("Front matter reference text: %s", line)
             result = self.add_ref(line)
@@ -330,13 +340,21 @@ class Fragment:
                     line)
 
     def _parse_io(self, fp):
-        line = fp.readline()
+        line: str = fp.readline()
         if line.strip() == FRONT_MATTER_DELIMITER:
             self._parse_front_matter(fp)
             line = fp.readline()
         while 1:
             if not line:
                 break
+
+            # Remove leading "bullet"
+            lstripped_line = line.lstrip()
+            if lstripped_line.startswith(_DASH_BULLET):
+                line = lstripped_line[len(_DASH_BULLET):]
+            elif lstripped_line.startswith(_ASTERISK_BULLET):
+                line = lstripped_line[len(_ASTERISK_BULLET):]
+
             self.text += line
             line = fp.readline()
         self.text = self.text.strip()
