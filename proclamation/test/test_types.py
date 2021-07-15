@@ -60,7 +60,8 @@ def test_fragment():
     fragment = Fragment(fn, io=fragmentio)
     assert(str(fragment.filename) == fn)
     assert(len(fragment.refs) == 1)
-    fragment.parse_file()
+    extras = fragment.parse_file()
+    assert(not extras)
     assert("content" in fragment.text)
     assert("---" not in fragment.text)
 
@@ -84,7 +85,8 @@ def test_fragment_with_error():
     fragmentio = StringIO(FRAGMENT_ERROR)
     fragment = Fragment(fn, io=fragmentio)
     try:
-        fragment.parse_file()
+        extras = fragment.parse_file()
+        assert(not extras)
     except RuntimeError as e:
         assert("Could not parse line" in str(e))
         return
@@ -101,7 +103,8 @@ def test_simple_fragment():
     fragment = Fragment(fn, io=fragmentio)
     assert(str(fragment.filename) == fn)
     assert(len(fragment.refs) == 1)
-    fragment.parse_file()
+    extras = fragment.parse_file()
+    assert(not extras)
     assert(len(fragment.refs) == 1)
     assert("content" in fragment.text)
 
@@ -129,7 +132,8 @@ def test_fragment_prefix_size_limit():
     fragment = Fragment(fn, io=fragmentio)
     # Haven't parsed the text yet
     assert(fragment.prefix == '')
-    fragment.parse_file()
+    extras = fragment.parse_file()
+    assert(not extras)
     assert(fragment.prefix == 'This')
 
 
@@ -139,7 +143,8 @@ def test_fragment_with_comment():
     fragment = Fragment(fn, io=fragmentio)
     assert(str(fragment.filename) == fn)
     assert(len(fragment.refs) == 1)
-    fragment.parse_file()
+    extras = fragment.parse_file()
+    assert(not extras)
     # skips comments
     assert(len(fragment.refs) == 4)
     assert("---" not in fragment.text)
@@ -163,7 +168,8 @@ def test_fragment_strip_bullet():
     fragment = Fragment(fn, io=fragmentio)
     assert(str(fragment.filename) == fn)
     assert(len(fragment.refs) == 1)
-    fragment.parse_file()
+    extras = fragment.parse_file()
+    assert(not extras)
     # skips comments
     assert(len(fragment.refs) == 4)
     assert("---" not in fragment.text)
