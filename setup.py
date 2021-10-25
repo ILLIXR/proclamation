@@ -25,7 +25,7 @@ setuptools.setup(
         "Documentation": "https://proclamation.readthedocs.io",
     },
     packages=setuptools.find_packages(),
-    install_requires=["jinja2", "click>=7,<8"],
+    install_requires=["jinja2", "click>=7,<9"],
     include_package_data=True,
     entry_points={"console_scripts": ["proclamation=proclamation.main:cli"]},
     classifiers=[
