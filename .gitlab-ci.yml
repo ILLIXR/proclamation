@@ -31,10 +31,10 @@ python-3.9:
   extends: .shared
 
 linting:
-  image: python:3.7
+  image: python:3.9
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
-    - pip3 install flake8
+    - python3 -m pip install flake8
     - flake8 proclamation/*.py
     - tox -e codespell
 
@@ -46,10 +46,10 @@ reuse:
     - reuse lint
 
 sphinx:
-  image: python:3.7
+  image: python:3.9
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends make
-    - pip3 install jinja2 && pip3 install -r docs/requirements.txt
+    - python3 -m pip install jinja2 && python3 -m pip install -r docs/requirements.txt
     - make -C docs
 
 # Publish schema
