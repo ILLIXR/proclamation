@@ -5,7 +5,8 @@
   image: python:3.$PYTHON_MINOR
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
-    - pip3 install pytest-cov jinja2 Click
+    - python3 -m pip install --upgrade pip
+    - python3 -m pip install pytest-cov jinja2 Click tox-venv
     - tox -e py3$PYTHON_MINOR
     - pytest --cov=proclamation
 
