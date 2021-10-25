@@ -5,6 +5,14 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020-2021 Collabora, Ltd. and the Proclamation contributors
 -->
 
+## Proclamation 1.2.1 (2021-10-25)
+
+This is a very minor release to improve ease of installation.
+
+- Script
+  - Mark as compatible with click version 8: no code changes required.
+    ([!22](https://gitlab.com/ryanpavlik/proclamation/merge_requests/22))
+
 ## Proclamation 1.2.0 (2021-07-15)
 
 This version has a minor API change (return value from `Fragment.parse_file`) to
