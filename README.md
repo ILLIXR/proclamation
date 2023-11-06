@@ -1,9 +1,9 @@
 # Proclamation
 
-[![pipeline status](https://gitlab.com/ryanpavlik/proclamation/badges/main/pipeline.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/main)
-[![coverage report](https://gitlab.com/ryanpavlik/proclamation/badges/main/coverage.svg)](https://gitlab.com/ryanpavlik/proclamation/-/commits/main)
+[![pipeline status](https://gitlab.com/proclamation/proclamation/badges/main/pipeline.svg)](https://gitlab.com/proclamation/proclamation/-/commits/main)
+[![coverage report](https://gitlab.com/proclamation/proclamation/badges/main/coverage.svg)](https://gitlab.com/proclamation/proclamation/-/commits/main)
 [![Documentation Status](https://readthedocs.org/projects/proclamation/badge/?version=latest)](https://proclamation.readthedocs.io/en/latest/?badge=latest)
-[![REUSE status](https://api.reuse.software/badge/gitlab.com/ryanpavlik/proclamation)](https://api.reuse.software/info/gitlab.com/ryanpavlik/proclamation)
+[![REUSE status](https://api.reuse.software/badge/gitlab.com/proclamation/proclamation)](https://api.reuse.software/info/gitlab.com/proclamation/proclamation)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
@@ -13,7 +13,7 @@ Inspired by [towncrier][], but completely language-agnostic and markup-agnostic.
 (The default template uses markdown, but all formatting is controlled by Jinja2
 templates so you can change that as desired.)
 
-Maintained at <https://gitlab.com/ryanpavlik/proclamation>
+Maintained at <https://gitlab.com/proclamation/proclamation>
 
 Documentation also available at <https://proclamation.readthedocs.io/en/latest/>
 
@@ -152,21 +152,21 @@ from your version control system.)
 
 ## Maintainers
 
-[@ryanpavlik](https://gitlab.com/ryanpavlik)
+[@ryliepavlik](https://gitlab.com/ryliepavlik)
 
 ## Thanks
 
-This tool was initially developed by Ryan Pavlik in the course of his work at
+This tool was initially developed by Rylie Pavlik in the course of her work at
 the open-source software consultancy [Collabora](https://collabora.com). Thanks
 to Collabora and their "Open First" mantra for supporting the development of
 this software.
 
 A debt of gratitude is owed to the developers of the [towncrier][] package,
 which strongly inspired the usage pattern for this tool. (Before writing this
-tool, Ryan initially attempted to modify towncrier to suit the use cases he
+tool, Rylie initially attempted to modify towncrier to suit the use cases she
 had.) It's definitely a project worth looking into if you maintain a Python
 project. (The Proclamation project doesn't use it, despite being in Python,
-because it uses itself...) Ryan first learned about towncrier at
+because it uses itself...) Rylie first learned about towncrier at
 [Stephen Finucane's talk at FOSDEM 2020](https://fosdem.org/2020/schedule/event/python2020_manage_change/).
 
 ## Code of Conduct
@@ -229,7 +229,7 @@ and licenses of files in this project.
 ### Default license, including all Python code files
 
 ```txt
-Copyright 2019-2021 Collabora, Ltd. and the Proclamation contributors
+Copyright 2019-2023 Collabora, Ltd. and the Proclamation contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -248,7 +248,7 @@ limitations under the License.
 
 ```txt
 SPDX-License-Identifier: CC0-1.0
-SPDX-FileCopyrightText: 2021 Collabora, Ltd. and the Proclamation contributors
+SPDX-FileCopyrightText: 2021-2023 Collabora, Ltd. and the Proclamation contributors
 ```
 
 - This `README.md` file

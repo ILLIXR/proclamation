@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: CC0-1.0
-# SPDX-FileCopyrightText: 2021 Collabora, Ltd. and the Proclamation contributors
+# SPDX-FileCopyrightText: 2021-2023 Collabora, Ltd. and the Proclamation contributors
 
 .shared:
   image: python:3.$PYTHON_MINOR

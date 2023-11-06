@@ -1,10 +1,10 @@
 {
-    "#": "This is a config file for Proclamation, the changelog combiner: https://gitlab.com/ryanpavlik/proclamation",
+    "#": "This is a config file for Proclamation, the changelog combiner: https://gitlab.com/proclamation/proclamation",
     "SPDX-License-Identifier: CC0-1.0": "",
-    "SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors": "",
-    "$schema": "https://ryanpavlik.gitlab.io/proclamation/proclamation.schema.json",
+    "SPDX-FileCopyrightText: 2020-2023 Collabora, Ltd. and the Proclamation contributors": "",
+    "$schema": "https://proclamation.gitlab.io/proclamation/proclamation.schema.json",
     "project_name": "Proclamation",
-    "base_url": "https://gitlab.com/ryanpavlik/proclamation",
+    "base_url": "https://gitlab.com/proclamation/proclamation",
     "news_filename": "CHANGELOG.md",
     "sections": {
         "Script": {

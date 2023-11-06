@@ -126,7 +126,7 @@ def test_fragment_prefix_size_limit():
     fragment_text = (
         "This is a really really long sample fragment. "
         "It has a colon because of a URL, but that's not a prefix. "
-        "<https://gitlab.com/ryanpavlik/proclamation>"
+        "<https://gitlab.com/proclamation/proclamation>"
     )
     fragmentio = StringIO(fragment_text)
     fragment = Fragment(fn, io=fragmentio)

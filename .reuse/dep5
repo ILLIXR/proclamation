@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Proclamation
-Upstream-Contact: Ryan Pavlik <ryan.pavlik@collabora.com>
-Source: https://gitlab.com/ryanpavlik/proclamation
+Upstream-Contact: Rylie Pavlik <rylie.pavlik@collabora.com>
+Source: https://gitlab.com/proclamation/proclamation
 
 # Commented out so that reuse lint will check the files themselves
 
