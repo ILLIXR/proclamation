@@ -112,7 +112,7 @@ def draft(project_collection, ctx, project_version, release_date=None,
           ref_parser=None):
     """Preview the new VERSION portion of your NEWS file(s) to stdout.
 
-    If no version is provided, a dummy value is used."""
+    If no version is provided, a placeholder value is used."""
 
     if project_version is None:
         project_version = "v.next (DRAFT)"
