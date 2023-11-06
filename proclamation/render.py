@@ -38,9 +38,10 @@ def render_template(project, project_version, release_date=None):
     try:
         template = env.get_template(project.template)
     except TemplateSyntaxError as e:
-        print("template syntax error during parse: {}:{} error: {}".
-              format(e.filename, e.lineno, e.message))
-        raise RuntimeError("Jinja2 template syntax error")
+        print(
+            "template syntax error during parse: {e.filename}:{e.lineno} " +
+            "error: {e.message}")
+        raise RuntimeError("Jinja2 template syntax error") from e
 
     log.info("Loaded template %s from %s", project.template, template.filename)
     try:
@@ -56,9 +57,10 @@ def render_template(project, project_version, release_date=None):
             result += "\n"
         return result
     except TemplateSyntaxError as e:
-        print("template syntax error during render: {}:{} error: {}".
-              format(e.filename, e.lineno, e.message))
-        raise RuntimeError("Jinja2 template syntax error")
+        print(
+            "template syntax error during render: {e.filename}:{e.lineno} " +
+            "error: {e.message}")
+        raise RuntimeError("Jinja2 template syntax error") from e
 
 
 def split_news_contents(project_settings, news_contents):
@@ -106,7 +108,7 @@ def get_split_news_file(project_settings):
     """
     fn = project_settings.news_filename
     try:
-        with open(fn, 'r', encoding='utf-8') as fp:
+        with open(fn, encoding='utf-8') as fp:
             content = fp.read()
         return split_news_contents(project_settings, content)
     except FileNotFoundError:

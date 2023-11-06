@@ -5,6 +5,7 @@
 """Project settings."""
 
 import logging
+import json
 import re
 
 from .types import ReferenceParser
@@ -159,12 +160,11 @@ def parse_settings(config):
 def settings_from_json_io(io):
     """Load :class:`Settings` from json in an IO like a file or
     :class:`StringIO`."""
-    import json
     config = json.load(io)
     return parse_settings(config)
 
 
 def settings_from_json_file(fn):
     """Load :class:`Settings` from a JSON file."""
-    with open(str(fn), 'r', encoding='utf-8') as fp:
+    with open(str(fn), encoding='utf-8') as fp:
         return settings_from_json_io(fp)

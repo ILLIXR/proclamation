@@ -1,8 +1,9 @@
 #!/usr/bin/env python3 -i
-# Copyright 2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 
+import copy
 import logging
 from operator import attrgetter
 from pathlib import Path
@@ -77,7 +78,7 @@ class ReferenceParser:
 
     def __init__(self):
         """Construct parser."""
-        self.extensions_to_drop = set(('md', 'rst', 'txt'))
+        self.extensions_to_drop = {'md', 'rst', 'txt'}
 
     def split_on_dot_and_drop_ext(self, s):
         """Return the .-delimited portions of a name/ref, excluding a file
@@ -365,7 +366,7 @@ class Fragment:
         extras: List[Fragment] = []
         if bullets:
             for bullet in bullets:
-                current = self.__copy__()
+                current = copy.copy(self)
                 current.text = bullet
                 extras.append(current)
         return extras
@@ -411,7 +412,7 @@ class Fragment:
         if self.io is not None:
             return self._parse_io(self.io)
 
-        with open(str(self.filename), 'r', encoding='utf-8') as fp:
+        with open(str(self.filename), encoding='utf-8') as fp:
             return self._parse_io(fp)
 
 
@@ -435,7 +436,7 @@ class Section:
         self.relative_directory = relative_directory
         self.sort_by_prefix = sort_by_prefix
         self.fragments = []
-        self._log = _LOG.getChild("Section." + name)
+        self._log = _LOG.getChild(f"Section.{name}")
 
     def _sort_fragments(self):
         # Keep this list sorted

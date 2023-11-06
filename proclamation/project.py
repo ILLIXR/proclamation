@@ -42,7 +42,7 @@ class Project:
         self.template = settings.template
 
         self._log = logging.getLogger(
-            __name__).getChild("Project." + self.name)
+            __name__).getChild(f"Project.{self.name}")
 
         self.sections = []
         """List of all sections in this project. Do not modify."""

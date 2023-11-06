@@ -48,9 +48,13 @@ class ProjectCollection:
         self.loaded_config = True
         if project_name and len(self.projects) == 0:
             raise RuntimeError(
-                "Could not find a project named '" + project_name + "'")
+                f"Could not find a project named '{project_name}'")
 
     def should_process_project(self, proj_name):
+        """
+        Return true if the named project is the one we want, or if
+        no filter was supplied.
+        """
         if self.project_name is None:
             return True
         return self.project_name == proj_name
@@ -108,7 +112,7 @@ def draft(project_collection, ctx, project_version, release_date=None,
           ref_parser=None):
     """Preview the new VERSION portion of your NEWS file(s) to stdout.
 
-    If no version is provided, a dummy value is used."""
+    If no version is provided, a placeholder value is used."""
 
     if project_version is None:
         project_version = "v.next (DRAFT)"
