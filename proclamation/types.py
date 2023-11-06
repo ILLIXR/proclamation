@@ -77,7 +77,7 @@ class ReferenceParser:
 
     def __init__(self):
         """Construct parser."""
-        self.extensions_to_drop = set(('md', 'rst', 'txt'))
+        self.extensions_to_drop = {'md', 'rst', 'txt'}
 
     def split_on_dot_and_drop_ext(self, s):
         """Return the .-delimited portions of a name/ref, excluding a file
@@ -411,7 +411,7 @@ class Fragment:
         if self.io is not None:
             return self._parse_io(self.io)
 
-        with open(str(self.filename), 'r', encoding='utf-8') as fp:
+        with open(str(self.filename), encoding='utf-8') as fp:
             return self._parse_io(fp)
 
 
@@ -435,7 +435,7 @@ class Section:
         self.relative_directory = relative_directory
         self.sort_by_prefix = sort_by_prefix
         self.fragments = []
-        self._log = _LOG.getChild("Section." + name)
+        self._log = _LOG.getChild(f"Section.{name}")
 
     def _sort_fragments(self):
         # Keep this list sorted

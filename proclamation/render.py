@@ -106,7 +106,7 @@ def get_split_news_file(project_settings):
     """
     fn = project_settings.news_filename
     try:
-        with open(fn, 'r', encoding='utf-8') as fp:
+        with open(fn, encoding='utf-8') as fp:
             content = fp.read()
         return split_news_contents(project_settings, content)
     except FileNotFoundError:

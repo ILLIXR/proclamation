@@ -48,7 +48,7 @@ class ProjectCollection:
         self.loaded_config = True
         if project_name and len(self.projects) == 0:
             raise RuntimeError(
-                "Could not find a project named '" + project_name + "'")
+                f"Could not find a project named '{project_name}'")
 
     def should_process_project(self, proj_name):
         if self.project_name is None:
