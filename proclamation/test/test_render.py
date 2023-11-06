@@ -1,5 +1,5 @@
 #!/usr/bin/env python3 -i
-# Copyright 2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -22,9 +22,9 @@ NEWS_FILE_1 = """# Sample NEWS file
 def test_split_news():
     proj_settings = ProjectSettings("Test")
     before, after = split_news_contents(proj_settings, NEWS_FILE_1)
-    assert("Sample" in before)
-    assert("Previous" in after)
-    assert(after.startswith("##"))
+    assert "Sample" in before
+    assert "Previous" in after
+    assert after.startswith("##")
 
 
 def make_dummy_project_settings():
@@ -44,21 +44,21 @@ def make_dummy_project_settings_with_sections():
 def test_missing_news_file():
     proj_settings = make_dummy_project_settings()
     before, after = get_split_news_file(proj_settings)
-    assert(after == "")
-    assert(before.endswith("\n"))
+    assert after == ""
+    assert before.endswith("\n")
 
 
 def test_duplicated_version():
     proj_settings = make_dummy_project_settings()
     before, after = split_news_contents(proj_settings, NEWS_FILE_1)
-    assert("Test 1.0" in after)
+    assert "Test 1.0" in after
     project = Project(proj_settings)
     try:
         combine_changelogs(before, after, project, "1.0", "date goes here")
     except RuntimeError:
-        assert(True)
+        assert True
         return
-    assert(False)  # We expect an error.
+    assert False  # We expect an error.
 
 
 EXPECTED1 = """## Test 1.0 (Release Date)
@@ -70,9 +70,9 @@ def test_render_no_sections():
     proj_settings = make_dummy_project_settings()
     project = Project(proj_settings)
     rendered = render_template(project, "1.0", "Release Date")
-    assert(rendered.endswith("\n\n"))
-    assert(rendered.startswith("## Test 1.0 (Release Date)\n\n"))
-    assert(EXPECTED1 == rendered)
+    assert rendered.endswith("\n\n")
+    assert rendered.startswith("## Test 1.0 (Release Date)\n\n")
+    assert EXPECTED1 == rendered
 
 
 EXPECTED2 = """## Test 1.0 (Release Date)
@@ -89,6 +89,6 @@ def test_render_no_fragments():
     proj_settings = make_dummy_project_settings_with_sections()
     project = Project(proj_settings)
     rendered = render_template(project, "1.0", "Release Date")
-    assert(rendered.endswith("\n\n"))
-    assert(rendered.startswith("## Test 1.0 (Release Date)\n\n"))
-    assert(EXPECTED2 == rendered)
+    assert rendered.endswith("\n\n")
+    assert rendered.startswith("## Test 1.0 (Release Date)\n\n")
+    assert EXPECTED2 == rendered

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3 -i
-# Copyright 2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -15,7 +15,7 @@ from .test_settings import PROJECT, PROJ_NAME
 def create_config_file(dirname, config_json):
     our_dir = Path(dirname)
     fn = str(our_dir / '.proclamation.json')
-    with open(fn, 'w') as fp:
+    with open(fn, 'w', encoding='utf-8') as fp:
         json.dump(config_json, fp)
     return fn
 
@@ -24,14 +24,14 @@ def test_named_project():
     with tempfile.TemporaryDirectory() as dirname:
         fn = create_config_file(dirname, PROJECT)
         collection = ProjectCollection(fn, PROJ_NAME, dirname)
-        assert(len(collection.projects) == 1)
+        assert len(collection.projects) == 1
 
 
 def test_all_projects():
     with tempfile.TemporaryDirectory() as dirname:
         fn = create_config_file(dirname, PROJECT)
         collection = ProjectCollection(fn, None, dirname)
-        assert(len(collection.projects) == 1)
+        assert len(collection.projects) == 1
 
 
 def test_missing_project():
