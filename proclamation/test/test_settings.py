@@ -12,7 +12,7 @@ PROJ_NAME = "my project"
 
 PROJECT = {
     "project_name": PROJ_NAME,
-    "template": "dummy",
+    "template": "mock",
     "sections": {
         "main section": {
             "directory": "changes/main"
@@ -40,7 +40,7 @@ def test_single_project():
     settings = settings_from_json_io(io)
     assert len(settings.projects) == 1
     assert settings.projects[0].name == PROJ_NAME
-    assert settings.projects[0].template == "dummy"
+    assert settings.projects[0].template == "mock"
     assert len(settings.projects[0].sections) == 1
 
 # def test_multi_project():
@@ -52,7 +52,7 @@ def test_project_toplevel():
     settings = settings_from_json_io(io)
     assert len(settings.projects) == 1
     assert settings.projects[0].name == PROJ_NAME
-    assert settings.projects[0].template == "dummy"
+    assert settings.projects[0].template == "mock"
     assert len(settings.projects[0].sections) == 1
 
 

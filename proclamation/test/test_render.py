@@ -27,13 +27,13 @@ def test_split_news():
     assert after.startswith("##")
 
 
-def make_dummy_project_settings():
+def make_mock_project_settings():
     proj_settings = ProjectSettings("Test", news_filename="nonexistent-file")
     return proj_settings
 
 
-def make_dummy_project_settings_with_sections():
-    proj_settings = make_dummy_project_settings()
+def make_mock_project_settings_with_sections():
+    proj_settings = make_mock_project_settings()
     proj_settings.sections.append(
         SectionSettings("Features", "missing-dir/features"))
     proj_settings.sections.append(
@@ -42,14 +42,14 @@ def make_dummy_project_settings_with_sections():
 
 
 def test_missing_news_file():
-    proj_settings = make_dummy_project_settings()
+    proj_settings = make_mock_project_settings()
     before, after = get_split_news_file(proj_settings)
     assert after == ""
     assert before.endswith("\n")
 
 
 def test_duplicated_version():
-    proj_settings = make_dummy_project_settings()
+    proj_settings = make_mock_project_settings()
     before, after = split_news_contents(proj_settings, NEWS_FILE_1)
     assert "Test 1.0" in after
     project = Project(proj_settings)
@@ -67,7 +67,7 @@ EXPECTED1 = """## Test 1.0 (Release Date)
 
 
 def test_render_no_sections():
-    proj_settings = make_dummy_project_settings()
+    proj_settings = make_mock_project_settings()
     project = Project(proj_settings)
     rendered = render_template(project, "1.0", "Release Date")
     assert rendered.endswith("\n\n")
@@ -86,7 +86,7 @@ EXPECTED2 = """## Test 1.0 (Release Date)
 
 
 def test_render_no_fragments():
-    proj_settings = make_dummy_project_settings_with_sections()
+    proj_settings = make_mock_project_settings_with_sections()
     project = Project(proj_settings)
     rendered = render_template(project, "1.0", "Release Date")
     assert rendered.endswith("\n\n")

@@ -1,6 +1,6 @@
 # Config for Sphinx documentation of Proclamation
 # SPDX-License-Identifier: CC0-1.0
-# SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+# SPDX-FileCopyrightText: 2020-2023, Collabora, Ltd. and the Proclamation contributors
 
 # Documentation builds require the following modules in addition to sphinx:
 # recommonmark click sphinx_click sphinx-jsonschema
@@ -30,7 +30,7 @@ extensions = [
 
 source_suffix = ['.rst', '.md']
 
-master_doc = 'index'
+root_doc = 'index'
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
