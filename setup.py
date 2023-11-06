@@ -11,7 +11,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="proclamation",
-    version="1.2.1",
+    version="1.2.2",
     author="Rylie Pavlik",
     author_email="rylie.pavlik@collabora.com",
     description="A CHANGES/NEWS file creator",
@@ -41,5 +41,5 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
 )

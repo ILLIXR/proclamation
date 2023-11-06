@@ -5,6 +5,32 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020-2023 Collabora, Ltd. and the Proclamation contributors
 -->
 
+## Proclamation 1.2.2 (2023-11-06)
+
+This is a minor release, primarily to update URLs and names.
+
+This release also no longer works with Python 3.6, which has been end-of-life
+for a long time by now.
+
+- Script
+  - Clean up formatting and warnings from newer versions of Python tooling.
+    ([!23](https://gitlab.com/proclamation/proclamation/merge_requests/23),
+    [!26](https://gitlab.com/proclamation/proclamation/merge_requests/26))
+  - Fix minor bug in logging.
+    ([!25](https://gitlab.com/proclamation/proclamation/merge_requests/25))
+- Templates
+  - No significant changes
+- Misc
+  - Update URL for project (now its own GitLab organization) and author name.
+    ([!23](https://gitlab.com/proclamation/proclamation/merge_requests/23))
+  - Remove Python 3.6 from support/test list, add through 3.12 to tests.
+    ([!23](https://gitlab.com/proclamation/proclamation/merge_requests/23))
+  - Improve respectful language in code.
+    ([!24](https://gitlab.com/proclamation/proclamation/merge_requests/24),
+    [!26](https://gitlab.com/proclamation/proclamation/merge_requests/26))
+  - Update README.
+    ([!27](https://gitlab.com/proclamation/proclamation/merge_requests/27))
+
 ## Proclamation 1.2.1 (2021-10-25)
 
 This is a very minor release to improve ease of installation.

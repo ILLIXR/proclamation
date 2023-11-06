@@ -1,2 +1,0 @@
-- Update URL for project (now its own GitLab organization) and author name.
-- Remove Python 3.6 from support/test list, add through 3.12 to tests.
