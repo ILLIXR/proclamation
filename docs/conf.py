@@ -10,8 +10,8 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 project = 'Proclamation'
-copyright = '2019-2020, Collabora, Ltd. and the Proclamation contributors'
-author = 'Ryan Pavlik'
+copyright = '2019-2023, Collabora, Ltd. and the Proclamation contributors'
+author = 'Rylie Pavlik'
 
 version = '1.0'
 release = '1.0.2.2'

@@ -1,19 +1,13 @@
 # SPDX-License-Identifier: CC0-1.0
-# SPDX-FileCopyrightText: 2021 Collabora, Ltd. and the Proclamation contributors
+# SPDX-FileCopyrightText: 2021-2023 Collabora, Ltd. and the Proclamation contributors
 
 .shared:
   image: python:3.$PYTHON_MINOR
   script:
-    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
-    - python3 -m pip install --upgrade pip
-    - python3 -m pip install pytest-cov jinja2 Click tox-venv
+    - python3 -m pip install --upgrade pip wheel
+    - python3 -m pip install pytest-cov jinja2 Click tox
     - tox -e py3$PYTHON_MINOR
     - pytest --cov=proclamation
-
-python-3.6:
-  variables:
-    PYTHON_MINOR: 6
-  extends: .shared
 
 python-3.7:
   variables:
@@ -30,11 +24,25 @@ python-3.9:
     PYTHON_MINOR: 9
   extends: .shared
 
+python-3.10:
+  variables:
+    PYTHON_MINOR: 10
+  extends: .shared
+
+python-3.11:
+  variables:
+    PYTHON_MINOR: 11
+  extends: .shared
+
+python-3.12:
+  variables:
+    PYTHON_MINOR: 12
+  extends: .shared
+
 linting:
-  image: python:3.9
+  image: python:3.12
   script:
-    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tox
-    - python3 -m pip install flake8
+    - python3 -m pip install tox flake8
     - flake8 proclamation/*.py
     - tox -e codespell
 
@@ -46,7 +54,7 @@ reuse:
     - reuse lint
 
 sphinx:
-  image: python:3.9
+  image: python:3.12
   script:
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends make
     - python3 -m pip install jinja2 && python3 -m pip install -r docs/requirements.txt

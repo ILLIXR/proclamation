@@ -187,7 +187,7 @@ def _actually_remove_fragments(project_collection, ref_parser=None):
 @click.pass_context
 @pass_project_collection
 def remove_fragments(project_collection, ctx, ref_parser=None):
-    """Remove NEWS fragments associated with all projects (or specified projects).
+    """Remove NEWS fragments associated with all/specified projects.
 
     If you only have one project, or your projects don't share sections,
     you may consider using the --delete-fragments option of "build" instead.
