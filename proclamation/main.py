@@ -51,6 +51,10 @@ class ProjectCollection:
                 f"Could not find a project named '{project_name}'")
 
     def should_process_project(self, proj_name):
+        """
+        Return true if the named project is the one we want, or if
+        no filter was supplied.
+        """
         if self.project_name is None:
             return True
         return self.project_name == proj_name

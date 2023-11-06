@@ -1,8 +1,9 @@
 #!/usr/bin/env python3 -i
-# Copyright 2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 
+import copy
 import logging
 from operator import attrgetter
 from pathlib import Path
@@ -365,7 +366,7 @@ class Fragment:
         extras: List[Fragment] = []
         if bullets:
             for bullet in bullets:
-                current = self.__copy__()
+                current = copy.copy(self)
                 current.text = bullet
                 extras.append(current)
         return extras

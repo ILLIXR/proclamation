@@ -38,8 +38,9 @@ def render_template(project, project_version, release_date=None):
     try:
         template = env.get_template(project.template)
     except TemplateSyntaxError as e:
-        print("template syntax error during parse: {}:{} error: {}".
-              format(e.filename, e.lineno, e.message))
+        print(
+            "template syntax error during parse: {e.filename}:{e.lineno} " +
+            "error: {e.message}")
         raise RuntimeError("Jinja2 template syntax error") from e
 
     log.info("Loaded template %s from %s", project.template, template.filename)
@@ -56,8 +57,9 @@ def render_template(project, project_version, release_date=None):
             result += "\n"
         return result
     except TemplateSyntaxError as e:
-        print("template syntax error during render: {}:{} error: {}".
-              format(e.filename, e.lineno, e.message))
+        print(
+            "template syntax error during render: {e.filename}:{e.lineno} " +
+            "error: {e.message}")
         raise RuntimeError("Jinja2 template syntax error") from e
 
 
