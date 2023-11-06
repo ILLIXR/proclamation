@@ -80,8 +80,8 @@ class ReferenceParser:
         self.extensions_to_drop = set(('md', 'rst', 'txt'))
 
     def split_on_dot_and_drop_ext(self, s):
-        """Return the .-delimited portions of a name/ref, excluding a file extension,
-        and whether or not a file extension was removed.
+        """Return the .-delimited portions of a name/ref, excluding a file
+        extension, and whether or not a file extension was removed.
 
         This is a utility function used by both :func:`parse` and
         :func:`parse_filename`.
@@ -210,7 +210,9 @@ _ASTERISK_BULLET = "* "
 
 
 class Fragment:
-    """A single CHANGES/NEWS entry, provided as text to insert into the templates.
+    """
+    A single CHANGES/NEWS entry, provided as text to insert into the
+    templates.
 
     A fragment comes from a file or stream.
 
@@ -454,7 +456,9 @@ class Section:
         self._log.debug("added: %s", fragment.filename)
 
     def populate_from_directory(self, directory, ref_parser):
-        """Iterate through a directory, trying to parse each filename as a reference.
+        """
+        Iterate through a directory, trying to parse each filename as a
+        reference.
 
         Files that parse properly are assumed to be fragments,
         and a :class:`Fragment` object is instantiated for them.
