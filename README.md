@@ -10,7 +10,7 @@
 A tool for building CHANGES/NEWS files from fragments.
 
 Inspired by [towncrier][], but completely language-agnostic and markup-agnostic.
-(The default template uses markdown, but all formatting is controlled by Jinja2
+(The default template uses Markdown, but all formatting is controlled by Jinja2
 templates so you can change that as desired.)
 
 Maintained at <https://gitlab.com/proclamation/proclamation>
@@ -49,7 +49,7 @@ metadata) when running the tool before a release. While towncrier is focused on
 Python and `.rst` formatting, Proclamation is explicitly language-neutral (a
 motivating use case was a mixed-content repo with specifications as well as C++
 code) and markup-neutral (all formatting is done by a Jinja2 template: the
-default is markdown but you can complete change the formatting if you supply a
+default is Markdown but you can completely change the formatting if you supply a
 custom template.)
 
 ## Install
@@ -59,19 +59,19 @@ Proclamation -- all they have to do is create a text file, and only the person
 doing releases strictly needs to install Proclamation. However, there are some
 utilities that they might find useful if they do.
 
-Proclamation requires Python 3.6 or newer.
+Proclamation requires Python 3.7 or newer. (The last release supporting 3.6 was 1.2.1.)
 
 Proclamation is available on [pypi][], so you can install it for your local user
 with:
 
 ```sh
-pip3 install --user proclamation
+pipx install proclamation
 ```
 
 Updating to a new release would be done with
 
 ```sh
-pip3 install --user --upgrade proclamation
+pipx upgrade proclamation
 ```
 
 Alternately, you can install from this repository. If you do this, it's
@@ -189,8 +189,7 @@ Additionally, consider the following suggestions/requirements:
 - Run `autopep8 proclamation/*.py proclamation/test/*.py --in-place` to
   automatically format the source code with [autopep8][].
 - Use [`tox`][tox] to run [flake8][] as well as tests for multiple Python versions.
-  - e.g. on Debian Buster, you can run `tox -e py37,flake8` (adding `py35` if
-    you upgraded from Stretch and never removed python 3.5)
+  - e.g. on Debian Bookworm, you can run `tox -e py39,flake8`
 - When submitting a change, be sure to create your changelog fragment in the
   changes directory! :)
 - If editing the README, please conform to the
@@ -213,7 +212,7 @@ dedication or nearest equivalent based on jurisdiction); this is so you can
 freely use them into your project no matter what license you use.
 
 Every file has an SPDX license tag and copyright or author information in it
-which should be considered the authoritative licensing data.
+which is considered the authoritative licensing data.
 
 Note that dependencies and third-party documents may have their own licenses.
 For instance, the code of conduct, based on the Contributor Covenant v2.0, is
