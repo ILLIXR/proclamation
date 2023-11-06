@@ -40,7 +40,7 @@ def render_template(project, project_version, release_date=None):
     except TemplateSyntaxError as e:
         print("template syntax error during parse: {}:{} error: {}".
               format(e.filename, e.lineno, e.message))
-        raise RuntimeError("Jinja2 template syntax error")
+        raise RuntimeError("Jinja2 template syntax error") from e
 
     log.info("Loaded template %s from %s", project.template, template.filename)
     try:
@@ -58,7 +58,7 @@ def render_template(project, project_version, release_date=None):
     except TemplateSyntaxError as e:
         print("template syntax error during render: {}:{} error: {}".
               format(e.filename, e.lineno, e.message))
-        raise RuntimeError("Jinja2 template syntax error")
+        raise RuntimeError("Jinja2 template syntax error") from e
 
 
 def split_news_contents(project_settings, news_contents):
