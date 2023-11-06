@@ -36,7 +36,9 @@ class ProjectCollection:
             return
         for project_settings in settings.projects:
             if not self.should_process_project(project_settings.name):
-                log.info("Skipping project %s, not selected on command line")
+                log.info(
+                    "Skipping project %s, not selected on command line",
+                    project_settings.name)
                 continue
 
             log.debug("Initializing project %s", project_settings.name)
