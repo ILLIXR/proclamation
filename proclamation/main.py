@@ -181,7 +181,7 @@ def build(
         )
     if not project_collection.loaded_config:
         raise click.UsageError(
-            "Config file %s not found" % project_collection.config_fn, ctx
+            f"Config file {project_collection.config_fn} not found", ctx
         )
     for project in project_collection.projects:
         try:

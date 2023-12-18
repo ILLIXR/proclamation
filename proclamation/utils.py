@@ -16,7 +16,7 @@ def remove_files(files: Iterable[Path]):
     Remove the given files, if possible.
     Do not fail if they are not found.
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger(__name__).getChild("remove_files")
     for f in files:
         try:
             f.unlink()
