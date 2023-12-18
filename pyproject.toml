@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: 2020-2023 Collabora, Ltd. and the Proclamation contributors
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[project]
+authors = [
+  {name = "Rylie Pavlik", email = "rylie.pavlik@collabora.com"},
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+]
+dependencies = [
+  "click >=7,<9",
+  "jinja2 >=2,<3.1",
+]
+dynamic = ["version", "description"]
+license = {text = "Apache-2.0 AND CC0-1.0"}
+name = "proclamation"
+readme = "README.md"
+requires-python = ">=3.7"
+
+[project.urls]
+Documentation = "https://proclamation.readthedocs.io"
+Home = "https://gitlab.com/proclamation/proclamation"
+
+[project.scripts]
+proclamation = "proclamation.main:cli"
+
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.2,<4"]
+
+[tool.flit.sdist]
+include = [
+    "LICENSES/",
+    "USAGE.md",
+    ".proclamation.json",
+    ".proclamation.json.license",
+    ".reuse",
+]

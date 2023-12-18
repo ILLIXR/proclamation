@@ -62,7 +62,7 @@ utilities that they might find useful if they do.
 Proclamation requires Python 3.7 or newer. (The last release supporting 3.6 was 1.2.1.)
 
 Proclamation is available on [pypi][], so you can install it for your local user
-with:
+in an isolated virtual environment with [pipx][]:
 
 ```sh
 pipx install proclamation
@@ -75,8 +75,8 @@ pipx upgrade proclamation
 ```
 
 Alternately, you can install from this repository. If you do this, it's
-recommended to install this in a virtualenv. Something like this will work on
-*nix-like systems, adjusted for your shell usage.
+recommended to install this in a virtual environment. Something like this will
+work on *nix-like systems, adjusted for your shell usage.
 
 ```bash
 # Create a virtualenv in `venv`
@@ -94,10 +94,12 @@ instead of copying the source, so updating your local clone of this repo will
 also update the virtualenv. Omit the `--editable` if you want other behavior.
 
 Note that the `venv/bin/proclamation` script can be run from outside the venv,
-through the magic of setuptools, so if you want to be able to use it elsewhere
-on your system, you might symlink it into a directory that's in your `PATH`.
+through the magic of virtual environments, so if you want to be able to use it
+elsewhere on your system, you might symlink it into a directory that's in your
+`PATH`. But, at that point, you may as well just use [pipx][].
 
 [pypi]: https://pypi.org/project/proclamation/
+[pipx]: https://pypa.github.io/pipx/
 
 ## Usage
 
@@ -185,6 +187,7 @@ locally install a link in a virtualenv.
 
 Additionally, consider the following suggestions/requirements:
 
+- "flit" is the build system used, but pip/pipx should be able to handle it.
 - Run `pytest-3` or similar to run the automated tests.
 - Run `autopep8 proclamation/*.py proclamation/test/*.py --in-place` to
   automatically format the source code with [autopep8][].
