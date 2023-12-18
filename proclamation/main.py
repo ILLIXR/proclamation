@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-# Copyright 2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023 Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
+#
+# Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
 """Main entry point."""
 
 import logging
@@ -133,22 +135,22 @@ def draft(project_collection, ctx, project_version, release_date=None,
               "release_date",
               default=None,
               help="Release date if not today.")
-@click.option("-d", "--delete-fragments",
-              "delete_fragments",
+@click.option("-k", "--keep-fragments",
+              "keep_fragments",
               is_flag=True,
-              help="Delete processed fragments when complete")
-@click.option("-o", "--overwrite",
+              help="Keep processed fragments")
+@click.option("-d", "--dry-run",
               is_flag=True,
-              help="Write updated changelog to disk, instead of to stdout.")
+              help="Write an updated changelog to stdout instead of disk.")
 @click.pass_context
 @pass_project_collection
 def build(project_collection, ctx, project_version, release_date=None,
-          delete_fragments=False, overwrite=False, ref_parser=None):
+          keep_fragments=False, dry_run=False, ref_parser=None):
     """Build your new NEWS file."""
-    if not overwrite and len(project_collection.projects) != 1:
+    if dry_run and len(project_collection.projects) != 1:
         raise click.UsageError(
             "You may only build a single project at a time to stdout: "
-            "please specify --project-name or use --overwrite",
+            "please specify --project-name or omit --dry-run",
             ctx)
     if not project_collection.loaded_config:
         raise click.UsageError("Config file %s not found" %
@@ -169,14 +171,14 @@ def build(project_collection, ctx, project_version, release_date=None,
     for project in project_collection.projects:
         new_contents = generate_updated_changelog(project, project_version,
                                                   release_date)
-        if overwrite:
+        if dry_run:
+            print(new_contents)
+        else:
             fn = project.settings.news_filename
             with open(fn, 'w', encoding='utf-8') as fp:
                 fp.write(new_contents)
-        else:
-            print(new_contents)
 
-    if delete_fragments:
+    if not keep_fragments and not dry_run:
         _actually_remove_fragments(project_collection, ref_parser=ref_parser)
 
 

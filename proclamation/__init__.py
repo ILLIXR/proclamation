@@ -2,6 +2,8 @@
 # Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
-"""Generate updates to a CHANGELOG/NEWS file by combining fragments.."""
+#
+# Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
+"""Generate updates to a CHANGELOG/NEWS file by combining fragments."""
 
-__version__ = "1.2.2"
+__version__ = "2.0.0"
