@@ -8,9 +8,11 @@
 
 import logging
 import sys
+from pathlib import Path
 
 import click
 
+from .merge import merge_fragments
 from .project import Project
 from .render import generate_updated_changelog, render_template
 from .settings import settings_from_json_file
@@ -204,3 +206,16 @@ def remove_fragments(project_collection, ctx, ref_parser=None):
     _actually_remove_fragments(project_collection, ref_parser=ref_parser)
 
 
+@cli.command()
+@click.argument("files",
+                metavar="FILENAME...",
+                nargs=-1,
+                type=click.Path(file_okay=True, dir_okay=False, readable=True))
+def merge(files, ref_parser=None):
+    """
+    Merge changelog fragments into a single fragment with bullet points.
+    """
+    if not files:
+        # Nothing to do
+        return
+    merge_fragments([Path(f) for f in files], ref_parser)
