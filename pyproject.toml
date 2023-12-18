@@ -48,3 +48,6 @@ include = [
     ".proclamation.json.license",
     ".reuse",
 ]
+
+[tool.isort]
+profile = "black"
