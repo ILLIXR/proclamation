@@ -5,6 +5,41 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2020-2023 Collabora, Ltd. and the Proclamation contributors
 -->
 
+## Proclamation 2.0.0 (2023-12-18)
+
+This is mainly a usability release, changing default behavior of the CLI to make
+it more ergonomic given several years' experience of using this tool. It also
+adds a new CLI subcommand, `merge`, to help project maintainers at release time
+combine things that do not actually require their own changelog item after all.
+(It is assumed that the merged fragment will be edited by the maintainer prior
+to building the updated changelog, often by combining the content of the two
+bullet points.)
+
+**Please be aware of the breaking changes: they may affect your workflow as well as your configuration!**
+
+- Script
+  - **Breaking change**: Change the parameters and defaults of the CLI interface so
+    that the most common base is default. This makes `build` overwrite and remove
+    fragments by default, primarily.
+    ([!29](https://gitlab.com/proclamation/proclamation/merge_requests/29))
+  - Add a new `merge` subcommand, for combining changelog fragment files.
+    ([!30](https://gitlab.com/proclamation/proclamation/merge_requests/30))
+- API
+  - **Breaking change**: Most references to "NEWS" in the API have been removed or changed to
+    "changelog".
+    ([!32](https://gitlab.com/proclamation/proclamation/merge_requests/32))
+- Templates
+  - No significant changes
+- Misc
+  - **Breaking change**: The default "news" filename is now `CHANGELOG.md`. If you were
+    using the default, you will need to update your project config.
+    ([!32](https://gitlab.com/proclamation/proclamation/merge_requests/32))
+  - Migrate to using `flit` instead of `setuptools`/`setup.py` for the build
+    system.
+    ([!28](https://gitlab.com/proclamation/proclamation/merge_requests/28))
+  - Switch from `autopep8` to `black` for the code formatter.
+    ([!31](https://gitlab.com/proclamation/proclamation/merge_requests/31))
+
 ## Proclamation 1.2.2 (2023-11-06)
 
 This is a minor release, primarily to update URLs and names.
