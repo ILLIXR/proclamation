@@ -2,7 +2,7 @@
 
 <!--
 SPDX-License-Identifier: CC0-1.0
-SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+SPDX-FileCopyrightText: 2020-2023 Collabora, Ltd. and the Proclamation contributors
 -->
 
 **NOTE**: You may wish to copy this file into your own project and modify it as
@@ -223,14 +223,14 @@ update your changelog, then remove the fragments that you've incorporated into
 the regular changelog. You can use a command like the following:
 
 ```sh
-proclamation build YOUR_NEW_VERSION
+proclamation build YOUR_NEW_VERSION --dry-run
 ```
 
 to preview the full file on screen. When you're ready to actually perform the
 update, run something like:
 
 ```sh
-proclamation build YOUR_NEW_VERSION --delete-fragments --overwrite
+proclamation build YOUR_NEW_VERSION
 ```
 
 to overwrite your changelog file with the updated one and delete the used

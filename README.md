@@ -145,7 +145,7 @@ fragment(s) appear as desired.
 The main subcommand used by maintainers is `build`, for example like this:
 
 ```sh
-proclamation build YOUR_VERSION_NUMBER_HERE --delete-fragments --overwrite
+proclamation build YOUR_VERSION_NUMBER_HERE
 ```
 
 This command updates your changelog file(s) (overwriting the original), and
@@ -154,7 +154,7 @@ from your version control system.)
 
 ## Maintainers
 
-[@ryliepavlik](https://gitlab.com/ryliepavlik)
+- [@ryliepavlik](https://gitlab.com/ryliepavlik) <https://ryliepavlik.com>
 
 ## Thanks
 
