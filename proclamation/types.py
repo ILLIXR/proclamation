@@ -55,9 +55,9 @@ class Reference:
         return (self.item_type, self.number, tuple(self.service_params))
 
     def __repr__(self):
-        return "Reference({}, {}, {})".format(repr(self.item_type),
-                                              repr(self.number),
-                                              repr(self.service_params))
+        return "Reference({}, {}, {})".format(
+            repr(self.item_type), repr(self.number), repr(self.service_params)
+        )
 
 
 class ReferenceParser:
@@ -78,7 +78,7 @@ class ReferenceParser:
 
     def __init__(self):
         """Construct parser."""
-        self.extensions_to_drop = {'md', 'rst', 'txt'}
+        self.extensions_to_drop = {"md", "rst", "txt"}
 
     def split_on_dot_and_drop_ext(self, s):
         """Return the .-delimited portions of a name/ref, excluding a file
@@ -139,9 +139,9 @@ class ReferenceParser:
             # Only one component: Can't be a ref.
             return None
         try:
-            return Reference(item_type=elts[0],
-                             number=int(elts[1]),
-                             service_params=elts[2:])
+            return Reference(
+                item_type=elts[0], number=int(elts[1]), service_params=elts[2:]
+            )
         except ValueError:
             # Conversion failure, etc. means this isn't actually a ref
             return None
@@ -252,8 +252,9 @@ class Fragment:
     a URL included in the fragment text.
     """
 
-    def __init__(self, filename, reference: Optional[Reference] = None,
-                 ref_parser=None, io=None):
+    def __init__(
+        self, filename, reference: Optional[Reference] = None, ref_parser=None, io=None
+    ):
         """Construct a fragment.
 
         Filename is used to open the file, if io is not provided.
@@ -277,7 +278,8 @@ class Fragment:
         if not reference:
             raise RuntimeError(
                 "Reference not provided, and could not be parsed "
-                "from filename " + filename.name)
+                "from filename " + filename.name
+            )
 
         self._ref: Reference = reference
 
@@ -318,19 +320,19 @@ class Fragment:
         if self._prefix:
             return
         # First try splitting on colon.
-        parts = self.text.split(':', maxsplit=1)
+        parts = self.text.split(":", maxsplit=1)
         if len(parts) == 2 and len(parts[0]) < self.ARBITRARY_MAX_PREFIX_LEN:
             self._prefix = parts[0]
             return
         # If that fails, just do spaces.
-        parts = self.text.split(' ', maxsplit=1)
+        parts = self.text.split(" ", maxsplit=1)
         self._prefix = parts[0]
 
     @property
     def prefix(self):
         """Get the colon-delimited prefix or first word of the content."""
         if not self.text:
-            return ''
+            return ""
         self._populate_prefix()
         return self._prefix
 
@@ -362,8 +364,8 @@ class Fragment:
             result = self.add_ref(line)
             if result is None:
                 raise RuntimeError(
-                    "Could not parse line in front matter as reference:",
-                    line)
+                    "Could not parse line in front matter as reference:", line
+                )
 
     def __copy__(self):
         current = Fragment(self.filename, self._ref, self._ref_parser)
@@ -372,7 +374,7 @@ class Fragment:
         current.text = self.text
         return current
 
-    def _parse_io(self, fp) -> List['Fragment']:
+    def _parse_io(self, fp) -> List["Fragment"]:
         line: str = fp.readline()
         if line.strip() == FRONT_MATTER_DELIMITER:
             self._parse_front_matter(fp)
@@ -381,8 +383,11 @@ class Fragment:
         bullets = self._parse_bullets(fp, line)
         self.text = bullets[0]
         log = logging.getLogger(__name__)
-        log.debug("Got fragment with prefix '%s', text starting with '%s'",
-                  self.prefix, self.text[:20])
+        log.debug(
+            "Got fragment with prefix '%s', text starting with '%s'",
+            self.prefix,
+            self.text[:20],
+        )
         bullets.pop(0)
 
         extras: List[Fragment] = []
@@ -404,10 +409,10 @@ class Fragment:
             lstripped_line = line.lstrip()
             had_bullet = False
             if lstripped_line.startswith(_DASH_BULLET):
-                line = lstripped_line[len(_DASH_BULLET):]
+                line = lstripped_line[len(_DASH_BULLET) :]
                 had_bullet = True
             elif lstripped_line.startswith(_ASTERISK_BULLET):
-                line = lstripped_line[len(_ASTERISK_BULLET):]
+                line = lstripped_line[len(_ASTERISK_BULLET) :]
                 had_bullet = True
 
             if had_bullet:
@@ -422,7 +427,7 @@ class Fragment:
             bullets.append(bullet_content)
         return [s.strip() for s in bullets]
 
-    def parse_file(self) -> List['Fragment']:
+    def parse_file(self) -> List["Fragment"]:
         """Open the file and parse content, and front matter if any.
 
         If io was provided at construction time, that is parsed instead.
@@ -434,7 +439,7 @@ class Fragment:
         if self.io is not None:
             return self._parse_io(self.io)
 
-        with open(str(self.filename), encoding='utf-8') as fp:
+        with open(str(self.filename), encoding="utf-8") as fp:
             return self._parse_io(fp)
 
 
@@ -449,10 +454,7 @@ class Section:
     :func:`populate_from_directory()`. They are kept sorted.
     """
 
-    def __init__(self,
-                 name,
-                 relative_directory=None,
-                 sort_by_prefix=False):
+    def __init__(self, name, relative_directory=None, sort_by_prefix=False):
         super().__init__()
         self.name = name
         self.relative_directory = relative_directory
@@ -465,7 +467,7 @@ class Section:
         self.fragments.sort()
         if self.sort_by_prefix:
             self._log.debug("Sorting by prefix here!")
-            self.fragments.sort(key=attrgetter('prefix'))
+            self.fragments.sort(key=attrgetter("prefix"))
 
     def add_fragment(self, fragment):
         """Add a fragment to this section.
@@ -513,4 +515,5 @@ class Section:
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

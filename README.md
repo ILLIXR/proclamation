@@ -189,8 +189,8 @@ Additionally, consider the following suggestions/requirements:
 
 - "flit" is the build system used, but pip/pipx should be able to handle it.
 - Run `pytest-3` or similar to run the automated tests.
-- Run `autopep8 proclamation/*.py proclamation/test/*.py --in-place` to
-  automatically format the source code with [autopep8][].
+- Run `black proclamation` to
+  automatically format the source code with [black][].
 - Use [`tox`][tox] to run [flake8][] as well as tests for multiple Python versions.
   - e.g. on Debian Bookworm, you can run `tox -e py39,flake8`
 - When submitting a change, be sure to create your changelog fragment in the
@@ -205,7 +205,7 @@ type (see below) for it to be accepted into the main repo.
 
 [tox]: https://tox.readthedocs.io/en/latest/
 [flake8]: https://flake8.pycqa.org/en/latest/
-[autopep8]: https://github.com/hhatto/autopep8.
+[black]: https://black.readthedocs.io/en/stable/
 
 ## License
 

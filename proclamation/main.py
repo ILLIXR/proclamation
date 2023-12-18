@@ -25,8 +25,7 @@ class ProjectCollection:
     Typically populated by whatever is parsing a command line.
     """
 
-    def __init__(self, config_file, project_name, default_base,
-                 ref_parser=None):
+    def __init__(self, config_file, project_name, default_base, ref_parser=None):
         """Construct the ProjectCollection, including creating all Project
         objects."""
         self.project_name = project_name
@@ -43,17 +42,19 @@ class ProjectCollection:
             if not self.should_process_project(project_settings.name):
                 log.info(
                     "Skipping project %s, not selected on command line",
-                    project_settings.name)
+                    project_settings.name,
+                )
                 continue
 
             log.debug("Initializing project %s", project_settings.name)
-            self.projects.append(Project(project_settings,
-                                         default_base=default_base,
-                                         ref_parser=ref_parser))
+            self.projects.append(
+                Project(
+                    project_settings, default_base=default_base, ref_parser=ref_parser
+                )
+            )
         self.loaded_config = True
         if project_name and len(self.projects) == 0:
-            raise RuntimeError(
-                f"Could not find a project named '{project_name}'")
+            raise RuntimeError(f"Could not find a project named '{project_name}'")
 
     def should_process_project(self, proj_name):
         """
@@ -69,27 +70,38 @@ pass_project_collection = click.make_pass_decorator(ProjectCollection)
 
 
 @click.group()
-@click.option("-c", "--config",
-              "config_file",
-              type=click.Path(file_okay=True, dir_okay=False, readable=True),
-              default=".proclamation.json",
-              show_default=True,
-              help="Config filename")
-@click.option("-p", "--project",
-              "project_name",
-              metavar="NAME",
-              default=None,
-              help="Specify a single project from the config to process. "
-              "If omitted, all projects in the config will be processed.")
-@click.option("--default-base",
-              "default_base",
-              default=None,
-              type=click.Path(file_okay=False, dir_okay=True),
-              help="Specify a different default base directory to search.")
-@click.option("-v", "--verbose",
-              "verbose",
-              count=True,
-              help="Show verbose info messages. Repeat for more verbosity.")
+@click.option(
+    "-c",
+    "--config",
+    "config_file",
+    type=click.Path(file_okay=True, dir_okay=False, readable=True),
+    default=".proclamation.json",
+    show_default=True,
+    help="Config filename",
+)
+@click.option(
+    "-p",
+    "--project",
+    "project_name",
+    metavar="NAME",
+    default=None,
+    help="Specify a single project from the config to process. "
+    "If omitted, all projects in the config will be processed.",
+)
+@click.option(
+    "--default-base",
+    "default_base",
+    default=None,
+    type=click.Path(file_okay=False, dir_okay=True),
+    help="Specify a different default base directory to search.",
+)
+@click.option(
+    "-v",
+    "--verbose",
+    "verbose",
+    count=True,
+    help="Show verbose info messages. Repeat for more verbosity.",
+)
 @click.pass_context
 def cli(ctx, config_file, project_name, default_base, verbose):
     """Proclamation builds your NEWS files from fragments."""
@@ -107,14 +119,10 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 
 @cli.command()
 @click.argument("project_version", metavar="VERSION", required=False)
-@click.option("--date",
-              "release_date",
-              default=None,
-              help="Release date if not today.")
+@click.option("--date", "release_date", default=None, help="Release date if not today.")
 @click.pass_context
 @pass_project_collection
-def draft(project_collection, ctx, project_version, release_date=None,
-          ref_parser=None):
+def draft(project_collection, ctx, project_version, release_date=None, ref_parser=None):
     """Preview the new VERSION portion of your NEWS file(s) to stdout.
 
     If no version is provided, a placeholder value is used."""
@@ -127,58 +135,72 @@ def draft(project_collection, ctx, project_version, release_date=None,
         except FileNotFoundError as e:
             logging.getLogger(__name__).warning(
                 "Skipping project '%s', got this error while populating: %s  ",
-                project.name, e)
+                project.name,
+                e,
+            )
             continue
         print(render_template(project, project_version, release_date))
 
 
 @cli.command()
 @click.argument("project_version", metavar="VERSION")
-@click.option("--date",
-              "release_date",
-              default=None,
-              help="Release date if not today.")
-@click.option("-k", "--keep-fragments",
-              "keep_fragments",
-              is_flag=True,
-              help="Keep processed fragments")
-@click.option("-d", "--dry-run",
-              is_flag=True,
-              help="Write an updated changelog to stdout instead of disk.")
+@click.option("--date", "release_date", default=None, help="Release date if not today.")
+@click.option(
+    "-k",
+    "--keep-fragments",
+    "keep_fragments",
+    is_flag=True,
+    help="Keep processed fragments",
+)
+@click.option(
+    "-d",
+    "--dry-run",
+    is_flag=True,
+    help="Write an updated changelog to stdout instead of disk.",
+)
 @click.pass_context
 @pass_project_collection
-def build(project_collection, ctx, project_version, release_date=None,
-          keep_fragments=False, dry_run=False, ref_parser=None):
+def build(
+    project_collection,
+    ctx,
+    project_version,
+    release_date=None,
+    keep_fragments=False,
+    dry_run=False,
+    ref_parser=None,
+):
     """Build your new NEWS file."""
     if dry_run and len(project_collection.projects) != 1:
         raise click.UsageError(
             "You may only build a single project at a time to stdout: "
             "please specify --project-name or omit --dry-run",
-            ctx)
+            ctx,
+        )
     if not project_collection.loaded_config:
-        raise click.UsageError("Config file %s not found" %
-                               project_collection.config_fn, ctx)
+        raise click.UsageError(
+            "Config file %s not found" % project_collection.config_fn, ctx
+        )
     for project in project_collection.projects:
         try:
             project.populate_sections(ref_parser)
         except FileNotFoundError as e:
-
             logging.getLogger(__name__).error(
-                "When processing project '%s', got this error: %s",
-                project.name, e)
+                "When processing project '%s', got this error: %s", project.name, e
+            )
             sys.exit(-1)
 
     # Separate loop so that we don't write anything until we know we parsed
     # everything OK
 
     for project in project_collection.projects:
-        new_contents = generate_updated_changelog(project, project_version,
-                                                  release_date)
+        new_contents = generate_updated_changelog(
+            project, project_version, release_date
+        )
         if dry_run:
             print(new_contents)
         else:
             fn = project.settings.news_filename
-            with open(fn, 'w', encoding='utf-8') as fp:
+            with open(fn, "w", encoding="utf-8") as fp:
                 fp.write(new_contents)
 
     if not keep_fragments and not dry_run:
@@ -207,10 +229,12 @@ def remove_fragments(project_collection, ctx, ref_parser=None):
 
 
 @cli.command()
-@click.argument("files",
-                metavar="FILENAME...",
-                nargs=-1,
-                type=click.Path(file_okay=True, dir_okay=False, readable=True))
+@click.argument(
+    "files",
+    metavar="FILENAME...",
+    nargs=-1,
+    type=click.Path(file_okay=True, dir_okay=False, readable=True),
+)
 def merge(files, ref_parser=None):
     """
     Merge changelog fragments into a single fragment with bullet points.

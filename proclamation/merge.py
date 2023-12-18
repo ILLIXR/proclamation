@@ -61,18 +61,17 @@ class MegaFragment:
         """
         Return the string contents of a file with all combined fragments.
         """
-        lines = ['---']
+        lines = ["---"]
         for ref in self.refs:
             ref_str = ref_parser.unparse(ref)
             lines.append(f"- {ref_str}")
-        lines.append('---')
+        lines.append("---")
         for item in self.bullet_points:
             lines.append(f"- {item.rstrip()}")
         return "\n".join(lines) + "\n"
 
 
-def merge_fragments(filenames: List[Path],
-                    ref_parser: Optional[ReferenceParser]):
+def merge_fragments(filenames: List[Path], ref_parser: Optional[ReferenceParser]):
     """
     Merge fragments from one or more files into a single file.
     """
@@ -85,7 +84,7 @@ def merge_fragments(filenames: List[Path],
 
     out_fn = filenames[0]
     remove_fns = filenames[1:]
-    with open(out_fn, 'w', encoding='utf-8') as fp:
+    with open(out_fn, "w", encoding="utf-8") as fp:
         fp.write(mega.export(ref_parser))
 
     remove_files(remove_fns)

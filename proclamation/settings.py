@@ -55,9 +55,15 @@ class ProjectSettings:
     Often parsed from JSON with a similar structure.
     """
 
-    def __init__(self, project_name, template=None, base_url=None,
-                 insert_point_pattern=None,
-                 news_filename=None, extra_data=None):
+    def __init__(
+        self,
+        project_name,
+        template=None,
+        base_url=None,
+        insert_point_pattern=None,
+        news_filename=None,
+        extra_data=None,
+    ):
         """Construct a settings object."""
         self.name = project_name
         """Name of the project."""
@@ -80,7 +86,7 @@ class ProjectSettings:
         template."""
 
         if insert_point_pattern is None:
-            insert_point_pattern = r'^## .*'
+            insert_point_pattern = r"^## .*"
         self.insert_point_re = re.compile(insert_point_pattern)
         """A regular expression matching the line we should insert before,
         compiled from ``insert_point_pattern``."""
@@ -124,9 +130,11 @@ class Settings:
 
 def parse_section(section_name, section_info):
     """Parse a name and dictionary into a :class:`SectionSettings` object."""
-    return SectionSettings(section_name,
-                           section_info["directory"],
-                           section_info.get("sort_by_prefix", False))
+    return SectionSettings(
+        section_name,
+        section_info["directory"],
+        section_info.get("sort_by_prefix", False),
+    )
 
 
 def parse_project(proj):
@@ -137,10 +145,10 @@ def parse_project(proj):
         base_url=proj.get("base_url"),
         insert_point_pattern=proj.get("insert_point_pattern"),
         news_filename=proj.get("news_filename"),
-        extra_data=proj.get("extra_data"))
+        extra_data=proj.get("extra_data"),
+    )
     for section_name, section_info in proj["sections"].items():
-        proj_settings.sections.append(
-            parse_section(section_name, section_info))
+        proj_settings.sections.append(parse_section(section_name, section_info))
     return proj_settings
 
 
@@ -166,5 +174,5 @@ def settings_from_json_io(io):
 
 def settings_from_json_file(fn):
     """Load :class:`Settings` from a JSON file."""
-    with open(str(fn), encoding='utf-8') as fp:
+    with open(str(fn), encoding="utf-8") as fp:
         return settings_from_json_io(fp)

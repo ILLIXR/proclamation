@@ -41,8 +41,7 @@ class Project:
         self.settings = settings
         self.template = settings.template
 
-        self._log = logging.getLogger(
-            __name__).getChild(f"Project.{self.name}")
+        self._log = logging.getLogger(__name__).getChild(f"Project.{self.name}")
 
         self.sections = []
         """List of all sections in this project. Do not modify."""
@@ -50,9 +49,11 @@ class Project:
         sections = self.sections
         for section_settings in settings.sections:
             self._log.debug("Instantiating section %s", section_settings.name)
-            section = Section(section_settings.name,
-                              section_settings.directory,
-                              section_settings.sort_by_prefix)
+            section = Section(
+                section_settings.name,
+                section_settings.directory,
+                section_settings.sort_by_prefix,
+            )
             sections.append(section)
 
     def populate_sections(self, ref_parser=None):
@@ -61,13 +62,14 @@ class Project:
             ref_parser = self.ref_parser
         for section in self.sections:
             directory = _resolve_with_base(
-                self.default_base, section.relative_directory)
-            self._log.info("Populating section %s from files in %s",
-                           section.name, str(directory))
+                self.default_base, section.relative_directory
+            )
+            self._log.info(
+                "Populating section %s from files in %s", section.name, str(directory)
+            )
             section.populate_from_directory(directory, ref_parser)
 
     @property
     def fragment_filenames(self):
         """Return filenames for all fragments added in all sections."""
-        return chain(*(section.fragment_filenames
-                       for section in self.sections))
+        return chain(*(section.fragment_filenames for section in self.sections))

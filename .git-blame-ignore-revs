@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: 2023, Collabora, Ltd. and the Monado contributors
+
+# Use with `git config --local blame.ignoreRevsFile .git-blame-ignore-revs`
+
+# apply black
+c7ea328a6bc4afa6dffd41905d4dd3d14a7615f4
