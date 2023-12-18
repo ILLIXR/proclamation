@@ -2,6 +2,9 @@
 # Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
+#
+# Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
+"""Core types and functionality for working with references and fragments."""
 
 import copy
 import logging

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2020-2023 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -123,9 +123,11 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 @click.pass_context
 @pass_project_collection
 def draft(project_collection, ctx, project_version, release_date=None, ref_parser=None):
-    """Preview the new VERSION portion of your NEWS file(s) to stdout.
+    """
+    Preview the new VERSION portion of your changelog file(s) to stdout.
 
-    If no version is provided, a placeholder value is used."""
+    If no version is provided, a placeholder value is used.
+    """
 
     if project_version is None:
         project_version = "v.next (DRAFT)"
@@ -156,7 +158,8 @@ def draft(project_collection, ctx, project_version, release_date=None, ref_parse
     "-d",
     "--dry-run",
     is_flag=True,
-    help="Write an updated changelog to stdout instead of disk.",
+    help="Write an updated changelog to stdout instead of disk. "
+    "Implies --keep-fragments",
 )
 @click.pass_context
 @pass_project_collection
@@ -221,10 +224,9 @@ def _actually_remove_fragments(project_collection, ref_parser=None):
 @pass_project_collection
 def remove_fragments(project_collection, ctx, ref_parser=None):
     """
-    Remove changelog fragments files associated with all/specified projects.
+    Remove changelog fragment files associated with all/specified projects.
 
-    If you only have one project, or your projects don't share sections,
-    you may consider using the --delete-fragments option of "build" instead.
+    Typically you can allow "build" to do this for you instead of doing this manually.
     """
     _actually_remove_fragments(project_collection, ref_parser=ref_parser)
 
@@ -238,7 +240,7 @@ def remove_fragments(project_collection, ctx, ref_parser=None):
 )
 def merge(files, ref_parser=None):
     """
-    Merge changelog fragments into a single fragment with bullet points.
+    Merge changelog fragment files into a single file with bullet points.
     """
     if not files:
         # Nothing to do

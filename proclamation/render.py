@@ -1,7 +1,9 @@
 #!/usr/bin/env python3 -i
-# Copyright 2019-2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2019-2020, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
+#
+# Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
 """Use Jinja2 to render an addition to the CHANGES file.
 
 This should be the only file that needs to import Jinja2,

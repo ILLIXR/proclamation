@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
-# Copyright 2020-2023 Collabora, Ltd. and the Proclamation contributors
+#!/usr/bin/env python3 -i
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 # Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
-
+"""Functionality that did not fit elsewhere."""
 
 from typing import Iterable
 from pathlib import Path
