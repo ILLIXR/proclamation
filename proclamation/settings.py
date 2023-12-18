@@ -92,9 +92,9 @@ class ProjectSettings:
         compiled from ``insert_point_pattern``."""
 
         if news_filename is None:
-            news_filename = "NEWS"
+            news_filename = "CHANGELOG.md"
         self.news_filename = news_filename
-        """The filename of your NEWS/CHANGES file."""
+        """The filename of your changelog file."""
 
         if extra_data is None:
             extra_data = {}

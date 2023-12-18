@@ -7,7 +7,8 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-A tool for building CHANGES/NEWS files from fragments.
+A tool for building changelog files from fragments: ease to maintain, easy for
+users to read.
 
 Inspired by [towncrier][], but completely language-agnostic and markup-agnostic.
 (The default template uses Markdown, but all formatting is controlled by Jinja2

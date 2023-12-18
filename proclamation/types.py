@@ -234,7 +234,7 @@ _ASTERISK_BULLET = "* "
 
 class Fragment:
     """
-    A single CHANGES/NEWS entry, provided as text to insert into the
+    A single changelog entry, provided as text to insert into the
     templates.
 
     A fragment comes from a file or stream.

@@ -4,6 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
-"""Generate updates to a CHANGELOG/NEWS file by combining fragments."""
+"""Generate updates to a changelog file by combining fragments."""
 
 __version__ = "2.0.0"
