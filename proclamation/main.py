@@ -14,6 +14,7 @@ import click
 from .project import Project
 from .render import generate_updated_changelog, render_template
 from .settings import settings_from_json_file
+from .utils import remove_files
 
 
 class ProjectCollection:
@@ -203,11 +204,3 @@ def remove_fragments(project_collection, ctx, ref_parser=None):
     _actually_remove_fragments(project_collection, ref_parser=ref_parser)
 
 
-def remove_files(files):
-    log = logging.getLogger(__name__)
-    for f in files:
-        try:
-            f.unlink()
-            log.info("Removed %s", f)
-        except FileNotFoundError:
-            log.info("Skipping %s, not found", f)
