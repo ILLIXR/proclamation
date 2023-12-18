@@ -205,6 +205,28 @@ class ReferenceParser:
 
         return self.make_reference(elts)
 
+    def unparse(self, ref: Reference) -> str:
+        """
+        Turn a Reference back into a string.
+
+        May override or extend.
+
+
+        >>> rp = ReferenceParser()
+        >>> rp.unparse(rp.parse("mr.50.md"))
+        'mr.50'
+
+        >>> rp.unparse(rp.parse("mr.50.extradata"))
+        'mr.50.extradata'
+
+        >>> rp.unparse(rp.parse("mr.50.extradata.more"))
+        'mr.50.extradata.more'
+        """
+        parts = [ref.item_type, str(ref.number)]
+        if ref.service_params:
+            parts.extend(ref.service_params)
+        return ".".join(parts)
+
 
 _DASH_BULLET = "- "
 _ASTERISK_BULLET = "* "
