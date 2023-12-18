@@ -2,6 +2,9 @@
 # Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
+#
+# Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
+"""Core types and functionality for working with references and fragments."""
 
 import copy
 import logging
@@ -234,7 +237,7 @@ _ASTERISK_BULLET = "* "
 
 class Fragment:
     """
-    A single CHANGES/NEWS entry, provided as text to insert into the
+    A single changelog entry, provided as text to insert into the
     templates.
 
     A fragment comes from a file or stream.

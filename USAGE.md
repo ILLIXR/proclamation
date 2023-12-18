@@ -170,7 +170,8 @@ elaborate use-cases than this.)
     etc.
   - `base_url` - Technically optional, but required if you're using the default
     template. Passed to the template which may use it to form reference links.
-  - `news_filename` - Optional, in case your changelog isn't called NEWS.
+  - `news_filename` - Optional, in case your changelog isn't called
+    `CHANGELOG.md`.
   - `sections` - Required: contains an object. The key names are the section
     names (used by the default template for section headers), while the values
     are objects. Sections might be logical sub-projects, or alternately

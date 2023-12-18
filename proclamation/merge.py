@@ -1,16 +1,17 @@
 #!/usr/bin/env python3 -i
-# Copyright 2020-2023 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 # Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
+"""Loosely-coupled functionality to combine changelog fragment files."""
 
 import logging
 from pathlib import Path
 from typing import List, Optional, Set, Tuple
 
 from .utils import remove_files
-from .types import Fragment, Reference, ReferenceParser
+from .types import FRONT_MATTER_DELIMITER, Fragment, Reference, ReferenceParser
 
 _LOG = logging.getLogger(__name__)
 
@@ -61,11 +62,11 @@ class MegaFragment:
         """
         Return the string contents of a file with all combined fragments.
         """
-        lines = ["---"]
+        lines = [FRONT_MATTER_DELIMITER]
         for ref in self.refs:
             ref_str = ref_parser.unparse(ref)
             lines.append(f"- {ref_str}")
-        lines.append("---")
+        lines.append(FRONT_MATTER_DELIMITER)
         for item in self.bullet_points:
             lines.append(f"- {item.rstrip()}")
         return "\n".join(lines) + "\n"

@@ -6,9 +6,9 @@
 from ..project import Project
 from ..render import (
     combine_changelogs,
-    get_split_news_file,
+    get_split_changelog_file,
     render_template,
-    split_news_contents,
+    split_changelog_contents,
 )
 from ..settings import ProjectSettings, SectionSettings
 
@@ -25,7 +25,7 @@ NEWS_FILE_1 = """# Sample NEWS file
 
 def test_split_news():
     proj_settings = ProjectSettings("Test")
-    before, after = split_news_contents(proj_settings, NEWS_FILE_1)
+    before, after = split_changelog_contents(proj_settings, NEWS_FILE_1)
     assert "Sample" in before
     assert "Previous" in after
     assert after.startswith("##")
@@ -45,14 +45,14 @@ def make_mock_project_settings_with_sections():
 
 def test_missing_news_file():
     proj_settings = make_mock_project_settings()
-    before, after = get_split_news_file(proj_settings)
+    before, after = get_split_changelog_file(proj_settings)
     assert after == ""
     assert before.endswith("\n")
 
 
 def test_duplicated_version():
     proj_settings = make_mock_project_settings()
-    before, after = split_news_contents(proj_settings, NEWS_FILE_1)
+    before, after = split_changelog_contents(proj_settings, NEWS_FILE_1)
     assert "Test 1.0" in after
     project = Project(proj_settings)
     try:

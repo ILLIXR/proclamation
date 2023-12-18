@@ -49,13 +49,14 @@
                 },
                 "news_filename": {
                     "type": "string",
-                    "title": "NEWS file filename",
-                    "default": "NEWS"
+                    "title": "Changelog file filename",
+                    "default": "CHANGELOG.md",
+                    "description": "Previous default was NEWS, hence the naming."
                 },
                 "insert_point_pattern": {
                     "type": "string",
                     "title": "Insert point pattern",
-                    "description": "Regex matching the line in your NEWS file that we should insert before.",
+                    "description": "Regex matching the line in your changelog file that we should insert before.",
                     "default": "^## .*'"
                 },
                 "sections": {
@@ -71,9 +72,9 @@
                 },
                 "template": {
                     "type": "string",
-                    "title": "NEWS file release template",
+                    "title": "changelog file release template",
                     "default": "base.md",
-                    "description": "A path to a Jinja2 template to use when generating new NEWS file updates. The default file is bundled with Proclamation itself."
+                    "description": "A path to a Jinja2 template to use when generating new changelog file updates. The default file is bundled with Proclamation itself."
                 },
                 "extra_data": {
                     "type": "object",

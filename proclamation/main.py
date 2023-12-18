@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2020-2023 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020-2023, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -104,7 +104,7 @@ pass_project_collection = click.make_pass_decorator(ProjectCollection)
 )
 @click.pass_context
 def cli(ctx, config_file, project_name, default_base, verbose):
-    """Proclamation builds your NEWS files from fragments."""
+    """Proclamation builds your changelog files from fragments."""
     fmt = "[%(levelname)s:%(name)s]  %(message)s"
     if verbose >= 2:
         logging.basicConfig(format=fmt, level=logging.DEBUG)
@@ -123,9 +123,11 @@ def cli(ctx, config_file, project_name, default_base, verbose):
 @click.pass_context
 @pass_project_collection
 def draft(project_collection, ctx, project_version, release_date=None, ref_parser=None):
-    """Preview the new VERSION portion of your NEWS file(s) to stdout.
+    """
+    Preview the new VERSION portion of your changelog file(s) to stdout.
 
-    If no version is provided, a placeholder value is used."""
+    If no version is provided, a placeholder value is used.
+    """
 
     if project_version is None:
         project_version = "v.next (DRAFT)"
@@ -156,7 +158,8 @@ def draft(project_collection, ctx, project_version, release_date=None, ref_parse
     "-d",
     "--dry-run",
     is_flag=True,
-    help="Write an updated changelog to stdout instead of disk.",
+    help="Write an updated changelog to stdout instead of disk. "
+    "Implies --keep-fragments",
 )
 @click.pass_context
 @pass_project_collection
@@ -169,7 +172,7 @@ def build(
     dry_run=False,
     ref_parser=None,
 ):
-    """Build your new NEWS file."""
+    """Build your updated changelog file."""
     if dry_run and len(project_collection.projects) != 1:
         raise click.UsageError(
             "You may only build a single project at a time to stdout: "
@@ -178,7 +181,7 @@ def build(
         )
     if not project_collection.loaded_config:
         raise click.UsageError(
-            "Config file %s not found" % project_collection.config_fn, ctx
+            f"Config file {project_collection.config_fn} not found", ctx
         )
     for project in project_collection.projects:
         try:
@@ -220,10 +223,10 @@ def _actually_remove_fragments(project_collection, ref_parser=None):
 @click.pass_context
 @pass_project_collection
 def remove_fragments(project_collection, ctx, ref_parser=None):
-    """Remove NEWS fragments associated with all/specified projects.
+    """
+    Remove changelog fragment files associated with all/specified projects.
 
-    If you only have one project, or your projects don't share sections,
-    you may consider using the --delete-fragments option of "build" instead.
+    Typically you can allow "build" to do this for you instead of doing this manually.
     """
     _actually_remove_fragments(project_collection, ref_parser=ref_parser)
 
@@ -237,7 +240,7 @@ def remove_fragments(project_collection, ctx, ref_parser=None):
 )
 def merge(files, ref_parser=None):
     """
-    Merge changelog fragments into a single fragment with bullet points.
+    Merge changelog fragment files into a single file with bullet points.
     """
     if not files:
         # Nothing to do

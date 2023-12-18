@@ -1,7 +1,9 @@
 #!/usr/bin/env python3 -i
-# Copyright 2019-2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2019-2020, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
+#
+# Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
 """Use Jinja2 to render an addition to the CHANGES file.
 
 This should be the only file that needs to import Jinja2,
@@ -43,8 +45,8 @@ def render_template(project, project_version, release_date=None):
         template = env.get_template(project.template)
     except TemplateSyntaxError as e:
         print(
-            "template syntax error during parse: {e.filename}:{e.lineno} "
-            + "error: {e.message}"
+            f"template syntax error during parse: {e.filename}:{e.lineno} "
+            + f"error: {e.message}"
         )
         raise RuntimeError("Jinja2 template syntax error") from e
 
@@ -65,20 +67,21 @@ def render_template(project, project_version, release_date=None):
         return result
     except TemplateSyntaxError as e:
         print(
-            "template syntax error during render: {e.filename}:{e.lineno} "
-            + "error: {e.message}"
+            f"template syntax error during render: {e.filename}:{e.lineno} "
+            + f"error: {e.message}"
         )
         raise RuntimeError("Jinja2 template syntax error") from e
 
 
-def split_news_contents(project_settings, news_contents):
-    """Split the contents of a NEWS file based on the insert point pattern.
+def split_changelog_contents(project_settings, contents):
+    """
+    Split the contents of a changelog file based on the insert point pattern.
 
     Two strings are returned: the content before the insert point, and the
     content after the insert point, including the line that matched the
     pattern.
     """
-    io = StringIO(news_contents)
+    io = StringIO(contents)
     before = []
     after = []
     found_first_line = False
@@ -113,8 +116,8 @@ def split_news_contents(project_settings, news_contents):
     return "".join(before), "".join(after)
 
 
-def get_split_news_file(project_settings):
-    """Load configured NEWS file and return the content for before and after
+def get_split_changelog_file(project_settings):
+    """Load configured changelog file and return the content for before and after
     our new entry.
 
     We make a minimal default if we can't open the original.
@@ -123,14 +126,14 @@ def get_split_news_file(project_settings):
     try:
         with open(fn, encoding="utf-8") as fp:
             content = fp.read()
-        return split_news_contents(project_settings, content)
+        return split_changelog_contents(project_settings, content)
     except FileNotFoundError:
         # Default "empty" changelog file
         return "# Changelog\n\n", ""
 
 
 def combine_changelogs(before, after, project, project_version, release_date):
-    """Return the text of the updated, complete CHANGES/NEWS file given
+    """Return the text of the updated, complete changelog file given
     pre-split contents."""
     new_portion = render_template(project, project_version, release_date)
 
@@ -141,14 +144,14 @@ def combine_changelogs(before, after, project, project_version, release_date):
     log.info("First line of insert point: %s", first_after_line.rstrip())
     if first_after_line.rstrip() == first_new_line.rstrip():
         raise RuntimeError(
-            "Your new NEWS entry has the same heading as the most recent "
+            "Your new changelog entry has the same heading as the most recent "
             "existing entry! Probably duplicating version numbers."
         )
     return "".join((before, new_portion, after))
 
 
 def generate_updated_changelog(project, project_version, release_date=None):
-    """Return the text of the updated, complete CHANGES/NEWS file."""
-    before, after = get_split_news_file(project.settings)
+    """Return the text of the updated, complete changelog file."""
+    before, after = get_split_changelog_file(project.settings)
 
     return combine_changelogs(before, after, project, project_version, release_date)

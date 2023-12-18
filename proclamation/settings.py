@@ -1,7 +1,9 @@
 #!/usr/bin/env python3 -i
-# Copyright 2020 Collabora, Ltd. and the Proclamation contributors
+# Copyright 2020, Collabora, Ltd. and the Proclamation contributors
 #
 # SPDX-License-Identifier: Apache-2.0
+#
+# Original author: Rylie Pavlik <rylie.pavlik@collabora.com>
 """Project settings."""
 
 import logging
@@ -92,9 +94,9 @@ class ProjectSettings:
         compiled from ``insert_point_pattern``."""
 
         if news_filename is None:
-            news_filename = "NEWS"
+            news_filename = "CHANGELOG.md"
         self.news_filename = news_filename
-        """The filename of your NEWS/CHANGES file."""
+        """The filename of your changelog file."""
 
         if extra_data is None:
             extra_data = {}
