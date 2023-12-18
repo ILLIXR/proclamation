@@ -17,7 +17,7 @@ Maintained at <https://gitlab.com/proclamation/proclamation>
 
 Documentation also available at <https://proclamation.readthedocs.io/en/latest/>
 
-[towncrier]: https://github.com/hawkowl/towncrier
+[towncrier]: https://towncrier.readthedocs.io/en/stable/
 
 ## Table of Contents
 
@@ -59,7 +59,7 @@ Proclamation -- all they have to do is create a text file, and only the person
 doing releases strictly needs to install Proclamation. However, there are some
 utilities that they might find useful if they do.
 
-Proclamation requires Python 3.7 or newer. (The last release supporting 3.6 was 1.2.1.)
+Proclamation requires Python 3.7 or newer.
 
 Proclamation is available on [pypi][], so you can install it for your local user
 in an isolated virtual environment with [pipx][]:
@@ -158,17 +158,17 @@ from your version control system.)
 
 ## Thanks
 
-This tool was initially developed by Rylie Pavlik in the course of her work at
-the open-source software consultancy [Collabora](https://collabora.com). Thanks
-to Collabora and their "Open First" mantra for supporting the development of
-this software.
+This tool was initially developed and maintained by Rylie Pavlik in the course
+of her work at the open-source software consultancy
+[Collabora](https://collabora.com). Thanks to Collabora and their "Open First"
+mantra for supporting the development of this software.
 
 A debt of gratitude is owed to the developers of the [towncrier][] package,
 which strongly inspired the usage pattern for this tool. (Before writing this
 tool, Rylie initially attempted to modify towncrier to suit the use cases she
 had.) It's definitely a project worth looking into if you maintain a Python
 project. (The Proclamation project doesn't use it, despite being in Python,
-because it uses itself...) Rylie first learned about towncrier at
+because Proclamation uses itself...) Rylie first learned about towncrier at
 [Stephen Finucane's talk at FOSDEM 2020](https://fosdem.org/2020/schedule/event/python2020_manage_change/).
 
 ## Code of Conduct
@@ -187,14 +187,15 @@ locally install a link in a virtualenv.
 
 Additionally, consider the following suggestions/requirements:
 
-- "flit" is the build system used, but pip/pipx should be able to handle it.
-- Run `pytest-3` or similar to run the automated tests.
+- "[flit][]" is the build system used, but pip/pipx should be able to handle it.
+- Run `pytest-3` or similar to run the automated tests. If you add
+  functionality, consider adding tests.
 - Run `black proclamation` to
   automatically format the source code with [black][].
 - Use [`tox`][tox] to run [flake8][] as well as tests for multiple Python versions.
   - e.g. on Debian Bookworm, you can run `tox -e py39,flake8`
 - When submitting a change, be sure to create your changelog fragment in the
-  changes directory! :)
+  `changes`` directory! :)
 - If editing the README, please conform to the
   [standard-readme](https://github.com/RichardLitt/standard-readme)
   specification.
@@ -203,6 +204,7 @@ No copyright assignment is required to contribute. However, you are required to
 make your contributions available under the prevailing license for that content
 type (see below) for it to be accepted into the main repo.
 
+[flit]: https://flit.pypa.io/en/stable/
 [tox]: https://tox.readthedocs.io/en/latest/
 [flake8]: https://flake8.pycqa.org/en/latest/
 [black]: https://black.readthedocs.io/en/stable/
@@ -210,7 +212,7 @@ type (see below) for it to be accepted into the main repo.
 ## License
 
 The *tl;dr* is: The bulk of the package is [Apache-2.0][] licensed. Files that
-you might incorporate into your own project are [CC0][] (public domain
+you might incorporate into your own project are [CC0][] (roughly, public domain
 dedication or nearest equivalent based on jurisdiction); this is so you can
 freely use them into your project no matter what license you use.
 
@@ -222,8 +224,8 @@ For instance, the code of conduct, based on the Contributor Covenant v2.0, is
 licensed CC-BY-4.0.
 
 This project is [REUSE-compliant](https://reuse.software) (version 3.0 of the
-REUSE specification). You can use that project's tools to work with copyright
-and licenses of files in this project.
+REUSE specification). You can use that project's tools to work with the
+copyright and license notices of files in this project.
 
 [Apache-2.0]: http://www.apache.org/licenses/LICENSE-2.0
 [CC0]: https://creativecommons.org/publicdomain/zero/1.0/
