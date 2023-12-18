@@ -14,8 +14,8 @@ from .test_settings import PROJECT, PROJ_NAME
 
 def create_config_file(dirname, config_json):
     our_dir = Path(dirname)
-    fn = str(our_dir / '.proclamation.json')
-    with open(fn, 'w', encoding='utf-8') as fp:
+    fn = str(our_dir / ".proclamation.json")
+    with open(fn, "w", encoding="utf-8") as fp:
         json.dump(config_json, fp)
     return fn
 

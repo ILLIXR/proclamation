@@ -4,8 +4,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from ..project import Project
-from ..render import (combine_changelogs, get_split_news_file, render_template,
-                      split_news_contents)
+from ..render import (
+    combine_changelogs,
+    get_split_news_file,
+    render_template,
+    split_news_contents,
+)
 from ..settings import ProjectSettings, SectionSettings
 
 NEWS_FILE_1 = """# Sample NEWS file
@@ -34,10 +38,8 @@ def make_mock_project_settings():
 
 def make_mock_project_settings_with_sections():
     proj_settings = make_mock_project_settings()
-    proj_settings.sections.append(
-        SectionSettings("Features", "missing-dir/features"))
-    proj_settings.sections.append(
-        SectionSettings("Bug fixes", "missing-dir/bugs"))
+    proj_settings.sections.append(SectionSettings("Features", "missing-dir/features"))
+    proj_settings.sections.append(SectionSettings("Bug fixes", "missing-dir/bugs"))
     return proj_settings
 
 

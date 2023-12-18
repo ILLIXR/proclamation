@@ -20,12 +20,13 @@ def test_ref_parse():
     assert parser.parse("issue.54").number == 54
     assert parser.parse("issue.54").as_tuple() == ("issue", 54, ())
 
-    assert (parser.parse("issue.54").as_tuple() ==
-            parser.parse("issue.54.md").as_tuple())
+    assert parser.parse("issue.54").as_tuple() == parser.parse("issue.54.md").as_tuple()
 
     assert parser.parse("issue.54.gh").as_tuple() == ("issue", 54, ("gh",))
-    assert (parser.parse("issue.54.gh").as_tuple() ==
-            parser.parse("issue.54.gh.md").as_tuple())
+    assert (
+        parser.parse("issue.54.gh").as_tuple()
+        == parser.parse("issue.54.gh.md").as_tuple()
+    )
 
     assert parser.parse(".gitignore") is None
     assert parser.parse(".git-keep") is None
@@ -35,10 +36,8 @@ def test_ref_parse_filename():
     parser = ReferenceParser()
     assert parser.parse_filename("issue.54.md").item_type == "issue"
     assert parser.parse_filename("issue.54.md").number == 54
-    assert (parser.parse_filename("issue.54.md").as_tuple()
-            == ("issue", 54, ()))
-    assert (parser.parse_filename("issue.54.gh.md").as_tuple()
-            == ("issue", 54, ("gh",)))
+    assert parser.parse_filename("issue.54.md").as_tuple() == ("issue", 54, ())
+    assert parser.parse_filename("issue.54.gh.md").as_tuple() == ("issue", 54, ("gh",))
     assert parser.parse_filename("issue.54") is None
     assert parser.parse_filename(".gitignore") is None
     assert parser.parse_filename(".git-keep") is None
@@ -131,10 +130,10 @@ def test_fragment_prefix_size_limit():
     fragmentio = StringIO(fragment_text)
     fragment = Fragment(fn, io=fragmentio)
     # Haven't parsed the text yet
-    assert fragment.prefix == ''
+    assert fragment.prefix == ""
     extras = fragment.parse_file()
     assert not extras
-    assert fragment.prefix == 'This'
+    assert fragment.prefix == "This"
 
 
 def test_fragment_with_comment():
@@ -219,9 +218,9 @@ PREFIX_DATA = (
 def create_fragments(dirname):
     our_dir = Path(dirname)
     for fn, contents in PREFIX_DATA:
-        with open(str(our_dir/fn), 'w', encoding='utf-8') as fp:
+        with open(str(our_dir / fn), "w", encoding="utf-8") as fp:
             fp.write(contents)
-            fp.write('\n')
+            fp.write("\n")
 
 
 def test_fragment_sorting_from_disk():

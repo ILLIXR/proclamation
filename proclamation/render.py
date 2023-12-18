@@ -12,8 +12,13 @@ import logging
 from datetime import date
 from io import StringIO
 
-from jinja2 import (ChoiceLoader, Environment, FileSystemLoader, PackageLoader,
-                    TemplateSyntaxError)
+from jinja2 import (
+    ChoiceLoader,
+    Environment,
+    FileSystemLoader,
+    PackageLoader,
+    TemplateSyntaxError,
+)
 
 
 def render_template(project, project_version, release_date=None):
@@ -24,12 +29,11 @@ def render_template(project, project_version, release_date=None):
     log = logging.getLogger(__name__)
     search_path = [project.default_base]
     log.debug(
-        "Template search path is %s, followed by built-in templates.",
-        str(search_path))
-    loader = ChoiceLoader([
-        FileSystemLoader(search_path),
-        PackageLoader("proclamation", "templates")
-    ])
+        "Template search path is %s, followed by built-in templates.", str(search_path)
+    )
+    loader = ChoiceLoader(
+        [FileSystemLoader(search_path), PackageLoader("proclamation", "templates")]
+    )
 
     if release_date is None:
         release_date = date.today().isoformat().strip()
@@ -39,27 +43,31 @@ def render_template(project, project_version, release_date=None):
         template = env.get_template(project.template)
     except TemplateSyntaxError as e:
         print(
-            "template syntax error during parse: {e.filename}:{e.lineno} " +
-            "error: {e.message}")
+            "template syntax error during parse: {e.filename}:{e.lineno} "
+            + "error: {e.message}"
+        )
         raise RuntimeError("Jinja2 template syntax error") from e
 
     log.info("Loaded template %s from %s", project.template, template.filename)
     try:
-        result = template.render({
-            "project_name": project.name,
-            "project_version": project_version,
-            "date": release_date,
-            "sections": project.sections,
-            "base_url": project.settings.base_url,
-        })
+        result = template.render(
+            {
+                "project_name": project.name,
+                "project_version": project_version,
+                "date": release_date,
+                "sections": project.sections,
+                "base_url": project.settings.base_url,
+            }
+        )
         # ensure it ends with a blank line
         while not result.endswith("\n\n"):
             result += "\n"
         return result
     except TemplateSyntaxError as e:
         print(
-            "template syntax error during render: {e.filename}:{e.lineno} " +
-            "error: {e.message}")
+            "template syntax error during render: {e.filename}:{e.lineno} "
+            + "error: {e.message}"
+        )
         raise RuntimeError("Jinja2 template syntax error") from e
 
 
@@ -91,12 +99,17 @@ def split_news_contents(project_settings, news_contents):
         before.append(line)
 
     log = logging.getLogger(__name__)
-    log.info("%d lines before the insert point in existing file, %d after",
-             len(before), len(after))
+    log.info(
+        "%d lines before the insert point in existing file, %d after",
+        len(before),
+        len(after),
+    )
     if not found_first_line:
-        log.warning("Did not find a line that matches the "
-                    "insert_point_pattern, there may be an error in "
-                    "your settings")
+        log.warning(
+            "Did not find a line that matches the "
+            "insert_point_pattern, there may be an error in "
+            "your settings"
+        )
     return "".join(before), "".join(after)
 
 
@@ -108,7 +121,7 @@ def get_split_news_file(project_settings):
     """
     fn = project_settings.news_filename
     try:
-        with open(fn, encoding='utf-8') as fp:
+        with open(fn, encoding="utf-8") as fp:
             content = fp.read()
         return split_news_contents(project_settings, content)
     except FileNotFoundError:
@@ -129,15 +142,13 @@ def combine_changelogs(before, after, project, project_version, release_date):
     if first_after_line.rstrip() == first_new_line.rstrip():
         raise RuntimeError(
             "Your new NEWS entry has the same heading as the most recent "
-            "existing entry! Probably duplicating version numbers.")
-    return "".join((before,
-                    new_portion,
-                    after))
+            "existing entry! Probably duplicating version numbers."
+        )
+    return "".join((before, new_portion, after))
 
 
 def generate_updated_changelog(project, project_version, release_date=None):
     """Return the text of the updated, complete CHANGES/NEWS file."""
     before, after = get_split_news_file(project.settings)
 
-    return combine_changelogs(before, after, project, project_version,
-                              release_date)
+    return combine_changelogs(before, after, project, project_version, release_date)
