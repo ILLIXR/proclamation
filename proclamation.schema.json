@@ -73,7 +73,7 @@
                 "template": {
                     "type": "string",
                     "title": "changelog file release template",
-                    "default": "base.md",
+                    "default": "base.j2",
                     "description": "A path to a Jinja2 template to use when generating new changelog file updates. The default file is bundled with Proclamation itself."
                 },
                 "extra_data": {

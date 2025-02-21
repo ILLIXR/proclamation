@@ -33,15 +33,15 @@ class Reference:
     this class and a custom template suffice.
     """
 
-    def __init__(self, item_type, number, service_params):
+    def __init__(self, item_type, identifier, service_params):
         """Construct from a parsed reference string."""
         super().__init__()
 
         self.item_type = item_type
         """Item type, like ``issue``, ``mr``, ``pr``."""
 
-        self.number = number
-        """Reference number."""
+        self.identifier = identifier
+        """Reference identifier."""
 
         self.service_params = service_params
         """A list/tuple of any additional parameters associated with the
@@ -55,11 +55,11 @@ class Reference:
 
         Don't actually use this in your templates!
         """
-        return (self.item_type, self.number, tuple(self.service_params))
+        return (self.item_type, self.identifier, tuple(self.service_params))
 
     def __repr__(self):
         return "Reference({}, {}, {})".format(
-            repr(self.item_type), repr(self.number), repr(self.service_params)
+            repr(self.item_type), repr(self.identifier), repr(self.service_params)
         )
 
 
@@ -132,18 +132,13 @@ class ReferenceParser:
 
         >>> ReferenceParser().make_reference(['mr'])
 
-        This list is not a valid reference: can't convert the second element
-        to a number.
-
-        >>> ReferenceParser().make_reference(['mr', 'fifty'])
-
         """
         if len(elts) < 2:
             # Only one component: Can't be a ref.
             return None
         try:
             return Reference(
-                item_type=elts[0], number=int(elts[1]), service_params=elts[2:]
+                item_type=elts[0], identifier=elts[1], service_params=elts[2:]
             )
         except ValueError:
             # Conversion failure, etc. means this isn't actually a ref
@@ -225,7 +220,7 @@ class ReferenceParser:
         >>> rp.unparse(rp.parse("mr.50.extradata.more"))
         'mr.50.extradata.more'
         """
-        parts = [ref.item_type, str(ref.number)]
+        parts = [ref.item_type, str(ref.identifier)]
         if ref.service_params:
             parts.extend(ref.service_params)
         return ".".join(parts)
@@ -291,6 +286,10 @@ class Fragment:
 
         Do not modify manually."""
 
+        self.authors: List[str] = []
+
+        self.issue: int
+
         self._known_refs: Set[Tuple[str, ...]] = set()
         """The set of all ref tuples associated with this fragment.
 
@@ -302,7 +301,12 @@ class Fragment:
     def _insert_ref(self, reference):
         ref_tuple = reference.as_tuple()
         if ref_tuple not in self._known_refs:
-            self.refs.append(reference)
+            if reference.item_type == "author":
+                self.authors.append(reference.identifier)
+            elif reference.item_type == "issue":
+                self.issue = int(reference.identifier)
+            else:
+                self.refs.append(reference)
             self._known_refs.add(ref_tuple)
 
     def __lt__(self, other):

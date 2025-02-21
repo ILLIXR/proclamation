@@ -1,0 +1,64 @@
+{#-
+SPDX-License-Identifier: CC0-1.0
+SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors
+Customized 2/2025 for ILLIXR
+-#}
+
+{% macro format_ref(ref) -%}
+    {%- if ref.item_type == "issue" -%}
+        {%- set subdir = "issues" %}
+        {%- set link_text %}#{{ ref.identifier }}{% endset %}
+    {%- elif ref.item_type == "pr" -%}
+        {%- set subdir = "pull" %}
+        {%- set link_text %}#{{ ref.identifier }}{% endset %}
+    {%- elif ref.item_type == "mr" -%}
+        {%- set subdir = "merge_requests" %}
+        {%- set link_text %}!{{ ref.identifier }}{% endset %}
+    {%- endif -%}
+[{{ link_text }}]({{base_url}}/{{subdir}}/{{ ref.identifier }})
+{%- endmacro -%}
+{% macro format_refs(refs) -%}
+    {% if (refs | length) > 0 %}
+        {%- set comma = joiner(",\n") -%}
+        {% for ref in refs -%}
+            {{comma()}}{{format_ref(ref)}}
+        {%- endfor %}
+    {%- endif %}
+{%- endmacro -%}
+{% macro format_authors(refs) -%}
+    {%if (refs | length) > 0 %}
+        {%- set comma = joiner(", ") -%}
+        {% for ref in refs -%}
+            {{comma()}}[@{{ ref }}](https://github.com/{{ ref }})
+        {%- endfor %}
+    {%- endif %}
+{%- endmacro -%}
+{% block title %}## {{ project_name }} {{project_version}} ({{date}}){% endblock %}
+{% block sections_and_fragments -%}
+{%- for section in sections %}
+- {{ section.name }}
+    {%- if section.name == "Issues" %}
+  The following issues have been addressed and closed by this release:
+        {%- for fragment in section.fragments %}
+  - [#{{ fragment.issue }}]({{ base_url }}/issues/{{  fragment.issue }})
+    {{ fragment.text | wordwrap | indent }}
+               {%- if (fragment.refs | length) > 0 %} }}
+    by PR {{ format_refs(fragment.refs) | indent }}
+              {%- endif -%}
+        {%- else %}
+  - None
+        {%- endfor %}
+    {%- elif section.name == "Release Notes" %}
+        {%- for fragment in section.fragments %}
+  {{ fragment.text | wordwrap | indent }}
+        {%- endfor -%}
+    {%- else -%}
+        {%- for fragment in section.fragments %}
+  - {{ fragment.text | wordwrap | indent }} by
+    {{ format_authors(fragment.authors) }} in PR
+    {{ format_refs(fragment.refs) | indent }}
+        {%- else %}
+  - No significant changes
+        {%- endfor -%}
+    {%- endif -%}
+{%- endfor %}{% endblock %}

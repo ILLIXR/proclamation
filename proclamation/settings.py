@@ -74,7 +74,7 @@ class ProjectSettings:
         # default above, because a config file might pass us "None" for
         # all of these.
         if template is None:
-            template = "base.md"
+            template = "base.j2"
         self.template = template
         """Filename of the changelog template."""
 

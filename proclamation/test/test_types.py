@@ -13,11 +13,11 @@ from ..types import Fragment, ReferenceParser, Section
 def test_ref_parse():
     parser = ReferenceParser()
     assert parser.parse("issue.54.md").item_type == "issue"
-    assert parser.parse("issue.54.md").number == 54
+    assert parser.parse("issue.54.md").identifier == 54
     assert parser.parse("issue.54.md").as_tuple() == ("issue", 54, ())
 
     assert parser.parse("issue.54").item_type == "issue"
-    assert parser.parse("issue.54").number == 54
+    assert parser.parse("issue.54").identifier == 54
     assert parser.parse("issue.54").as_tuple() == ("issue", 54, ())
 
     assert parser.parse("issue.54").as_tuple() == parser.parse("issue.54.md").as_tuple()
@@ -35,7 +35,7 @@ def test_ref_parse():
 def test_ref_parse_filename():
     parser = ReferenceParser()
     assert parser.parse_filename("issue.54.md").item_type == "issue"
-    assert parser.parse_filename("issue.54.md").number == 54
+    assert parser.parse_filename("issue.54.md").identifier == 54
     assert parser.parse_filename("issue.54.md").as_tuple() == ("issue", 54, ())
     assert parser.parse_filename("issue.54.gh.md").as_tuple() == ("issue", 54, ("gh",))
     assert parser.parse_filename("issue.54") is None

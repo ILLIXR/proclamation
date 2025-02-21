@@ -1,11 +1,12 @@
 # Proclamation
 
-[![pipeline status](https://gitlab.com/proclamation/proclamation/badges/main/pipeline.svg)](https://gitlab.com/proclamation/proclamation/-/commits/main)
-[![coverage report](https://gitlab.com/proclamation/proclamation/badges/main/coverage.svg)](https://gitlab.com/proclamation/proclamation/-/commits/main)
-[![Documentation Status](https://readthedocs.org/projects/proclamation/badge/?version=latest)](https://proclamation.readthedocs.io/en/latest/?badge=latest)
-[![REUSE status](https://api.reuse.software/badge/gitlab.com/proclamation/proclamation)](https://api.reuse.software/info/gitlab.com/proclamation/proclamation)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
-[![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+This is a customized version of Proclamation for ILLIXR. The original can be found [here](https://gitlab.com/proclamation/proclamation).
+
+**Changes**
+- Added the capability to tag authors with fragments
+- Issues are now tracked separately from other references
+- References can contain text or numbers for the second part of the reference (e.g. `author.bob` and `issue.25` are both valid)
+- The output template has been re-designed to accommodate these changes
 
 A tool for building changelog files from fragments: ease to maintain, easy for
 users to read.
