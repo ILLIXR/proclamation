@@ -10,6 +10,7 @@ from typing import Iterable
 from pathlib import Path
 import logging
 
+VERSION = "ILLIXR"
 
 def remove_files(files: Iterable[Path]):
     """
