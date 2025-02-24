@@ -411,7 +411,7 @@ class Fragment:
         while 1:
             if not line:
                 break
-
+            '''
             # Remove leading "bullet"
             lstripped_line = line.lstrip()
             had_bullet = False
@@ -427,6 +427,8 @@ class Fragment:
                 if bullet_content:
                     bullets.append(bullet_content)
                 bullet_content = ""
+            bullet_content += line
+            '''
             bullet_content += line
             line = fp.readline()
 
